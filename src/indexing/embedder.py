@@ -230,9 +230,9 @@ class VectorStoreManager:
                 ]
             )
 
-        results = self.qdrant.search(
+        results = self.qdrant.query_points(
             collection_name=self.COLLECTION_NAME,
-            query_vector=query_embedding,
+            query=query_embedding,
             limit=top_k,
             query_filter=query_filter,
             with_payload=True,
@@ -250,7 +250,7 @@ class VectorStoreManager:
                 "chunk_type": hit.payload.get("chunk_type", ""),
                 "filename": hit.payload.get("filename", ""),
             }
-            for hit in results
+            for hit in results.points
         ]
 
     def _search_chroma(
