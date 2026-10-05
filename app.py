@@ -19,6 +19,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from src.pipeline import RAGPipeline
+from src.config.loader import ConfigLoader
 
 # Configure logging
 logging.basicConfig(
@@ -30,21 +31,48 @@ logger = logging.getLogger("app")
 
 # ─── Global Pipeline Instance ────────────────────────────────────────────
 pipeline = None
+config_loader = None
 
 
-def get_pipeline():
-    """Lazy-initialize the pipeline."""
+def load_config():
+    """Load configuration from config file or environment."""
+    global config_loader
+    if config_loader is None:
+        config_loader = ConfigLoader()
+        logger.info("Configuration loaded")
+    return config_loader
+
+
+def get_pipeline(mode: str = "local", use_llm_judge: bool = False):
+    """
+    Lazy-initialize the pipeline. On repeat calls with a different
+    use_llm_judge value, swaps the evaluator in place rather than
+    rebuilding the whole pipeline (which would re-load embedding/reranker
+    models and lose the in-memory index).
+
+    Args:
+        mode: Configuration mode ("local", "cloud", etc.)
+        use_llm_judge: Whether to use LLM-based evaluation.
+    """
     global pipeline
     if pipeline is None:
+        config = load_config()
+        model_cfg = config.get_model_config(mode)
+        eval_cfg = config.get_evaluator_config()
+        eval_cfg["use_llm_judge"] = use_llm_judge
+
+        logger.info(f"Initializing pipeline with mode={mode}, model={model_cfg.model}")
         pipeline = RAGPipeline(
             qdrant_url="http://localhost:6333",
             use_qdrant=True,
-            ollama_model="llama3.2:latest",
-            ollama_url="http://localhost:11434",
             data_dir="./data/prospectuses",
             vectorstore_dir="./vectorstore",
             use_reranker=True,
+            model_config=model_cfg,
+            evaluator_config=eval_cfg,
         )
+    else:
+        pipeline.set_evaluator_mode(use_llm_judge=use_llm_judge)
     return pipeline
 
 
@@ -178,10 +206,16 @@ def stream_query(question, company_filter, top_k):
         yield f"❌ Error: {str(e)}"
 
 
-def run_evaluation():
-    """Run RAGAS evaluation on sample questions."""
+def run_evaluation(eval_mode: str = "Rule-Based (Fast)"):
+    """
+    Run RAGAS evaluation on sample questions.
+
+    Args:
+        eval_mode: Evaluation mode ("Rule-Based (Fast)" or "LLM-Judge (Accurate)").
+    """
     try:
-        pipe = get_pipeline()
+        use_llm = "LLM" in eval_mode
+        pipe = get_pipeline(mode="local", use_llm_judge=use_llm)
         if not pipe.is_indexed:
             return "⚠️ Please ingest documents first.", ""
 
@@ -563,6 +597,19 @@ def build_app():
                     "10 sample financial questions."
                 )
 
+                with gr.Row():
+                    with gr.Column(scale=1):
+                        eval_mode = gr.Radio(
+                            label="Evaluation Mode",
+                            choices=["Rule-Based (Fast)", "LLM-Judge (Accurate)"],
+                            value="Rule-Based (Fast)",
+                            interactive=True,
+                        )
+                    with gr.Column(scale=1):
+                        gr.Markdown("**Performance:**\n"
+                                   "- Rule-Based: ~30 seconds\n"
+                                   "- LLM-Judge: ~5-10 minutes")
+
                 eval_btn = gr.Button(
                     "▶️ Run Evaluation",
                     variant="primary",
@@ -570,7 +617,7 @@ def build_app():
                     size="lg",
                 )
                 gr.Markdown(
-                    "*⏱️ This will query the pipeline 10 times — may take several minutes.*"
+                    "*⏱️ This will query the pipeline 10 times. Time depends on evaluation mode selected above.*"
                 )
 
                 with gr.Row():
@@ -587,6 +634,7 @@ def build_app():
 
                 eval_btn.click(
                     fn=run_evaluation,
+                    inputs=[eval_mode],
                     outputs=[eval_metrics, eval_details],
                     show_progress="full",
                 )

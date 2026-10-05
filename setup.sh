@@ -34,10 +34,11 @@ echo "  ✓ Dependencies installed"
 echo "→ [3/5] Checking Ollama..."
 if command -v ollama &>/dev/null || [ -f /usr/local/bin/ollama ]; then
     OLLAMA_CMD="${OLLAMA_CMD:-/usr/local/bin/ollama}"
-    if $OLLAMA_CMD list 2>/dev/null | grep -q "llama3.2"; then
-        echo "  ✓ Ollama running with Llama 3.2"
+    if $OLLAMA_CMD list 2>/dev/null | grep -q "mistral"; then
+        echo "  ✓ Ollama running with Mistral 7B (see config/models.yaml)"
     else
-        echo "  ⚠ Llama 3.2 not found. Pull it with: ollama pull llama3.2:latest"
+        echo "  ⚠ Mistral 7B not found. Pull it with: ollama pull mistral:7b"
+        echo "    (or edit config/models.yaml to use a different model, e.g. llama3.2:latest)"
     fi
 else
     echo "  ⚠ Ollama not found. Install from: https://ollama.com"
