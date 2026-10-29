@@ -1,0 +1,3 @@
+# Optional evaluation dependency for compare_evaluation.py.
+# Pin the RAGAS API used by the comparison harness.
+ragas==0.2.15
