@@ -152,6 +152,7 @@ def run_ragas(
             model=model,
             base_url=base_url,
             temperature=0,
+            num_ctx=8192,
             num_predict=512,
         )
     )
@@ -172,7 +173,11 @@ def run_ragas(
             {
                 "user_input": sample["user_input"],
                 "response": sample["response"],
-                "retrieved_contexts": sample["retrieved_contexts"],
+                # Keep the full ranked list while bounding the prompt size for
+                # local evaluator models with limited context/VRAM.
+                "retrieved_contexts": [
+                    context[:4000] for context in sample["retrieved_contexts"]
+                ],
             }
             for sample in samples
         ]
@@ -198,6 +203,7 @@ def run_ragas(
         "version": "0.2.15",
         "judge_model": model,
         "embedding_model": "BAAI/bge-small-en-v1.5",
+        "context_limit_chars_per_chunk": 4000,
         "results": records,
         "aggregate": aggregate,
     }
