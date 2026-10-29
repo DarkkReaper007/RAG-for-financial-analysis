@@ -79,7 +79,11 @@ class BenchmarkEvaluator:
 
     def ensure_indexed(self):
         """Ensure documents are ingested."""
-        self.init_pipeline(use_llm_judge=False)
+        # Preserve the current evaluator mode when the pipeline already exists.
+        # run_llm_evaluation() switches to the LLM judge before calling this
+        # method; reinitializing here would silently switch it back to rules.
+        if self.pipeline is None:
+            self.init_pipeline(use_llm_judge=False)
         if not self.pipeline.is_indexed:
             logger.info("Ingesting documents...")
             self.pipeline.ingest(recreate_index=True)
