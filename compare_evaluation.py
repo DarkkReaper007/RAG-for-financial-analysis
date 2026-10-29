@@ -9,12 +9,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import importlib.util
 import logging
 import math
 import os
 import re
 import sys
 import time
+import types
 from pathlib import Path
 from typing import Any
 
@@ -133,11 +135,33 @@ def run_custom_judge(
 def run_ragas(
     samples: list[dict[str, Any]], *, base_url: str, model: str
 ) -> dict[str, Any]:
-    """Run reference-free RAGAS metrics against saved answers and contexts."""
-    from datasets import Dataset
+    """Run reference-free RAGAS metrics directly on saved single-turn samples."""
+
+    # RAGAS 0.2 imports its optional Hugging Face dataset and Vertex AI
+    # integrations eagerly. This harness scores SingleTurnSample objects and
+    # uses Ollama, so provide import-only placeholders when those extras are
+    # absent instead of installing PyArrow or a Vertex AI SDK.
+    try:
+        from datasets import Dataset as _Dataset  # noqa: F401
+    except ImportError:
+        datasets_module = types.ModuleType("datasets")
+        datasets_module.Dataset = type("Dataset", (), {})
+        datasets_module.Sequence = type("Sequence", (), {})
+        sys.modules["datasets"] = datasets_module
+    try:
+        from langchain_community.chat_models.vertexai import (  # noqa: F401
+            ChatVertexAI as _ChatVertexAI,
+        )
+    except ImportError:
+        vertex_module = types.ModuleType(
+            "langchain_community.chat_models.vertexai"
+        )
+        vertex_module.ChatVertexAI = type("ChatVertexAI", (), {})
+        sys.modules[vertex_module.__name__] = vertex_module
+
     from langchain_community.embeddings import HuggingFaceEmbeddings
     from langchain_ollama import ChatOllama
-    from ragas import evaluate
+    from ragas import SingleTurnSample
     from ragas.embeddings import LangchainEmbeddingsWrapper
     from ragas.llms import LangchainLLMWrapper
     from ragas.metrics import (
@@ -168,36 +192,41 @@ def run_ragas(
         ResponseRelevancy(llm=evaluator_llm, embeddings=evaluator_embeddings),
         LLMContextPrecisionWithoutReference(llm=evaluator_llm),
     ]
-    dataset = Dataset.from_list(
-        [
-            {
-                "user_input": sample["user_input"],
-                "response": sample["response"],
-                # Keep the full ranked list while bounding the prompt size for
-                # local evaluator models with limited context/VRAM.
-                "retrieved_contexts": [
-                    context[:4000] for context in sample["retrieved_contexts"]
-                ],
-            }
-            for sample in samples
-        ]
-    )
-    results = evaluate(
-        dataset=dataset,
-        metrics=metrics,
-        run_config=RunConfig(max_workers=1, timeout=240, max_retries=2),
-        raise_exceptions=False,
-        show_progress=True,
-    )
-    frame = results.to_pandas()
-    records = frame.to_dict(orient="records")
+    run_config = RunConfig(max_workers=1, timeout=240, max_retries=2)
+    for metric in metrics:
+        metric.init(run_config)
+
+    records: list[dict[str, Any]] = []
+    for index, sample in enumerate(samples, 1):
+        LOGGER.info("RAGAS metrics: %s/%s", index, len(samples))
+        ragas_sample = SingleTurnSample(
+            user_input=sample["user_input"],
+            response=sample["response"],
+            # Keep ranked retrieval order while bounding local prompt size.
+            retrieved_contexts=[
+                context[:4000] for context in sample["retrieved_contexts"]
+            ],
+        )
+        row: dict[str, Any] = {"user_input": sample["user_input"]}
+        errors: dict[str, str] = {}
+        for metric in metrics:
+            try:
+                row[metric.name] = metric.single_turn_score(ragas_sample)
+            except Exception as exc:
+                row[metric.name] = None
+                errors[metric.name] = f"{type(exc).__name__}: {exc}"
+        if errors:
+            row["errors"] = errors
+        records.append(row)
+
     aggregate: dict[str, float | None] = {}
-    input_columns = {"user_input", "response", "retrieved_contexts", "reference"}
-    for metric in frame.columns:
-        if metric in input_columns:
-            continue
-        values = [float(value) for value in frame[metric].dropna().tolist()]
-        aggregate[str(metric)] = round(sum(values) / len(values), 4) if values else None
+    for metric in metrics:
+        values = [
+            float(row[metric.name])
+            for row in records
+            if row.get(metric.name) is not None
+        ]
+        aggregate[metric.name] = round(sum(values) / len(values), 4) if values else None
     return {
         "framework": "ragas",
         "version": "0.2.15",
