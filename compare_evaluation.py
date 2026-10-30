@@ -181,6 +181,7 @@ def run_ragas(
             model=model,
             base_url=base_url,
             temperature=0,
+            format="json",
             num_ctx=8192,
             # Faithfulness returns the original statements alongside verdicts;
             # long answers can require more than 512 tokens for valid JSON.
