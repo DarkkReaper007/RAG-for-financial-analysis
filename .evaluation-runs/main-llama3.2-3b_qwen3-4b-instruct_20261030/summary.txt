@@ -1,0 +1,29 @@
+﻿Old main-branch evaluation (judge restart)
+Run date: 2026-10-30
+Branch: main
+Generator: llama3.2:3b (answers/contexts reused from the saved main run)
+Judge: qwen3:4b-instruct via Ollama
+Questions: 10
+Evaluation mode: score-only; temperature 0; top_k 5
+GPU: NVIDIA GeForce RTX 3050 Laptop GPU; Ollama reported 28% CPU / 72% GPU allocation for Qwen during evaluation
+RAGAS embeddings: BAAI/bge-small-en-v1.5 on CPU
+RAGAS: all 10 rows complete, no null metric values or parser errors
+
+Native rule-based aggregate
+faithfulness=0.058
+answer_relevance=0.970
+context_precision=0.860
+retrieval_hit_rate=1.000
+
+Custom LLM judge aggregate (Qwen3 4B Instruct)
+faithfulness=0.680
+answer_relevance=0.760
+context_precision=0.720
+
+RAGAS aggregate (Qwen3 4B Instruct)
+faithfulness=0.4547
+answer_relevancy=0.4961
+llm_context_precision_without_reference=0.6981
+
+Artifacts: metrics.json, ragas_progress.json, samples.json, benchmark.log
+The feature-branch summary already on disk used Mistral 7B as its judge and did not include RAGAS. Treat judge-score comparisons between these summaries as indicative only because the judge models differ; the feature branch was not rerun.

@@ -1,0 +1,10 @@
+﻿branch=main
+generator_model=llama3.2:3b
+judge_model=qwen3:4b-instruct
+judge_runtime=Ollama
+scoring_resumed_from_saved_samples=true
+question_count=10
+temperature=0
+top_k=5
+gpu=NVIDIA GeForce RTX 3050 Laptop GPU; Ollama reported 28% CPU / 72% GPU allocation
+ragas=0.2.15; all 10 rows complete with no parser errors
