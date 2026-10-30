@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import importlib.util
 import logging
 import math
 import os
@@ -133,7 +132,11 @@ def run_custom_judge(
 
 
 def run_ragas(
-    samples: list[dict[str, Any]], *, base_url: str, model: str
+    samples: list[dict[str, Any]],
+    *,
+    base_url: str,
+    model: str,
+    progress_path: Path | None = None,
 ) -> dict[str, Any]:
     """Run reference-free RAGAS metrics directly on saved single-turn samples."""
 
@@ -196,8 +199,20 @@ def run_ragas(
     for metric in metrics:
         metric.init(run_config)
 
-    records: list[dict[str, Any]] = []
+    prior_records = []
+    if progress_path and progress_path.exists():
+        prior_records = json.loads(progress_path.read_text(encoding="utf-8")).get(
+            "results", []
+        )
+    records_by_index = {
+        row["sample_index"]: row
+        for row in prior_records
+        if row.get("complete") and isinstance(row.get("sample_index"), int)
+    }
     for index, sample in enumerate(samples, 1):
+        if index in records_by_index:
+            LOGGER.info("RAGAS checkpoint already complete: %s/%s", index, len(samples))
+            continue
         LOGGER.info("RAGAS metrics: %s/%s", index, len(samples))
         ragas_sample = SingleTurnSample(
             user_input=sample["user_input"],
@@ -207,7 +222,10 @@ def run_ragas(
                 context[:4000] for context in sample["retrieved_contexts"]
             ],
         )
-        row: dict[str, Any] = {"user_input": sample["user_input"]}
+        row: dict[str, Any] = {
+            "sample_index": index,
+            "user_input": sample["user_input"],
+        }
         errors: dict[str, str] = {}
         for metric in metrics:
             try:
@@ -217,8 +235,15 @@ def run_ragas(
                 errors[metric.name] = f"{type(exc).__name__}: {exc}"
         if errors:
             row["errors"] = errors
-        records.append(row)
+        row["complete"] = True
+        records_by_index[index] = row
+        if progress_path:
+            write_json(
+                progress_path,
+                {"framework": "ragas", "version": "0.2.15", "results": list(records_by_index.values())},
+            )
 
+    records = [records_by_index[index] for index in sorted(records_by_index)]
     aggregate: dict[str, float | None] = {}
     for metric in metrics:
         values = [
@@ -227,13 +252,17 @@ def run_ragas(
             if row.get(metric.name) is not None
         ]
         aggregate[metric.name] = round(sum(values) / len(values), 4) if values else None
+    clean_records = [
+        {key: value for key, value in row.items() if key != "complete"}
+        for row in records
+    ]
     return {
         "framework": "ragas",
         "version": "0.2.15",
         "judge_model": model,
         "embedding_model": "BAAI/bge-small-en-v1.5",
         "context_limit_chars_per_chunk": 4000,
-        "results": records,
+        "results": clean_records,
         "aggregate": aggregate,
     }
 
@@ -247,6 +276,11 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--timeout", type=int, default=240)
+    parser.add_argument(
+        "--score-only",
+        action="store_true",
+        help="Score existing samples.json without re-running ingestion or generation.",
+    )
     parser.add_argument(
         "--use-config",
         action="store_true",
@@ -263,50 +297,57 @@ def main() -> int:
     )
     LOGGER.info("Starting %s with generator=%s, judge=%s", run_dir.name, args.generator_model, args.judge_model)
 
-    pipeline_kwargs: dict[str, Any] = {}
-    if args.use_config:
-        from src.config.loader import ConfigLoader
+    ingestion: dict[str, Any] = {}
+    generation_elapsed_seconds: float | None = None
+    if args.score_only:
+        samples = json.loads((run_dir / "samples.json").read_text(encoding="utf-8"))
+        LOGGER.info("Loaded %s saved samples for scoring", len(samples))
+    else:
+        pipeline_kwargs: dict[str, Any] = {}
+        if args.use_config:
+            from src.config.loader import ConfigLoader
 
-        model_config = ConfigLoader().get_model_config("local")
-        model_config.model = args.generator_model
-        model_config.url = args.ollama_url
-        pipeline_kwargs["model_config"] = model_config
+            model_config = ConfigLoader().get_model_config("local")
+            model_config.model = args.generator_model
+            model_config.url = args.ollama_url
+            pipeline_kwargs["model_config"] = model_config
 
-    pipeline = RAGPipeline(
-        ollama_model=args.generator_model,
-        ollama_url=args.ollama_url,
-        data_dir=str(REPO_ROOT / "data" / "prospectuses"),
-        vectorstore_dir=str(run_dir / "vectorstore"),
-        use_qdrant=False,
-        use_reranker=True,
-        **pipeline_kwargs,
-    )
-    # Align both model runs independently of branch-specific config defaults.
-    pipeline.generator.temperature = args.temperature
-    pipeline.generator.max_tokens = 2048
-    ingestion = pipeline.ingest(recreate_index=True)
-    if "error" in ingestion:
-        raise RuntimeError(ingestion["error"])
-
-    questions = RAGEvaluator.SAMPLE_QUESTIONS
-    samples: list[dict[str, Any]] = []
-    generation_started = time.time()
-    for index, item in enumerate(questions, 1):
-        question = item["question"]
-        LOGGER.info("Generating answer %s/%s: %s", index, len(questions), question)
-        result = pipeline.query(question, top_k=args.top_k)
-        if "error" in result:
-            raise RuntimeError(f"Query failed for {question!r}: {result['error']}")
-        samples.append(
-            {
-                "user_input": question,
-                "response": result["answer"],
-                "retrieved_contexts": [chunk["text"] for chunk in result["retrieved_chunks"]],
-                "expected_sections": item.get("expected_sections", []),
-                "timing": result.get("timing", {}),
-            }
+        pipeline = RAGPipeline(
+            ollama_model=args.generator_model,
+            ollama_url=args.ollama_url,
+            data_dir=str(REPO_ROOT / "data" / "prospectuses"),
+            vectorstore_dir=str(run_dir / "vectorstore"),
+            use_qdrant=False,
+            use_reranker=True,
+            **pipeline_kwargs,
         )
-        write_json(run_dir / "samples.json", samples)
+        # Align both model runs independently of branch-specific config defaults.
+        pipeline.generator.temperature = args.temperature
+        pipeline.generator.max_tokens = 2048
+        ingestion = pipeline.ingest(recreate_index=True)
+        if "error" in ingestion:
+            raise RuntimeError(ingestion["error"])
+
+        questions = RAGEvaluator.SAMPLE_QUESTIONS
+        samples = []
+        generation_started = time.time()
+        for index, item in enumerate(questions, 1):
+            question = item["question"]
+            LOGGER.info("Generating answer %s/%s: %s", index, len(questions), question)
+            result = pipeline.query(question, top_k=args.top_k)
+            if "error" in result:
+                raise RuntimeError(f"Query failed for {question!r}: {result['error']}")
+            samples.append(
+                {
+                    "user_input": question,
+                    "response": result["answer"],
+                    "retrieved_contexts": [chunk["text"] for chunk in result["retrieved_chunks"]],
+                    "expected_sections": item.get("expected_sections", []),
+                    "timing": result.get("timing", {}),
+                }
+            )
+            write_json(run_dir / "samples.json", samples)
+        generation_elapsed_seconds = round(time.time() - generation_started, 2)
 
     rule_pairs = [
         {
@@ -324,13 +365,19 @@ def main() -> int:
         model=args.judge_model,
         timeout=args.timeout,
     )
-    ragas_result = run_ragas(samples, base_url=args.ollama_url, model=args.judge_model)
+    ragas_result = run_ragas(
+        samples,
+        base_url=args.ollama_url,
+        model=args.judge_model,
+        progress_path=run_dir / "ragas_progress.json",
+    )
 
     metrics = {
         "branch": os.getenv("GIT_BRANCH", "unknown"),
         "generator_model": args.generator_model,
         "judge_model": args.judge_model,
         "judge_relationship": "same model as generator" if args.generator_model == args.judge_model else "independent model",
+        "scoring_resumed_from_saved_samples": args.score_only,
         "question_count": len(samples),
         "ollama_url": args.ollama_url,
         "generation_temperature": args.temperature,
@@ -340,7 +387,7 @@ def main() -> int:
             "total_chunks": ingestion.get("total_chunks"),
             "timing": ingestion.get("timing"),
         },
-        "generation_elapsed_seconds": round(time.time() - generation_started, 2),
+        "generation_elapsed_seconds": generation_elapsed_seconds,
         "native_rule_metrics": rule_metrics,
         "custom_llm_judge": custom_judge,
         "ragas": ragas_result,
