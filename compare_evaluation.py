@@ -182,7 +182,9 @@ def run_ragas(
             base_url=base_url,
             temperature=0,
             num_ctx=8192,
-            num_predict=512,
+            # Faithfulness returns the original statements alongside verdicts;
+            # long answers can require more than 512 tokens for valid JSON.
+            num_predict=2048,
         )
     )
     evaluator_embeddings = LangchainEmbeddingsWrapper(
