@@ -172,6 +172,7 @@ def run_ragas(
         LLMContextPrecisionWithoutReference,
         ResponseRelevancy,
     )
+    from ragas.metrics._faithfulness import NLIStatementPrompt
     from ragas.run_config import RunConfig
 
     evaluator_llm = LangchainLLMWrapper(
@@ -190,8 +191,20 @@ def run_ragas(
             encode_kwargs={"normalize_embeddings": True},
         )
     )
+    # Keep the default RAGAS schema and scoring logic, while constraining the
+    # rationale length. The default example rationales caused Mistral to emit
+    # oversized JSON that exceeded the local generation cap and failed parsing.
+    nli_prompt = NLIStatementPrompt()
+    nli_prompt.instruction = (
+        "Judge whether each statement is supported by the context. Preserve each "
+        "statement exactly, set verdict to 1 if supported or 0 otherwise, and use "
+        "a reason of at most three words. Return only valid JSON matching the "
+        "required schema."
+    )
+    nli_prompt.examples = []
+
     metrics = [
-        Faithfulness(llm=evaluator_llm),
+        Faithfulness(llm=evaluator_llm, nli_statements_prompt=nli_prompt),
         ResponseRelevancy(llm=evaluator_llm, embeddings=evaluator_embeddings),
         LLMContextPrecisionWithoutReference(llm=evaluator_llm),
     ]
@@ -210,7 +223,8 @@ def run_ragas(
         if row.get("complete") and isinstance(row.get("sample_index"), int)
     }
     for index, sample in enumerate(samples, 1):
-        if index in records_by_index:
+        existing = records_by_index.get(index)
+        if existing and all(existing.get(metric.name) is not None for metric in metrics):
             LOGGER.info("RAGAS checkpoint already complete: %s/%s", index, len(samples))
             continue
         LOGGER.info("RAGAS metrics: %s/%s", index, len(samples))
@@ -222,12 +236,14 @@ def run_ragas(
                 context[:4000] for context in sample["retrieved_contexts"]
             ],
         )
-        row: dict[str, Any] = {
+        row: dict[str, Any] = existing or {
             "sample_index": index,
             "user_input": sample["user_input"],
         }
         errors: dict[str, str] = {}
         for metric in metrics:
+            if row.get(metric.name) is not None:
+                continue
             try:
                 row[metric.name] = metric.single_turn_score(ragas_sample)
             except Exception as exc:
@@ -235,6 +251,8 @@ def run_ragas(
                 errors[metric.name] = f"{type(exc).__name__}: {exc}"
         if errors:
             row["errors"] = errors
+        else:
+            row.pop("errors", None)
         row["complete"] = True
         records_by_index[index] = row
         if progress_path:
