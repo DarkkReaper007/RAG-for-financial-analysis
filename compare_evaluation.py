@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 import requests
+from pydantic import BaseModel, Field
 
 REPO_ROOT = Path(os.environ.get("REPO_ROOT", Path(__file__).resolve().parent))
 sys.path.insert(0, str(REPO_ROOT))
@@ -191,17 +192,26 @@ def run_ragas(
             encode_kwargs={"normalize_embeddings": True},
         )
     )
-    # Keep the default RAGAS schema and scoring logic, while constraining the
-    # rationale length. The default example rationales caused Mistral to emit
-    # oversized JSON that exceeded the local generation cap and failed parsing.
+    # Keep RAGAS's faithfulness metric and scoring logic, but use a compact
+    # output schema. The default schema/examples elicited long rationales that
+    # exceeded Ollama's local generation cap and failed JSON parsing.
+    class CompactStatementFaithfulnessAnswer(BaseModel):
+        statement: str = Field(..., description="Original statement, unchanged")
+        reason: str = Field(..., description="Reason in at most four words")
+        verdict: int = Field(..., description="1 if supported, otherwise 0")
+
+    class CompactNLIStatementOutput(BaseModel):
+        statements: list[CompactStatementFaithfulnessAnswer]
+
     nli_prompt = NLIStatementPrompt()
     nli_prompt.instruction = (
         "Judge whether each statement is supported by the context. Preserve each "
-        "statement exactly, set verdict to 1 if supported or 0 otherwise, and use "
-        "a reason of at most three words. Return only valid JSON matching the "
-        "required schema."
+        "statement exactly, set verdict to 1 if supported or 0 otherwise, and "
+        "give a reason of no more than four words. Return only valid JSON matching "
+        "the required schema. Do not add explanations outside the JSON."
     )
     nli_prompt.examples = []
+    nli_prompt.output_model = CompactNLIStatementOutput
 
     metrics = [
         Faithfulness(llm=evaluator_llm, nli_statements_prompt=nli_prompt),
