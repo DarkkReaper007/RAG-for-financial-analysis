@@ -7,3 +7,11 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+
+# corpus PDFs are public filings; not committed (see data/manifest.json for sha256)
+data/prospectuses/*.pdf
+data/prospectuses/*.PDF
+.env
+eval/results/
+goldgen/out/
+indexes/

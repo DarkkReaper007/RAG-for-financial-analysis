@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "docs": [
+    {
+      "id": "zomato",
+      "file": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "doc_type": "prospectus",
+      "sector": "food delivery / tech",
+      "year": 2021,
+      "split": "dev",
+      "pages": 420,
+      "sha256": "38be604b315cc92a309ab1acdfd9285b3abd5a572ad23e23f8a1c9d5e35b4f22"
+    },
+    {
+      "id": "nykaa",
+      "file": "1636529320240.pdf",
+      "company": "FSN E-COMMERCE VENTURES LIMITED",
+      "doc_type": "prospectus",
+      "sector": "e-commerce / retail",
+      "year": 2021,
+      "split": "test",
+      "pages": 601,
+      "sha256": "5da1661763521550b564517fd6d3395006c701f6c142ae0d28907f11410d76e0"
+    },
+    {
+      "id": "swiggy",
+      "file": "1731315962150.pdf",
+      "company": "SWIGGY LIMITED",
+      "doc_type": "prospectus",
+      "sector": "food delivery / tech",
+      "year": 2024,
+      "split": "test",
+      "pages": 541,
+      "sha256": "47b7de87fdc6fabec6da252b0ab7cae3e42c00cde7017818fc2d9f999679498c"
+    },
+    {
+      "id": "lic",
+      "file": "1644761029168.pdf",
+      "company": "LIFE INSURANCE CORPORATION OF INDIA",
+      "doc_type": "drhp",
+      "sector": "insurance",
+      "year": 2022,
+      "split": "dev",
+      "pages": 652,
+      "sha256": "81a93c46ee1a3a34459d6fc23bcf69ae2b6a02503df7e7e6febdfa2a766e3258"
+    },
+    {
+      "id": "ola_electric",
+      "file": "1703580725954.PDF",
+      "company": "OLA ELECTRIC MOBILITY LIMITED",
+      "doc_type": "drhp",
+      "sector": "electric vehicles",
+      "year": 2023,
+      "split": "dev",
+      "pages": 444,
+      "sha256": "61b8733a123fa1274d4854a34b65ceabab6ab4c2dd3106a20e677bdc80fa6c94"
+    },
+    {
+      "id": "hyundai_india",
+      "file": "1718692993829.PDF",
+      "company": "HYUNDAI MOTOR INDIA LIMITED",
+      "doc_type": "drhp",
+      "sector": "automobiles",
+      "year": 2024,
+      "split": "test",
+      "pages": 436,
+      "sha256": "5b2b9bda4d9a4cb849a672be432253888dc0254633b8500b497ebc4487102a21"
+    },
+    {
+      "id": "hdb_financial",
+      "file": "1730791806554_562.pdf",
+      "company": "HDB FINANCIAL SERVICES LIMITED",
+      "doc_type": "drhp",
+      "sector": "NBFC",
+      "year": 2024,
+      "split": "test",
+      "pages": 713,
+      "sha256": "15d7560b92bede4f322b2490ab5be336fd04e4e38ad8a489525b25664f895e73"
+    },
+    {
+      "id": "lg_india",
+      "file": "1733743806550_598.pdf",
+      "company": "LG ELECTRONICS INDIA LIMITED",
+      "doc_type": "drhp",
+      "sector": "consumer durables",
+      "year": 2024,
+      "split": "test",
+      "pages": 456,
+      "sha256": "11ae49a614532ec829631680146e00962b3a6257ab579f0daf0e4cf9bb2cf01e"
+    },
+    {
+      "id": "delhivery",
+      "file": "Delhivery Limited - Draft Red Herring Prospectus (November 1, 2021)_20211102142410.pdf",
+      "company": "DELHIVERY LIMITED",
+      "doc_type": "drhp",
+      "sector": "logistics",
+      "year": 2021,
+      "split": "dev",
+      "pages": 581,
+      "sha256": "9103ce5699cfa502eaeb2b39d18f989814affb8fcafa684f668b06765e286a14"
+    },
+    {
+      "id": "manipal_health",
+      "file": "1775547017596_1210.pdf",
+      "company": "MANIPAL HEALTH ENTERPRISES LIMITED",
+      "doc_type": "drhp",
+      "sector": "healthcare",
+      "year": 2026,
+      "split": "dev",
+      "pages": 732,
+      "sha256": "d50f34aa6555bd813bcd760be51888bac599031c9ba3f0a869692e076139c9aa"
+    },
+    {
+      "id": "jio_platforms",
+      "file": "1781870482419.PDF",
+      "company": "JIO PLATFORMS LIMITED",
+      "doc_type": "drhp",
+      "sector": "telecom / digital",
+      "year": 2026,
+      "split": "test",
+      "pages": 528,
+      "sha256": "57d002247bfbde408f49bc0eafa9df6aff8b10180f0b3c1927a0ef02b1092eef"
+    },
+    {
+      "id": "nse",
+      "file": "NSEDRHP_20260617214858.pdf",
+      "company": "NATIONAL STOCK EXCHANGE OF INDIA LIMITED",
+      "doc_type": "drhp",
+      "sector": "exchange",
+      "year": 2026,
+      "split": "test",
+      "pages": 614,
+      "sha256": "71a501f39d1e0eb6ff53de298499ce174e695d28b15046bb59ce6ac85414b436"
+    }
+  ]
+}
