@@ -15,3 +15,6 @@ data/prospectuses/*.PDF
 eval/results/
 goldgen/out/
 indexes/
+ragbench/results/
+ragbench/out/
+review_app/cache/

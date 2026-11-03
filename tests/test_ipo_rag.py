@@ -59,6 +59,14 @@ def test_fusion_and_ordering():
     assert reorder_lost_in_middle([1, 2, 3, 4, 5]) == [1, 3, 5, 4, 2]
 
 
+def test_hybrid_actually_mixes_sparse_hits():
+    dense, bm = list(range(10)), list(range(100, 110))             # disjoint top-10 lists
+    old = rrf([dense, bm], [0.6, 0.4], 60)[:10]
+    new = rrf([dense, bm], [BASELINE.query.rrf_dense_weight, BASELINE.query.rrf_sparse_weight], BASELINE.query.rrf_k)[:10]
+    assert not (set(old) & set(bm)), "documents the old defect: sparse hits never made the cut"
+    assert set(new) & set(bm) and set(new) & set(dense)
+
+
 def test_verification():
     ctx = ["Offer price is Rs. 76 per share; issue size 9,375.00 million."]
     ok = check("Price is 76 and size 9,375.00 million [Acme, Page: 5]", ctx, {5, 6})

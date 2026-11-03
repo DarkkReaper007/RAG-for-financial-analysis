@@ -25,8 +25,8 @@ class QueryConfig:
     retrieval_mode: str = "hybrid"    # dense | bm25 | hybrid               (study 3: retrieval mode)
     top_k: int = 5
     candidate_depth: int = 2          # candidates per retriever = top_k * depth (held fixed)
-    rrf_dense_weight: float = 0.6     # held fixed
-    rrf_sparse_weight: float = 0.4
+    rrf_dense_weight: float = 1.0     # standard equal-weight RRF. (0.6/0.4 with k=60 made hybrid == dense: BM25-only hits could never
+    rrf_sparse_weight: float = 1.0    #  outrank a dense hit within the candidate cut-off; found by ragbench, see tests)
     rrf_k: int = 60
     rerank: bool = True               # held fixed
     reranker: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
