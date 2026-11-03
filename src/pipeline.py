@@ -44,6 +44,8 @@ class RAGPipeline:
         data_dir: str = "./data/prospectuses",
         vectorstore_dir: str = "./vectorstore",
         use_reranker: bool = True,
+        model_config=None,
+        evaluator_config=None,
     ):
         self.data_dir = Path(data_dir)
         self.vectorstore_dir = Path(vectorstore_dir)
@@ -79,13 +81,22 @@ class RAGPipeline:
         )
 
         # Stage 5: Generation
-        self.generator = RAGGenerator(
-            model_name=ollama_model,
-            ollama_base_url=ollama_url,
-        )
+        # Use model_config if provided, otherwise use individual parameters
+        if model_config:
+            self.generator = RAGGenerator(model_config=model_config)
+            logger.info("Initialized generator with ModelConfig")
+        else:
+            self.generator = RAGGenerator(
+                model_name=ollama_model,
+                ollama_base_url=ollama_url,
+            )
+            logger.info("Initialized generator with legacy parameters")
 
         # Stage 6: Evaluation
-        self.evaluator = RAGEvaluator()
+        # Support both rule-based and LLM-based evaluation
+        use_llm_judge = bool(evaluator_config and evaluator_config.get("use_llm_judge"))
+        quick_mode = bool(evaluator_config and evaluator_config.get("quick_mode"))
+        self.set_evaluator_mode(use_llm_judge=use_llm_judge, quick_mode=quick_mode)
 
         # State tracking
         self.ingested_documents: List[Dict] = []
@@ -93,6 +104,34 @@ class RAGPipeline:
         self.is_indexed = False
 
         logger.info("Pipeline initialization complete")
+
+    def set_evaluator_mode(self, use_llm_judge: bool = False, quick_mode: bool = False):
+        """
+        Switch the active evaluator without rebuilding the rest of the
+        pipeline (embedding model, retriever, reranker, index all stay put).
+
+        Args:
+            use_llm_judge: Use LLM-as-judge (RAGAS-style) semantic evaluation
+                          instead of the fast rule-based heuristics.
+            quick_mode: Force rule-based evaluation even if use_llm_judge is set
+                       (useful for quick smoke tests).
+        """
+        if use_llm_judge and not quick_mode:
+            try:
+                from src.evaluation.llm_evaluator import HybridEvaluator
+                # Reuse the pipeline's own generator (same model/endpoint the
+                # answers were produced with) as the judge, instead of
+                # spinning up a second, differently-configured connection.
+                self.evaluator = HybridEvaluator(
+                    use_llm_judge=True, quick_mode=False, llm_judge=self.generator
+                )
+                logger.info("Evaluator set to: LLM-as-judge")
+                return
+            except ImportError:
+                logger.warning("LLM evaluator not available, falling back to rule-based")
+
+        self.evaluator = RAGEvaluator()
+        logger.info("Evaluator set to: rule-based")
 
     def ingest(
         self,

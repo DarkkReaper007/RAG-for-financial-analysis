@@ -1,8 +1,10 @@
 """
 Stage 5: LLM Generation
 
-Connects to Ollama (Llama 3.2 3B) for grounded generation with
-structured prompts, Chain-of-Thought reasoning, and citation formatting.
+Connects to Ollama for grounded generation with structured prompts,
+Chain-of-Thought reasoning, and citation formatting. Model is configurable
+(see src/config/loader.py) — defaults to Mistral 7B locally or on a
+self-hosted free-tier cloud VM; also tested with Llama 3.2 3B.
 """
 
 import logging
@@ -56,29 +58,95 @@ Based on the context above, provide a detailed and accurate answer with proper c
         ollama_base_url: str = "http://localhost:11434",
         temperature: float = 0.1,
         max_tokens: int = 2048,
+        model_config=None,
     ):
         """
         Args:
-            model_name: Ollama model name.
-            ollama_base_url: Ollama API base URL.
+            model_name: Ollama model name (used if model_config not provided).
+            ollama_base_url: Ollama API base URL (used if model_config not provided).
             temperature: Generation temperature (low for factual accuracy).
             max_tokens: Maximum tokens in response.
+            model_config: Optional ModelConfig object from config loader.
+                         Takes precedence over individual parameters.
         """
-        self.model_name = model_name
-        self.ollama_base_url = ollama_base_url
-        self.temperature = temperature
-        self.max_tokens = max_tokens
+        # Use config if provided, otherwise fall back to parameters
+        if model_config:
+            self.model_name = model_config.model
+            self.ollama_base_url = model_config.url
+            self.temperature = model_config.temperature
+            self.max_tokens = model_config.max_tokens
+            self.timeout = model_config.timeout
+            logger.info(f"Loaded config from ModelConfig: {self.model_name}")
+        else:
+            self.model_name = model_name
+            self.ollama_base_url = ollama_base_url
+            self.temperature = temperature
+            self.max_tokens = max_tokens
+            # 180s for both — see config/models.yaml for measured evidence:
+            # full-prospectus generation exceeded even a 120s timeout on a
+            # cold-start 7B-parameter model without a dedicated GPU. Remote
+            # endpoints would want extra headroom on top of this for network
+            # latency, but we don't have a signal here to size that safely,
+            # so local and cloud share the same conservative floor.
+            self.timeout = 180
 
-        # Verify Ollama is accessible
+        # Verify Ollama/inference service is accessible
+        self._verify_connection()
+
+    def _verify_connection(self):
+        """Verify connection to Ollama/inference service."""
         try:
-            resp = requests.get(f"{ollama_base_url}/api/tags", timeout=5)
+            # Try to connect to the service
+            resp = requests.get(
+                f"{self.ollama_base_url}/api/tags",
+                timeout=5
+            )
             models = [m["name"] for m in resp.json().get("models", [])]
-            if model_name not in models and not any(model_name in m for m in models):
-                logger.warning(f"Model '{model_name}' not found in Ollama. Available: {models}")
+            if self.model_name not in models and not any(self.model_name in m for m in models):
+                logger.warning(f"Model '{self.model_name}' not found. Available: {models}")
             else:
-                logger.info(f"Ollama connected. Using model: {model_name}")
+                logger.info(f"Service connected. Using model: {self.model_name}")
+        except requests.exceptions.ConnectionError:
+            logger.error(f"Failed to connect to {self.ollama_base_url}. "
+                        "Make sure the service is running.")
         except Exception as e:
-            logger.error(f"Failed to connect to Ollama: {e}")
+            logger.error(f"Error verifying connection: {e}")
+
+    def raw_complete(self, prompt: str, system_prompt: str = "", temperature: Optional[float] = None) -> str:
+        """
+        Send a prompt directly to the model with no context-wrapping or
+        financial-analyst system prompt applied. Used for auxiliary tasks
+        like LLM-as-judge scoring where the standard citation-heavy
+        SYSTEM_PROMPT / CONTEXT_TEMPLATE would corrupt the output.
+
+        Args:
+            prompt: The raw prompt to send as the user turn.
+            system_prompt: Optional system prompt override (default: none).
+            temperature: Optional temperature override.
+
+        Returns:
+            The model's raw text response (empty string on error).
+        """
+        try:
+            response = requests.post(
+                f"{self.ollama_base_url}/api/generate",
+                json={
+                    "model": self.model_name,
+                    "prompt": prompt,
+                    "system": system_prompt,
+                    "stream": False,
+                    "options": {
+                        "temperature": temperature if temperature is not None else self.temperature,
+                        "num_predict": 32,  # scoring responses are short
+                    },
+                },
+                timeout=self.timeout,
+            )
+            response.raise_for_status()
+            return response.json().get("response", "").strip()
+        except Exception as e:
+            logger.error(f"raw_complete failed: {e}")
+            return ""
 
     def generate(
         self,
@@ -145,7 +213,7 @@ Based on the context above, provide a detailed and accurate answer with proper c
                     },
                 },
                 stream=True,
-                timeout=120,
+                timeout=self.timeout,
             )
             response.raise_for_status()
 
@@ -204,7 +272,7 @@ Based on the context above, provide a detailed and accurate answer with proper c
                         "num_predict": self.max_tokens,
                     },
                 },
-                timeout=120,
+                timeout=self.timeout,
             )
             response.raise_for_status()
             data = response.json()
@@ -274,7 +342,7 @@ Based on the context above, provide a detailed and accurate answer with proper c
                     },
                 },
                 stream=True,
-                timeout=120,
+                timeout=self.timeout,
             )
             for line in response.iter_lines():
                 if line:

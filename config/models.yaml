@@ -1,0 +1,68 @@
+# RAG Pipeline Model Configuration
+#
+# Supports multiple deployment modes:
+# - local: Ollama running on this machine (development)
+# - cloud: Ollama running on a free-tier cloud VM, exposed over HTTPS
+#          (e.g. Oracle Cloud Always-Free ARM instance, Google Cloud free
+#          tier, Fly.io free allowance). This is a genuinely free option
+#          because both Ollama and the models below are open-weight/open
+#          source — you are not paying per-token to a hosted API.
+#
+# Environment variables override these settings:
+# - OLLAMA_MODEL: Model name
+# - OLLAMA_URL: API endpoint (Ollama's native /api/generate host)
+# - OLLAMA_TEMPERATURE: Generation temperature (0.0-1.0)
+# - OLLAMA_MAX_TOKENS: Max tokens to generate
+# - OLLAMA_TIMEOUT: Request timeout in seconds
+
+# Local development configuration
+# Requires: `ollama serve` running on localhost:11434
+local:
+  model: "mistral:7b"          # upgraded from llama3.2:3b — see IMPROVEMENTS.md
+  url: "http://localhost:11434"
+  temperature: 0.1
+  max_tokens: 2048
+  # Full-prospectus context + parent-chunk expansion routinely pushes
+  # generation past 60s on consumer hardware without a dedicated GPU.
+  # Measured during testing: a 60s timeout failed outright; even 120s
+  # (Ollama's own default) was cut close by a cold-start Mistral 7B run
+  # (>120s) though warm runs completed in ~90s. 180s gives real headroom.
+  timeout: 180
+
+# Cloud configuration — a free-tier VM running Ollama itself.
+#
+# How to set this up (all free):
+#   1. Provision a free-tier VM, e.g.:
+#      - Oracle Cloud "Always Free" Ampere A1 (4 vCPU / 24GB RAM — plenty for a 7B model)
+#      - Google Cloud free tier (e2-micro, smaller — use a quantized 7B or smaller model)
+#      - Fly.io free allowance
+#   2. Install Ollama: curl -fsSL https://ollama.com/install.sh | sh
+#   3. Pull the model: ollama pull mistral:7b
+#   4. Expose it: OLLAMA_HOST=0.0.0.0:11434 ollama serve
+#      (put it behind a reverse proxy / firewall rule restricting access,
+#       or tunnel with e.g. Tailscale/ngrok/cloudflared for a quick HTTPS URL)
+#   5. Point this config's `url` at that VM's address, e.g. https://your-vm:11434
+#
+# This is the same Ollama HTTP API as `local` above — only the host changes.
+cloud:
+  model: "mistral:7b"
+  url: "http://YOUR_CLOUD_VM_IP:11434"   # replace with your free-tier VM's Ollama endpoint
+  temperature: 0.1
+  max_tokens: 2048
+  timeout: 180  # generation time + network round-trip headroom
+
+# Evaluator configuration
+evaluator:
+  # Enable LLM-as-judge evaluation (requires evaluator model to be running)
+  use_llm_judge: false
+
+  # Quick mode: Run with rule-based metrics (faster, less accurate)
+  quick_mode: false
+
+  # Sample size for evaluation
+  sample_size: 10
+
+# Embedding configuration (for future upgrades)
+embedding:
+  model: "BAAI/bge-small-en-v1.5"
+  dimension: 384
