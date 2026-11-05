@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prospectus Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#ask" aria-label="Prospectus Desk"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">Prospectus Desk</span></a>
+    <nav class="tabs" role="tablist" aria-label="Views">
+      <button role="tab" data-view="ask" aria-selected="true">Ask</button>
+      <button role="tab" data-view="compare" aria-selected="false">Compare</button>
+      <button role="tab" data-view="results" aria-selected="false">Results</button>
+    </nav>
+    <button class="icon-btn" id="theme" aria-label="Toggle theme" title="Toggle theme">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<!-- ASK -->
+<section id="view-ask" class="view" data-view="ask">
+  <aside class="rail" aria-label="Filings">
+    <div class="rail-h"><span>Filings</span><button class="link" id="all-docs">All 12</button></div>
+    <div id="doc-list" class="doc-list"></div>
+  </aside>
+  <div class="stage">
+    <form id="ask-form" class="composer">
+      <label for="q" class="sr">Question</label>
+      <textarea id="q" rows="2" placeholder="Ask about an IPO offer document, for example: Who is the registrar to the offer?"></textarea>
+      <div class="composer-row">
+        <div class="seg" role="group" aria-label="Retrieval">
+          <button type="button" data-mode="hybrid" aria-pressed="true">Hybrid</button>
+          <button type="button" data-mode="dense" aria-pressed="false">Dense</button>
+          <button type="button" data-mode="bm25" aria-pressed="false">Keyword</button>
+        </div>
+        <label class="check"><input type="checkbox" id="verify"> Strict figure check</label>
+        <button class="btn primary" id="go" type="submit">Ask</button>
+      </div>
+    </form>
+    <div id="chips" class="chips" aria-label="Example questions"></div>
+    <div id="result"></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="view-compare" class="view" data-view="compare" hidden>
+  <div class="stage wide">
+    <div class="cmp-head">
+      <h1 class="h-serif">Same question, two settings</h1>
+      <p class="sub">Pick what to vary. Everything else stays identical, which is how each ablation in the study was run.</p>
+      <div class="presets" id="presets"></div>
+      <div class="cmp-q"><label class="sr" for="cq">Question</label><input id="cq" type="text" placeholder="Choose an example below or type a question"><button class="btn primary" id="cmp-go">Compare</button></div>
+      <div id="cmp-chips" class="chips"></div>
+    </div>
+    <div id="cmp-out" class="cmp-grid"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="view-results" class="view" data-view="results" hidden>
+  <div class="stage wide" id="results"></div>
+</section>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+{
+  "_instructions": "Per answerable question fill relevant_pages (1-indexed PDF pages that contain the answer; use eval/label_helper.py), key_facts (short strings the answer MUST contain, e.g. '72', '76') and optionally reference_answer. answerable=false items need no labels (correct behaviour = abstain). Aim for 30+ labelled items across all 4 docs; add multi-document (company=null) questions too. Unlabelled items are skipped for the metrics that need labels. Categories drive the per-category breakdown.",
+  "docs": {
+    "1626944616560.pdf": {
+      "company": "ZOMATO LIMITED"
+    },
+    "1636529320240.pdf": {
+      "company": null
+    },
+    "1731315962150.pdf": {
+      "company": null
+    },
+    "1775547017596_1210.pdf": {
+      "company": null
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "category": "risk",
+      "question": "What are the main risk factors mentioned in the prospectus?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q02",
+      "category": "issue_details",
+      "question": "What is the total issue size and price band for the IPO?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q03",
+      "category": "ownership",
+      "question": "Who are the promoters and what is their shareholding percentage?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q04",
+      "category": "use_of_proceeds",
+      "question": "What are the objects of the issue and how will the proceeds be used?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q05",
+      "category": "financials_table",
+      "question": "What is the company's revenue and profit for the last 3 years?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q06",
+      "category": "legal",
+      "question": "What are the outstanding litigations against the company?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q07",
+      "category": "valuation",
+      "question": "What is the basis for the issue price?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q08",
+      "category": "intermediaries",
+      "question": "Who are the book running lead managers and registrar?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q09",
+      "category": "business",
+      "question": "What is the company's business model and competitive advantage?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q10",
+      "category": "dividend",
+      "question": "What is the dividend policy of the company?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": true,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q11",
+      "category": "unanswerable",
+      "question": "What was the company's share price on the stock exchange one year after listing?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": false,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q12",
+      "category": "unanswerable",
+      "question": "What is the company's revenue guidance for the next fiscal year?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": false,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    },
+    {
+      "id": "q13",
+      "category": "unanswerable",
+      "question": "Who won the most recent cricket world cup?",
+      "doc": "1626944616560.pdf",
+      "company": "ZOMATO LIMITED",
+      "answerable": false,
+      "relevant_pages": [],
+      "key_facts": [],
+      "reference_answer": null
+    }
+  ]
+}

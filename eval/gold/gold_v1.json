@@ -1,0 +1,4778 @@
+{
+ "version": "v1",
+ "note": "LLM-generated and LLM-verified (independent verifier model); spot-checked by Claude (see goldgen/REVIEW_LOG.md). NOT human-verified.",
+ "items": [
+  {
+   "id": "d-fac-01",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the revenue from operations for Zomato in Fiscal 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     30,
+     39,
+     76,
+     224,
+     267,
+     302,
+     319
+    ]
+   ],
+   "reference_answer": "19,937.89",
+   "key_facts": [
+    "19,937.89"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 319,
+    "quote": "19,937.89",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-02",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Capital Structure",
+   "question": "What percentage of Jogo Technologies Private Limited did Zomato acquire through Jogo SPA II?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     196
+    ]
+   ],
+   "reference_answer": "18.66%",
+   "key_facts": [
+    "18.66"
+   ],
+   "tags": {
+    "lexical_overlap": 0.6,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 196,
+    "quote": "Pursuant to the Jogo SPA II, our Company purchased 6,624 equity shares of Jogo Technologies Private Limited aggregating to 18.66% of the issued and paid-up share capital of Jogo Technologies Private Limited for an aggregate consideration of ₹ 21,566,142 from the selling shareholders subject to fulfilment of certain conditions, as set out in the Jogo SPA II.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-01",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Offer Structure",
+   "question": "What is the minimum bid amount required for Retail Individual Bidders in Zomato's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     370
+    ]
+   ],
+   "reference_answer": "₹200,000",
+   "key_facts": [
+    "200,000"
+   ],
+   "tags": {
+    "lexical_overlap": 0.18,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 370,
+    "quote": "Such number of Equity Shares and in multiples of 195 Equity Shares so that the Bid Amount exceeds ₹200,000.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-02",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Our Business",
+   "question": "What percentage of new customers did Zomato acquire organically during Fiscal 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     141,
+     314
+    ]
+   ],
+   "reference_answer": "68.0%",
+   "key_facts": [
+    "68.0"
+   ],
+   "tags": {
+    "lexical_overlap": 0.67,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 141,
+    "quote": "During Fiscal 2021, 68.0% of our new customers were acquired organically and not through any paid advertisements.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-01",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total expenses amount for Zomato in Fiscal 2020 compared to Fiscal 2019?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     76,
+     224,
+     319,
+     322
+    ]
+   ],
+   "reference_answer": "₹50,063.11 million for Fiscal 2020 from ₹36,081.51 million for Fiscal 2019",
+   "key_facts": [
+    "50,063.11",
+    "2020",
+    "36,081.51",
+    "2019"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 322,
+    "quote": "Our total expenses increased by 38.75% to ₹50,063.11 million for Fiscal 2020 from ₹36,081.51 million for Fiscal 2019.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-02",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the restated balance of other equity for Zomato as of March 31, 2019?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     229,
+     245,
+     264
+    ]
+   ],
+   "reference_answer": "-22,624.81 INR Millions",
+   "key_facts": [
+    "22,624.81"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 245,
+    "quote": "Retained earnings\nRestated balance as at 31 March 2019\n(22,624.81)",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-01",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Basis For Offer Price",
+   "question": "What are the specific qualitative strengths supporting Zomato's offer price determination?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     124,
+     146
+    ]
+   ],
+   "reference_answer": "Strong network effects, widespread hyperlocal delivery, technology focus, and recognized consumer brand across India.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 124,
+    "quote": "(a) Strong network effects driven by our content and transaction flywheels; (b) Our widespread and on-demand hyperlocal delivery network; (c) Our technology and product-first approach to business; and (d) Our consumer brand which is recognized across the length and breadth of India.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-02",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "History And Certain Corporate Matters",
+   "question": "What significant business milestones did Zomato achieve between 2011 and 2020?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     171
+    ]
+   ],
+   "reference_answer": "First institutional fund raise, launch of food delivery in India, launch of table reservation, launch of customer membership program, added hyperlocal delivery capability, launch of Hyperpure, expansion of food delivery business across 500 cities, and acquisition of Uber Eats India Assets.",
+   "key_facts": [
+    "500"
+   ],
+   "tags": {
+    "lexical_overlap": 0.5,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 171,
+    "quote": "2011 First institutional fund raise by our Company\n2015 Launch of food delivery in India\n2016 Launch of table reservation\n2017 Launch of customer membership program (currently, ‘Zomato Pro’)\n2018 Added capability of hyperlocal delivery platform by acquisition of Carthero Technologies Private Limited\n2019 Launch of Hyperpure, a B2B supplies business for restaurant partners\n2020 Expansion of food delivery business across 500 cities in India\n2020 Acquisition of ‘Uber Eats India Assets’ of ‘Uber Eats India Business’ from Uber India",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-def-01",
+   "split": "dev",
+   "type": "definition",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the abbreviation MCA signify within Zomato's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     19,
+     287
+    ]
+   ],
+   "reference_answer": "Ministry of Corporate Affairs, Government of India",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.12,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 19,
+    "quote": "MCA Ministry of Corporate Affairs, Government of India",
+    "ratings": {
+     "natural": 4,
+     "value": 1
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-01",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the total borrowings figure for Nykaa as of June 30, 2021 pre-offer?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     23,
+     161,
+     349,
+     350,
+     351,
+     368,
+     370
+    ]
+   ],
+   "reference_answer": "2,681.34 million",
+   "key_facts": [
+    "2,681.34"
+   ],
+   "tags": {
+    "lexical_overlap": 0.22,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 370,
+    "quote": "Total borrowings (I) + (II) = (A)*\n2,681.34",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-02",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Capital Structure",
+   "question": "What was the number of preference shares allotted on December 26, 2019 at Nykaa's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     123
+    ]
+   ],
+   "reference_answer": "275,000",
+   "key_facts": [
+    "275,000"
+   ],
+   "tags": {
+    "lexical_overlap": 0.27,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 123,
+    "quote": "December 26, 2019 275,000 10.00 3,862.61 Private Placement(1) Cash 275,000",
+    "ratings": {
+     "natural": 3,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-01",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "The Offer",
+   "question": "What is the total value in millions for the entire equity share offer at Nykaa?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     1,
+     11,
+     20,
+     95,
+     454
+    ]
+   ],
+   "reference_answer": "53,497.24",
+   "key_facts": [
+    "53,497.24"
+   ],
+   "tags": {
+    "lexical_overlap": 0.12,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 95,
+    "quote": "47,575,326* Equity Shares, aggregating to ₹ 53,497.24* million",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-02",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Basis For Offer Price",
+   "question": "What was the basic earnings per share at Nykaa for the period ending March 31, 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     23,
+     101,
+     168,
+     297,
+     341,
+     362
+    ]
+   ],
+   "reference_answer": "1.39",
+   "key_facts": [
+    "1.39"
+   ],
+   "tags": {
+    "lexical_overlap": 0.3,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 168,
+    "quote": "March 31, 2021(1) (3) 1.39 1.34 3",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-01",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the depreciation and amortisation expense for the Financial Year 2019 at Nykaa's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     100,
+     102,
+     297,
+     300,
+     340,
+     366,
+     400
+    ]
+   ],
+   "reference_answer": "₹308.76 million",
+   "key_facts": [
+    "308.76"
+   ],
+   "tags": {
+    "lexical_overlap": 0.6,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 400,
+    "quote": "Our depreciation and amortisation expense increased by 92.74% to ₹595.09 million for the Financial Year 2020 from ₹308.76 million for the Financial Year 2019,",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-02",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the cost of materials consumed for Fsn E-Commerce Ventures Limited in the three months ended June 30, 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     100,
+     297,
+     339,
+     367,
+     394,
+     395
+    ]
+   ],
+   "reference_answer": "229.37 million",
+   "key_facts": [
+    "229.37"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 395,
+    "quote": "229.37 35.08",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-01",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Offer Procedure",
+   "question": "What specific jurisdictional limitations apply to offering or selling Nykaa's equity shares outside India?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     432,
+     464,
+     482
+    ]
+   ],
+   "reference_answer": "The Equity Shares have not been and will not be registered, listed or otherwise qualified in any other jurisdiction outside India.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 482,
+    "quote": "The Equity Shares have not been and will not be registered, listed or otherwise qualified in any other jurisdiction outside India and may not be offered or sold, and Bids may not be made, by persons in any such jurisdiction except in compliance with the applicable laws of such jurisdiction.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-02",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Dividend Policy",
+   "question": "What financial years has Nykaa's company not distributed any dividend on its equity shares?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     288
+    ]
+   ],
+   "reference_answer": "FYs 2019, 2020 and 2021",
+   "key_facts": [
+    "2019,",
+    "2020",
+    "2021"
+   ],
+   "tags": {
+    "lexical_overlap": 0.58,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 288,
+    "quote": "Our Company has not declared any dividend on the Equity Shares of our Company in FYs 2019, 2020 and 2021 and until the date of this Prospectus.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-def-01",
+   "split": "test",
+   "type": "definition",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the abbreviation MCA signify within Nykaa's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     17,
+     319,
+     551
+    ]
+   ],
+   "reference_answer": "Ministry of Corporate Affairs, Government of India",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.12,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 17,
+    "quote": "“MCA” \nMinistry of Corporate Affairs, Government of India.",
+    "ratings": {
+     "natural": 5,
+     "value": 1
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-03",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "General Information",
+   "question": "Which credit rating agency has Swiggy appointed to monitor gross proceeds utilization?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     13,
+     93,
+     165
+    ]
+   ],
+   "reference_answer": "CRISIL Ratings Limited",
+   "key_facts": [
+    "CRISIL Ratings Limited"
+   ],
+   "tags": {
+    "lexical_overlap": 0.9,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 93,
+    "quote": "Our Company has appointed CRISIL Ratings Limited, a credit rating agency registered with SEBI, as the monitoring agency to monitor utilization of the Gross Proceeds, in compliance with the SEBI ICDR Regulations.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-04",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Dividend Policy",
+   "question": "What dividend payments has Swiggy made in the three fiscal periods ending June 30, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     283
+    ]
+   ],
+   "reference_answer": "None",
+   "key_facts": [
+    "None"
+   ],
+   "tags": {
+    "lexical_overlap": 0.5,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 283,
+    "quote": "Our Company has not declared and paid any dividend in the three Fiscals and the three months ended June 30, 2024, preceding the date of this Prospectus and the period from July 1, 2024, until the date of this Prospectus.",
+    "ratings": {
+     "natural": 5,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-03",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Risk Factors",
+   "question": "What was the Swiggy Platform Consolidated Gross Revenue for the three months ended June 30, Fiscal 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     38,
+     170,
+     176,
+     212,
+     214,
+     375
+    ]
+   ],
+   "reference_answer": "34,772.87",
+   "key_facts": [
+    "34,772.87"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 38,
+    "quote": "34,772.87",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-04",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Offer Structure",
+   "question": "What is the total value of the equity shares offered for cash in Swiggy's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     1,
+     3,
+     13,
+     22,
+     49,
+     69,
+     446
+    ]
+   ],
+   "reference_answer": "₹113,274.27 million",
+   "key_facts": [
+    "113,274.27"
+   ],
+   "tags": {
+    "lexical_overlap": 0.4,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 446,
+    "quote": "Offer of 290,494,914* Equity Shares for cash at a price of ₹390^ per Equity Share (including a premium of ₹389 per Equity Share) aggregating to ₹113,274.27 million*^",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-03",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the total authorized share capital for Swiggy as of June 30, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     322
+    ]
+   ],
+   "reference_answer": "2,800.00",
+   "key_facts": [
+    "2,800.00"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 322,
+    "quote": "2,800.00",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-04",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Financial Information",
+   "question": "What date was the auditor's report issued concerning the consolidated interim financial statements for the three months ended 30 June 2024 at Swiggy?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     287
+    ]
+   ],
+   "reference_answer": "24 September 2024",
+   "key_facts": [
+    "2024"
+   ],
+   "tags": {
+    "lexical_overlap": 0.82,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 287,
+    "quote": "Auditor’s report issued by us dated 24 September 2024 on the consolidated interim financial statements of the Group and its associate as at and for the three months periods ended 30 June 2024 as referred in Paragraph 4 (a) above.",
+    "ratings": {
+     "natural": 4,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-03",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Our Management",
+   "question": "Which parties possess the entitlement to nominate a director on Swiggy's board under the agreement?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     251,
+     281
+    ]
+   ],
+   "reference_answer": "Accel Entities, MIH, Softbank, and the Founders collectively have nomination rights.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.3,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 281,
+    "quote": "Accel Entities (collectively) hold at least 5% (five percent) of the share capital of the Company on a fully diluted basis, they shall have the right to nominate and maintain 1 (one) Director on the Board (“Accel Director”); (ii) MIH holds at least 5% (five percent) of the share capital of the Company on a fully diluted basis, it shall have the right to nominate and maintain 2 (two) Directors on the Board (“MIH Director”); and (iii) Softbank holds at least 5% (five percent) of the share capital of the Company on a fully diluted basis, it shall have the right to nominate and maintain 1 (one) Director on the Board (“Softbank Director”). The Founders collectively have the right to nominate 2 (two) Directors to the Board",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-04",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "Other Financial Information",
+   "question": "What are the three financial years for which audited standalone financial statements are available at Swiggy's website?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     362
+    ]
+   ],
+   "reference_answer": "2024, 2023 and 2022",
+   "key_facts": [
+    "2024,",
+    "2023",
+    "2022"
+   ],
+   "tags": {
+    "lexical_overlap": 0.8,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 362,
+    "quote": "In accordance with the SEBI ICDR Regulations, the audited standalone financial statements of (i) our Company; and (ii) Scootsy, for the Financial Years 2024, 2023 and 2022 (collectively, the “Audited Financial Statements”) are available on the website of our Company at https://www.swiggy.com/corporate/investor-relations/.",
+    "ratings": {
+     "natural": 5,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-03",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Other Financial Information",
+   "question": "What was the return on net worth percentage at LIC as of September 30, 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     101,
+     413,
+     438
+    ]
+   ],
+   "reference_answer": "18.76%",
+   "key_facts": [
+    "18.76"
+   ],
+   "tags": {
+    "lexical_overlap": 0.38,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 438,
+    "quote": "Return on net worth (%)(2) 18.76%",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-04",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What date did the Board of Directors approve the interim financial statements for six months ending September 30, 2021 at LIC's?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     461
+    ]
+   ],
+   "reference_answer": "January 20, 2022",
+   "key_facts": [
+    "2022"
+   ],
+   "tags": {
+    "lexical_overlap": 0.13,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 461,
+    "quote": "which have been approved by the Board of Directors at their meeting held on January 20, 2022;",
+    "ratings": {
+     "natural": 3,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-03",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Financial Statements",
+   "question": "What was the net earned premiums at LIC for the six months ending September 30, 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     74,
+     425,
+     455,
+     458,
+     478
+    ]
+   ],
+   "reference_answer": "1,872,895.40",
+   "key_facts": [
+    "1,872,895.40"
+   ],
+   "tags": {
+    "lexical_overlap": 0.3,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 478,
+    "quote": "Net earned premiums 1,872,895.40",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-04",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the management expense ratio for LIC during fiscal 2019 according to the offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     440
+    ]
+   ],
+   "reference_answer": "14.37",
+   "key_facts": [
+    "14.37"
+   ],
+   "tags": {
+    "lexical_overlap": 0.2,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 440,
+    "quote": "Fiscal 2019 484,932.11 3,375,050.71 14.37",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-03",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Outstanding Litigation",
+   "question": "What amount did LIC's Corporation submit as a claim in the DHFL insolvency process?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     509
+    ]
+   ],
+   "reference_answer": "approximately ₹65,030.00 million",
+   "key_facts": [
+    "65,030.00"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 509,
+    "quote": "our Corporation submitted a claim amount of approximately ₹65,030.00 million.",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-04",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Outstanding Litigation",
+   "question": "What potential payment amount might LIC have to cover if the Supreme Court rules against them regarding the 2008-09 assessment year?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     516
+    ]
+   ],
+   "reference_answer": "approximately ₹59,549.90 million",
+   "key_facts": [
+    "59,549.90"
+   ],
+   "tags": {
+    "lexical_overlap": 0.28,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 516,
+    "quote": "In the event the Supreme Court of India rules against our Corporation, our Corporation may have to pay approximately ₹59,549.90 million, based on our internal calculations.",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-03",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Basis For Offer Price",
+   "question": "What are some of the qualitative strengths forming the basis for LIC's offer price calculation?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     100,
+     182
+    ]
+   ],
+   "reference_answer": "Fifth largest life insurer globally by GWP and the largest player in the fast growing and underpenetrated Indian life insurance sector",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 100,
+    "quote": "• Fifth largest life insurer globally by GWP and the largest player in the fast growing and underpenetrated Indian life insurance sector;",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-04",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Financial Indebtedness",
+   "question": "What specific rights do holders of Class C preference shares possess regarding dividends and liquidation at LIC Lanka?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     445
+    ]
+   ],
+   "reference_answer": "The rights include receiving a non-cumulative preferential dividend at 10% per annum and being paid out of assets before ordinary equity shareholders during liquidation.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.46,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 445,
+    "quote": "The terms of the Preference Share Issue also include, among other things, the right to receive a non-cumulative preferential dividend at the rate of 10% per annum on the subscription price of LKR 10 per share as well as the right to be paid out of the assets of LIC Lanka in preference to holders of ordinary equity shares in the event of liquidation.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-def-02",
+   "split": "dev",
+   "type": "definition",
+   "docs": [
+    "lic"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the abbreviation CAGR signify within LIC's offer document terminology?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     13,
+     111
+    ]
+   ],
+   "reference_answer": "Compound annual growth rate",
+   "key_facts": [
+    "Compound annual growth rate"
+   ],
+   "tags": {
+    "lexical_overlap": 0.11,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 13,
+    "quote": "CAGR Compound annual growth rate",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-05",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Outstanding Litigation",
+   "question": "What monetary value defines material outstanding dues to creditors as of June 30, 2023 in Ola Electric's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     343,
+     347
+    ]
+   ],
+   "reference_answer": "₹520.34 million",
+   "key_facts": [
+    "520.34"
+   ],
+   "tags": {
+    "lexical_overlap": 0.4,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 343,
+    "quote": "Accordingly, as of June 30, 2023, any outstanding dues exceeding ₹520.34 million have been considered as material outstanding dues for the purposes of disclosure in this section.",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-06",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Terms Of The Offer",
+   "question": "What is the tradable lot size for the Equity Shares at Ola Electric?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     380,
+     386
+    ]
+   ],
+   "reference_answer": "one Equity Share",
+   "key_facts": [
+    "one Equity Share"
+   ],
+   "tags": {
+    "lexical_overlap": 0.57,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 380,
+    "quote": "Since trading of the Equity Shares is in dematerialised form, the tradable lot is one Equity Share.",
+    "ratings": {
+     "natural": 5,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-05",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the total borrowings figure for Ola Electric as at June 30, 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     19,
+     288,
+     291,
+     335,
+     339
+    ]
+   ],
+   "reference_answer": "16,165.73 million",
+   "key_facts": [
+    "16,165.73"
+   ],
+   "tags": {
+    "lexical_overlap": 0.25,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 339,
+    "quote": "Total Borrowings (A) + (B) = (C) 16,165.73",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-06",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the total revenue reported for the subsidiaries in Ola Electric's consolidated financial statements for the year ended 31 March 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     243
+    ]
+   ],
+   "reference_answer": "1.01",
+   "key_facts": [
+    "1.01"
+   ],
+   "tags": {
+    "lexical_overlap": 0.13,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 243,
+    "quote": "Total revenue 1.01",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-05",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Our Business",
+   "question": "How many experience centers did Ola Electric's distribution network include by October 31, 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     17,
+     39,
+     42,
+     113,
+     114,
+     124,
+     183
+    ]
+   ],
+   "reference_answer": "935",
+   "key_facts": [
+    "935"
+   ],
+   "tags": {
+    "lexical_overlap": 0.55,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 183,
+    "quote": "Our D2C omnichannel distribution network comprised 935 experience centres, some of which also house service centres, across 24 States in India, as of October 31, 2023.",
+    "ratings": {
+     "natural": 5,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-06",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Industry Overview",
+   "question": "What electric scooter subsegment achieved approximately seventy-five percent electric penetration in the first half of the 2024 fiscal year at Ola Electric's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     143
+    ]
+   ],
+   "reference_answer": "premium scooters subsegment",
+   "key_facts": [
+    "premium scooters subsegment"
+   ],
+   "tags": {
+    "lexical_overlap": 0.28,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 143,
+    "quote": "Within the scooter segment, premium scooters subsegment (priced (ex-showroom) >₹100 thousand i.e. US$ 1250) have high electric penetration of ~75% (in H1 FY 2024).",
+    "ratings": {
+     "natural": 4,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-05",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Basis For Offer Price",
+   "question": "What are the comparable adjusted gross margin percentages for Ola Electric against its listed two-wheeler peers?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     125
+    ]
+   ],
+   "reference_answer": "8.64%, 13.23%, 7.63%",
+   "key_facts": [
+    "8.64",
+    "13.23",
+    "7.63"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 125,
+    "quote": "8.64 13.23% 7.63%",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-06",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "Industry Overview",
+   "question": "What are the key elements of the vertically integrated approach for EV OEMs at Ola Electric?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     153,
+     159,
+     317
+    ]
+   ],
+   "reference_answer": "Ownership of R&D & Technology",
+   "key_facts": [
+    "Ownership of R&D & Technology"
+   ],
+   "tags": {
+    "lexical_overlap": 0.11,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 153,
+    "quote": "Ownership of R&D & Technology – Designing and development of EV technology components (cell & battery pack, software, motor & drive train and electronics) in-house (rather than procuring readily available off-the shelf items) enhances control over the product.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-05",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "General Information",
+   "question": "When will Hyundai's company enter into the Underwriting Agreement with the Underwriters?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     90
+    ]
+   ],
+   "reference_answer": "After the determination of the Offer Price and allocation of Equity Shares, but prior to the filing of the Prospectus with the RoC.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.7,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 90,
+    "quote": "After the determination of the Offer Price and allocation of Equity Shares, but prior to the filing of the Prospectus with the RoC, our Company and the Promoter Selling Shareholder will enter into an Underwriting Agreement with the Underwriters for the Equity Shares proposed to be offered through the Offer.",
+    "ratings": {
+     "natural": 3,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-05",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "Dividend Policy",
+   "question": "What was the total dividend paid by Hyundai during the Financial Year 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     81,
+     232,
+     239,
+     240,
+     261
+    ]
+   ],
+   "reference_answer": "46,534.23",
+   "key_facts": [
+    "46,534.23"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 232,
+    "quote": "46,534.23",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-06",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the total borrowings figure for Hyundai as of December 31, 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     20,
+     64,
+     319,
+     330
+    ]
+   ],
+   "reference_answer": "7,844.78",
+   "key_facts": [
+    "7,844.78"
+   ],
+   "tags": {
+    "lexical_overlap": 0.29,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 330,
+    "quote": "Total borrowings (C) = (A+B) 7,844.78",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-05",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the profit for the year achieved by Hyundai in Fiscal 2022 compared to Fiscal 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     20,
+     80,
+     81,
+     105,
+     159,
+     166,
+     314
+    ]
+   ],
+   "reference_answer": "₹29,015.91 million in Fiscal 2022 from ₹18,811.56 million in Fiscal 2021",
+   "key_facts": [
+    "29,015.91",
+    "2022",
+    "18,811.56",
+    "2021"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 314,
+    "quote": "As a result of the foregoing factors, our profit for the year in Fiscal 2022 increased by 54.25% to ₹29,015.91 million from a profit for the year of ₹18,811.56 million in Fiscal 2021.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-06",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total income achieved by Hyundai in Fiscal 2022 compared to Fiscal 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     38,
+     80,
+     159,
+     166,
+     238,
+     307,
+     312
+    ]
+   ],
+   "reference_answer": "₹479,660.48 million",
+   "key_facts": [
+    "479,660.48"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 312,
+    "quote": "Our total income increased by 15.85% to ₹479,660.48 million in Fiscal 2022 from ₹414,046.50 million in Fiscal 2021",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-def-02",
+   "split": "test",
+   "type": "definition",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the term Designated Intermediary(ies) signify regarding the Hyundai's offer?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     10,
+     11
+    ]
+   ],
+   "reference_answer": "SCSBs, Syndicate, sub-Syndicate, Registered Brokers, CDPs and RTAs who are authorized to collect ASBA Forms from the ASBA Bidders, in relation to the Offer.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.44,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 11,
+    "quote": "Designated Intermediary(ies) SCSBs, Syndicate, sub-Syndicate, Registered Brokers, CDPs and RTAs who are authorized to collect ASBA Forms from the ASBA Bidders, in relation to the Offer.",
+    "ratings": {
+     "natural": 4,
+     "value": 1
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-06",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Summary Of The Offer Document",
+   "question": "What was the total income for HDB during the financial year ended March 31, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     22,
+     38,
+     71,
+     146
+    ]
+   ],
+   "reference_answer": "141,711.2 ₹ million",
+   "key_facts": [
+    "141,711.2"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 22,
+    "quote": "141,711.2  124,028.8",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-07",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total borrowings amount for HDB as at September 30, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     70,
+     335,
+     356,
+     376,
+     379,
+     415
+    ]
+   ],
+   "reference_answer": "₹372,417.3 million",
+   "key_facts": [
+    "372,417.3"
+   ],
+   "tags": {
+    "lexical_overlap": 0.14,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 415,
+    "quote": "Borrowings (other than debt securities) 372,417.3",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-07",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the total capitalisation for HDB as at September 30, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     419
+    ]
+   ],
+   "reference_answer": "966,168.8",
+   "key_facts": [
+    "966,168.8"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 419,
+    "quote": "Total Capitalisation (I=D+H) 966,168.8",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-07",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the interest income from investments reported by HDB in Fiscal 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     360,
+     407
+    ]
+   ],
+   "reference_answer": "₹960.2 million",
+   "key_facts": [
+    "960.2"
+   ],
+   "tags": {
+    "lexical_overlap": 0.43,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 407,
+    "quote": "Interest income on investments\n960.2\n-",
+    "ratings": {
+     "natural": 5,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-08",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Our Business",
+   "question": "What was the loan book amount for Business Loans as of September 30, 2024 in HDB's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     253
+    ]
+   ],
+   "reference_answer": "₹126.4 billion",
+   "key_facts": [
+    "126.4"
+   ],
+   "tags": {
+    "lexical_overlap": 0.42,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 253,
+    "quote": "As at September 30, 2024, this product had a loan book of ₹126.4 billion.",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-05",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "Our Management",
+   "question": "What are the specific functions included within the terms of reference for HDB's Risk Management Committee?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     304
+    ]
+   ],
+   "reference_answer": "Approving and monitoring the Company’s risk management policies and procedures; Framing, implementing, reviewing and monitoring the risk management plan including cyber security for the Company; Evaluating the overall risks faced by the Company including liquidity risk; Formulate a detailed risk management policy which shall include: (a) A framework for identification of internal and external risks specifically faced by the Company, in particular including financial, operational, sectoral, sustainability (particularly, ESG related risks), information, cyber security risks or any other risk as may be determined by the Committee; (b) Measures for risk mitigation including systems and processes for internal control of identified risks; (c) Business continuity plan; Ensure that appropriate methodology, processes and systems are in place to monitor and evaluate risks associated with the business of the Company; Monitoring and overseeing implementation of the risk management policy, including evaluating the adequacy of risk management systems; Periodically reviewing the risk management policy, at least once in two years, including by considering the changing industry dynamics and evolving complexity; Keeping the board of directors informed about the nature and content of its discussions, recommendations and actions to be taken; The appointment, removal and terms of remuneration of the Chief Risk Officer (if any) shall be subject to review by the Risk Management Committee.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.27,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 304,
+    "quote": "1. Approving and monitoring the Company’s risk management policies and procedures; 2. Framing, implementing, reviewing and monitoring the risk management plan including cyber security for the Company.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-08",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Financial Indebtedness",
+   "question": "What are some consequences resulting from the occurrence of events of default for LG Electronics's borrowing arrangements?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     352
+    ]
+   ],
+   "reference_answer": "termination/cancellation of sanctioned facilities, application of repaid amount towards settlement, and levy of an additional interest rate",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 352,
+    "quote": "(a) termination/ cancellation of the sanctioned facilities; (b) application of any amount re-paid to the lender towards settlement and discharge of liabilities; and (c) levy of an additional interest rate.",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-09",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "General Information",
+   "question": "Who is the managing director of LG Electronics's Company according to the offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     16,
+     93,
+     212,
+     214,
+     215,
+     222
+    ]
+   ],
+   "reference_answer": "Hong Ju Jeon",
+   "key_facts": [
+    "Hong Ju Jeon"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 16,
+    "quote": "The managing director of our Company, being Hong Ju Jeon. For further details, please see “Our Management – Board of Directors” on page 207",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-08",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Dividend Policy",
+   "question": "What was the total dividend paid by LG Electronics during the financial year ended March 31, 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     25,
+     72,
+     91,
+     236,
+     247,
+     248,
+     270
+    ]
+   ],
+   "reference_answer": "24,888.32",
+   "key_facts": [
+    "24,888.32"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 236,
+    "quote": "24,888.32",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-09",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Offer Structure",
+   "question": "What is the minimum bid amount required for Retail Individual Bidders in LG Electronics's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     400
+    ]
+   ],
+   "reference_answer": "₹0.20 million",
+   "key_facts": [
+    "0.20"
+   ],
+   "tags": {
+    "lexical_overlap": 0.17,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 400,
+    "quote": "Such number of Equity Shares and in multiples of [●] Equity Shares so that the Bid Amount exceeds ₹0.20 million",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-09",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Our Business",
+   "question": "What was the total income for LG Electronics in Fiscal 2024 compared to Fiscal 2023?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     90,
+     246,
+     329,
+     333
+    ]
+   ],
+   "reference_answer": "₹215,571.18 million in Fiscal 2024 from ₹201,085.84 million in Fiscal 2023",
+   "key_facts": [
+    "215,571.18",
+    "2024",
+    "201,085.84",
+    "2023"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 333,
+    "quote": "Our total income increased by 7.20% to ₹215,571.18 million in Fiscal 2024 from ₹201,085.84 million in Fiscal 2023, primarily due to:",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-10",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Financial Information",
+   "question": "What is the designation held by Mr. Soo Cheol Kim at LG Electronics?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     287
+    ]
+   ],
+   "reference_answer": "Director and Chief financial officer",
+   "key_facts": [
+    "Director and Chief financial officer"
+   ],
+   "tags": {
+    "lexical_overlap": 0.5,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 287,
+    "quote": "Mr. Soo Cheol Kim (Director and Chief financial officer) ",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-06",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Our Business",
+   "question": "What specific television display technologies does LG Electronics offer according to the Redseer Report?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     153,
+     174,
+     183
+    ]
+   ],
+   "reference_answer": "OLED, QNED, NanoCell, UHD, and LED models",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.1,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 174,
+    "quote": "For example, our range of televisions spans across Organic Light-emitting Diode (“OLED”), Quantum Nano-Emitting Diode (“QNED”), NanoCell (technology that uses nanoparticles to display rich images), Ultra High Definition (“UHD”), and Light Emitting Diode (“LED”) models",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-07",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What specific actions caused the increase in authorized share capital at LG Electronics?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     350
+    ]
+   ],
+   "reference_answer": "The company increased its authorized share capital pursuant to a board resolution dated October 17, 2024 and shareholder resolution dated October 18, 2024.",
+   "key_facts": [
+    "2024",
+    "2024"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 350,
+    "quote": "Post June 30, 2024, i) pursuant to the board resolution dated October 17, 2024 and shareholder resolution dated October 18, 2024, our Company increased its authorized share capital from 1,150.00 million to 15,000.00 million",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-07",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Our Business",
+   "question": "What was the revenue growth percentage for Delhivery's customer contracts between Fiscal 2019 and Fiscal 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     174
+    ]
+   ],
+   "reference_answer": "48.49%",
+   "key_facts": [
+    "48.49"
+   ],
+   "tags": {
+    "lexical_overlap": 0.45,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 174,
+    "quote": "Our revenue from contracts with customers has grown from ₹16,538.97 million in Fiscal 2019 to ₹36,465.27 million in Fiscal 2021, or a CAGR of 48.49%.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-08",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Objects Of The Offer",
+   "question": "Does Delhivery's company possess any promoters or a promoter group as of this Draft Red Herring Prospectus date?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     104,
+     131,
+     220
+    ]
+   ],
+   "reference_answer": "No",
+   "key_facts": [
+    "No"
+   ],
+   "tags": {
+    "lexical_overlap": 0.77,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 131,
+    "quote": "Our Company does not have any promoters or promoter group as on the date of this Draft Red Herring Prospectus.",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-07",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Basis For Offer Price",
+   "question": "What was the basic loss per share for Delhivery ending March 31, 2021?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     27,
+     76,
+     132,
+     229
+    ]
+   ],
+   "reference_answer": "-8.05",
+   "key_facts": [
+    "8.05"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 132,
+    "quote": "March 31, 2021 (8.05) (8.05) 3",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-08",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total current assets amount for Delhivery as of June 30, 2021 in ₹ million?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     73,
+     228,
+     307,
+     480
+    ]
+   ],
+   "reference_answer": "45,091.91",
+   "key_facts": [
+    "45,091.91"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 480,
+    "quote": "45,091.91",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-07",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total expense amount reported by Delhivery in Fiscal 2020?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     75,
+     229,
+     474,
+     477,
+     479
+    ]
+   ],
+   "reference_answer": "₹32,574.31 million",
+   "key_facts": [
+    "32,574.31"
+   ],
+   "tags": {
+    "lexical_overlap": 0.43,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 479,
+    "quote": "Our total expenses decreased by 6.35% to ₹32,574.31 million in Fiscal 2020 from ₹34,781.78 million in Fiscal 2019.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-08",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the total consideration paid for Spoton Group acquisition on August 24, 2021 at Delhivery?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     309,
+     311,
+     313
+    ]
+   ],
+   "reference_answer": "INR 15,216.02",
+   "key_facts": [
+    "15,216.02"
+   ],
+   "tags": {
+    "lexical_overlap": 0.7,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 309,
+    "quote": "The financial information gives effect to the acquisition of Spoton Group for consideration of INR 15,216.02 on August 24, 2021.",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-07",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What specific adjustments were made to the CCCPS conversion ratio after the bonus equity share issuance at Delhivery?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     27,
+     132,
+     133,
+     457,
+     462
+    ]
+   ],
+   "reference_answer": "The conversion ratio was adjusted to 10:1",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.5,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 462,
+    "quote": "the conversion ratio accordingly stands adjusted to 10:1 i.e. 10 equity shares of ₹10 each for every 1 CCCPS of ₹100 each held by such CCCPS holder, pursuant to such bonus issuance.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-08",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Capital Structure",
+   "question": "What are the four specific employee stock option schemes at Delhivery mentioned here?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     4,
+     108
+    ]
+   ],
+   "reference_answer": "Delhivery Employees Stock Option Plan, 2012, Delhivery Employees Stock Option Plan - II, 2020, Delhivery Employees Stock Option Plan - III, 2020, and Delhivery Employees Stock Option Plan - IV, 2021",
+   "key_facts": [
+    "2012,",
+    "2020,",
+    "2020,",
+    "2021"
+   ],
+   "tags": {
+    "lexical_overlap": 0.56,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 108,
+    "quote": "Our Company has four ESOP schemes, namely, Delhivery Employees Stock Option Plan, 2012 (“ESOP I – 2012”), Delhivery Employees Stock Option Plan - II, 2020 (“ESOP II – 2020”), Delhivery Employees Stock Option Plan - III, 2020 (“ESOP III – 2020”) and Delhivery Employees Stock Option Plan - IV, 2021",
+    "ratings": {
+     "natural": 4,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-def-03",
+   "split": "dev",
+   "type": "definition",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the abbreviation RHP signify within Delhivery's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     11
+    ]
+   ],
+   "reference_answer": "The red herring prospectus to be issued by our Company in accordance with Section 32 of the Companies Act, 2013 and the provisions of the SEBI ICDR Regulations, which does not have complete particulars of the Offer Price and the size of the Offer, including any addenda or corrigenda thereto.",
+   "key_facts": [
+    "2013"
+   ],
+   "tags": {
+    "lexical_overlap": 0.25,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 11,
+    "quote": "Red Herring Prospectus or RHP The red herring prospectus to be issued by our Company in accordance with Section 32 of the Companies Act, 2013 and the provisions of the SEBI ICDR Regulations, which does not have complete particulars of the Offer Price and the size of the Offer, including any addenda or corrigenda thereto.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-09",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Risk Factors",
+   "question": "Will Manipal's company receive any money from the Offer for Sale?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     71,
+     144
+    ]
+   ],
+   "reference_answer": "No",
+   "key_facts": [
+    "No"
+   ],
+   "tags": {
+    "lexical_overlap": 0.67,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 71,
+    "quote": "While our Company will receive proceeds from the Fresh Issue, it will not receive any proceeds from the Offer for Sale.",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-fac-10",
+   "split": "dev",
+   "type": "factoid",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Dividend Policy",
+   "question": "When did Manipal's Board approve and adopt the dividend distribution policy?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     7,
+     324
+    ]
+   ],
+   "reference_answer": "November 25, 2025",
+   "key_facts": [
+    "2025"
+   ],
+   "tags": {
+    "lexical_overlap": 0.44,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 324,
+    "quote": "The dividend distribution policy of our Company (“Dividend Policy”) was approved and adopted by our Board at its meeting on November 25, 2025.",
+    "ratings": {
+     "natural": 4,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-09",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "The Offer",
+   "question": "What was the value of property plant and equipment for Manipal's period ended March 31, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     88,
+     332,
+     350,
+     581
+    ]
+   ],
+   "reference_answer": "37,502.41",
+   "key_facts": [
+    "37,502.41"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 88,
+    "quote": "37,502.41",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-num-10",
+   "split": "dev",
+   "type": "numeric",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the equity value consideration paid for the initial acquisition of Manipal Hospitals Synergie Private Limited on July 01, 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     370
+    ]
+   ],
+   "reference_answer": "9,855.30 million",
+   "key_facts": [
+    "9,855.30"
+   ],
+   "tags": {
+    "lexical_overlap": 0.29,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 370,
+    "quote": "engaged in the business of running/managing hospitals and providing healthcare services for an equity value consideration of ₹ 9,855.30 million.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-09",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the revenue from operations for Manipal's company in Fiscal 2025 compared to Fiscal 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     37,
+     38,
+     90,
+     157,
+     221,
+     580
+    ]
+   ],
+   "reference_answer": "₹82,422.50 million in Fiscal 2025 from ₹61,716.32 million in Fiscal 2024",
+   "key_facts": [
+    "82,422.50",
+    "2025",
+    "61,716.32",
+    "2024"
+   ],
+   "tags": {
+    "lexical_overlap": 0.56,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 580,
+    "quote": "Revenue from operations increased by 33.55%, or ₹20,706.18 million, to ₹82,422.50 million in Fiscal 2025 from ₹61,716.32 million in Fiscal 2024, primarily due to increased patient volume, including as a result of the acquisition of Medica Synergie in July 2024, and the first full-year contribution from AMRI, which we acquired in September 2023.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-tab-10",
+   "split": "dev",
+   "type": "table",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Financial Information",
+   "question": "What was the revenue from operations for Healthmap Diagnostics Private Limited in the year ended March 31, 2023 at Manipal's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     404
+    ]
+   ],
+   "reference_answer": "1,169.80",
+   "key_facts": [
+    "1,169.80"
+   ],
+   "tags": {
+    "lexical_overlap": 0.13,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 404,
+    "quote": "Revenue from operations                   1,195.87                    2,117.99                   1,814.69                   1,169.80",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-09",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Our Group Companies",
+   "question": "Which specific entities constitute the group companies of Manipal's based on the current draft red herring prospectus?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     630
+    ]
+   ],
+   "reference_answer": "ManipalCigna Health Insurance Company Limited, Unext Learning Private Limited, Polaris Healthcare Investments Pte. Ltd., Manipal Education and Medical Group India Private Limited, MEMG International India Private Limited, Akna Medical Private Limited, iGenetic Diagnostics Private Limited, Manipal Health Systems Private Limited, MeritTrac Services Private Limited, Stempeutics Research Private Limited, and Terrals Technologies Private Limited",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.15,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 630,
+    "quote": "1. ManipalCigna Health Insurance Company Limited\n2. Unext Learning Private Limited\n3. Polaris Healthcare Investments Pte. Ltd.\n4. Manipal Education and Medical Group India Private Limited\n5. MEMG International India Private Limited\n6. Akna Medical Private Limited\n7. iGenetic Diagnostics Private Limited\n8. Manipal Health Systems Private Limited\n9. MeritTrac Services Private Limited\n10. Stempeutics Research Private Limited\n11. Terrals Technologies Private Limited",
+    "ratings": {
+     "natural": 3,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-lis-10",
+   "split": "dev",
+   "type": "list",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "Key Regulations And Policies",
+   "question": "What specific regulatory acts govern the import manufacture distribution and sale of medicinal products at Manipal?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     261
+    ]
+   ],
+   "reference_answer": "The Drugs Act, the Drugs Rules, the New Drugs and Clinical Trials Rules, and the Drugs (Prices Control) Order, 2013",
+   "key_facts": [
+    "2013"
+   ],
+   "tags": {
+    "lexical_overlap": 0.0,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 261,
+    "quote": "The Drugs and Cosmetics Act, 1940 (“Drugs Act”), the Drugs and Cosmetics Rules, 1945 (“Drugs Rules”), The New Drugs and Clinical Trials Rules, 2019 (“Clinical Trials Rules”) and The Drugs (Prices Control) Order, 2013 (“DPCO 2013”)",
+    "ratings": {
+     "natural": 3,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-10",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Risk Factors",
+   "question": "What is the value of disputed claims against the group as of March 31, 2026 in Jio's summary?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     52,
+     70,
+     357,
+     398
+    ]
+   ],
+   "reference_answer": "15,021 ₹ million",
+   "key_facts": [
+    "15,021"
+   ],
+   "tags": {
+    "lexical_overlap": 0.36,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 70,
+    "quote": "Claims/ disputed liabilities against the group not acknowledged as debts\n15,021*",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-11",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Industry Overview",
+   "question": "How many 5G cells did Jio deploy within one year in India?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     168,
+     181
+    ]
+   ],
+   "reference_answer": "more than 1 million",
+   "key_facts": [
+    "more than 1 million"
+   ],
+   "tags": {
+    "lexical_overlap": 0.5,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 168,
+    "quote": "deploying more than 1 million 5G cells within 1 year",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-10",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Other Financial Information",
+   "question": "What is the total borrowings to total equity ratio at Jio as of March 31, 2026?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     357,
+     378
+    ]
+   ],
+   "reference_answer": "0.21",
+   "key_facts": [
+    "0.21"
+   ],
+   "tags": {
+    "lexical_overlap": 0.38,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 378,
+    "quote": "Total borrowings/ Total Equity (Number of times) (VIII = III/ VII) 0.21",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-11",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Our Business",
+   "question": "How many Jio Centres did Jio operate as of March 31, 2026?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     116,
+     191
+    ]
+   ],
+   "reference_answer": "1,059",
+   "key_facts": [
+    "1,059"
+   ],
+   "tags": {
+    "lexical_overlap": 0.83,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 191,
+    "quote": "We also use physical touchpoints, such as the 1,059 Jio Centres and the 6,323 Jio Points as of March 31, 2026, supported by the feet-on-street network which includes a mix of employees and contractors to distribute our digital",
+    "ratings": {
+     "natural": 5,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-11",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What is the intended amount Jio plans to repay from the proceeds of this Issue?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     54,
+     106,
+     107,
+     397
+    ]
+   ],
+   "reference_answer": "₹275,000 million",
+   "key_facts": [
+    "275,000"
+   ],
+   "tags": {
+    "lexical_overlap": 0.43,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 397,
+    "quote": "We intend to repay ₹275,000 million of debt with the proceeds of this Issue.",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-12",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Outstanding Litigation",
+   "question": "What total financial penalties did TRAI impose on Jio for failing to curb unsolicited communications by June 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     37,
+     408
+    ]
+   ],
+   "reference_answer": "approximately ₹271 million",
+   "key_facts": [
+    "271"
+   ],
+   "tags": {
+    "lexical_overlap": 0.67,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 408,
+    "quote": "TRAI had issued 17 orders under Regulation 27 of the Telecom Commercial Communications Customer Preference Regulations, 2018, (“TCCCP Regulations”) imposing financial disincentives aggregating to approximately ₹271 million against RJIL, for purportedly failing to curb unsolicited commercial communications sent to subscribers without their prior consent and for allegedly not meeting the benchmark of the quality of service parameters during the period between April 2020 and June 2024 (“FD Orders”).",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-08",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Dividend Policy",
+   "question": "What internal financial elements influence Jio's decision regarding dividend declaration during the financial year?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     278
+    ]
+   ],
+   "reference_answer": "Profits earned during the financial year, retained earnings, earnings outlook for next three to five years, expected future capital/ liquidity requirements and any other relevant factors and material events",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.42,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 278,
+    "quote": "The internal factors on the basis of which the Company may declare dividend include but are not limited to, profits earned during the financial year, retained earnings, earnings outlook for next three to five years, expected future capital/ liquidity requirements and any other relevant factors and material events.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-09",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "Our Business",
+   "question": "What are the key components included within Jio's passive infrastructure assets for connectivity offerings?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     34,
+     204
+    ]
+   ],
+   "reference_answer": "towers, shelters, fibre pairs and ducts, and other equipment needed for our connectivity offerings.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.36,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 204,
+    "quote": "Our passive infrastructure includes towers, shelters, fibre pairs and ducts, and other equipment needed for our connectivity offerings.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-12",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Capitalisation Statement",
+   "question": "What was the total equity of NSE's company as at March 31, 2026 before the offer?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     77,
+     285,
+     358,
+     360,
+     381,
+     394
+    ]
+   ],
+   "reference_answer": "321,135.41 million",
+   "key_facts": [
+    "321,135.41"
+   ],
+   "tags": {
+    "lexical_overlap": 0.2,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 394,
+    "quote": "Total Equity (G) = (D)+(E)+(F) 321,135.41",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-fac-13",
+   "split": "test",
+   "type": "factoid",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Our Business",
+   "question": "What was the first year NSE introduced a fully automated electronic trading system through NEAT?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     119,
+     147,
+     160,
+     195
+    ]
+   ],
+   "reference_answer": "Fiscal 1995",
+   "key_facts": [
+    "1995"
+   ],
+   "tags": {
+    "lexical_overlap": 0.73,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 195,
+    "quote": "In Fiscal 1995, we were the first stock exchange in India, among the ones still operational, to introduce a fully automated, screen-based electronic trading system through our National Exchange for Automated Trading (“NEAT”) platform, according to the Redseer Report.",
+    "ratings": {
+     "natural": 5,
+     "value": 2
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-12",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Our Management",
+   "question": "What was the remuneration amount for Shri Ashishkumar Chauhan in Fiscal 2026 at NSE's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     256
+    ]
+   ],
+   "reference_answer": "137.63",
+   "key_facts": [
+    "137.63"
+   ],
+   "tags": {
+    "lexical_overlap": 0.36,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 256,
+    "quote": "(₹ in million)\nName\nDesignation\nRemuneration*\nShri Ashishkumar Chauhan\nManaging Director and Chief Executive\nOfficer\n137.63",
+    "ratings": {
+     "natural": 4,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-num-13",
+   "split": "test",
+   "type": "numeric",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Offer Structure",
+   "question": "What is the maximum allocation percentage for Anchor Investors within the QIB portion at NSE's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     9,
+     74,
+     480,
+     482,
+     485,
+     495
+    ]
+   ],
+   "reference_answer": "60%",
+   "key_facts": [
+    "60%"
+   ],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 480,
+    "quote": "up to 60% of the QIB Portion (of up to [●] equity shares of face value of ₹1 each) may be allocated on a discretionary basis to Anchor Investors of",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-13",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Management'S Discussion And Analysis",
+   "question": "What was the total income for NSE in Fiscal 2025 compared to Fiscal 2024?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     59,
+     79,
+     123,
+     130,
+     189,
+     374
+    ]
+   ],
+   "reference_answer": "₹191,768.31 million in Fiscal 2025 from ₹163,520.62 million in Fiscal 2024",
+   "key_facts": [
+    "191,768.31",
+    "2025",
+    "163,520.62",
+    "2024"
+   ],
+   "tags": {
+    "lexical_overlap": 0.71,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 374,
+    "quote": "Our total income increased by 17.27% to ₹191,768.31 million in Fiscal 2025 from ₹163,520.62 million in Fiscal 2024, primarily due to increase in transaction charges, Data Feed & Terminal services, Clearing & Settlement Services and other operating income.",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-tab-14",
+   "split": "test",
+   "type": "table",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Our Business",
+   "question": "What was the market capitalization of listed entities on the cash market in Fiscal 2024 at NSE?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     123,
+     129,
+     189,
+     207
+    ]
+   ],
+   "reference_answer": "₹384.21 trillion",
+   "key_facts": [
+    "384.21"
+   ],
+   "tags": {
+    "lexical_overlap": 0.62,
+    "needs_table": true,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 207,
+    "quote": "The Market Capitalisation of Listed Entities on our cash market was ₹411.25 trillion, ₹410.87 trillion and ₹384.21 trillion in Fiscals 2026, 2025, and 2024, respectively.",
+    "ratings": {
+     "natural": 5,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-10",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Financial Information",
+   "question": "What are the different ways exchange differences arising from foreign operations are recognized in NSE's financial statements?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     302
+    ]
+   ],
+   "reference_answer": "Exchange differences are recognized in other comprehensive income or statement of profit or loss depending on the transaction type.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.17,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 302,
+    "quote": "all resulting exchange differences are recognised in other comprehensive income.",
+    "ratings": {
+     "natural": 4,
+     "value": 4
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-lis-11",
+   "split": "test",
+   "type": "list",
+   "docs": [
+    "nse"
+   ],
+   "topic": "General Information",
+   "question": "Which individuals hold the designation of Public Interest Director at NSE's organization?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     89,
+     257,
+     258
+    ]
+   ],
+   "reference_answer": "Shri Srinivas Injeti, Prof. G. Sivakumar, Shri Rajesh Gopinathan, Justice (Retd.) Smt. Abhilasha Kumari, Prof. (Dr.) Mamata Biswal, Shri Rajeev Vasudeva, and Shri P.R. Ramesh",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": 0.33,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 89,
+    "quote": "Shri Srinivas Injeti\nChairperson and Public\nInterest Director\n01811921\nE-4, First Floor, Anant Raj Estate, Sector - 63A, Gurgaon 122\n098, Haryana, India",
+    "ratings": {
+     "natural": 4,
+     "value": 3
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "t-def-03",
+   "split": "test",
+   "type": "definition",
+   "docs": [
+    "nse"
+   ],
+   "topic": "Definitions And Abbreviations",
+   "question": "What does the term Fugitive Economic Offender signify according to NSE's offer document?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     13
+    ]
+   ],
+   "reference_answer": "An individual declared a fugitive economic offender under Section 12 of the Fugitive Economic Offenders Act, 2018",
+   "key_facts": [
+    "2018"
+   ],
+   "tags": {
+    "lexical_overlap": 0.3,
+    "needs_table": false,
+    "spread": "single_page"
+   },
+   "provenance": {
+    "method": "llm_generated",
+    "generator": "nvidia/nemotron-3.5-bolt-e4b",
+    "source_page": 13,
+    "quote": "Fugitive Economic Offender\nAn individual who is declared a fugitive economic offender under Section 12 of the Fugitive Economic Offenders Act, 2018",
+    "ratings": {
+     "natural": 5,
+     "value": 5
+    },
+    "verification": [
+     "llm_verifier",
+     "spot_check_by_claude"
+    ]
+   }
+  },
+  {
+   "id": "d-mul-01",
+   "split": "dev",
+   "type": "multi_document",
+   "docs": [
+    "zomato",
+    "delhivery"
+   ],
+   "topic": "General Information",
+   "question": "Who are the statutory auditors of Zomato and of Delhivery?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     83
+    ],
+    [
+     85
+    ]
+   ],
+   "reference_answer": "Zomato: Deloitte Haskins & Sells. Delhivery: S.R. Batliboi & Associates LLP.",
+   "key_facts": [
+    "Deloitte Haskins & Sells",
+    "S.R. Batliboi & Associates LLP"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "auditor",
+    "quotes": [
+     "Statutory Auditor to our Company\nDeloitte Haskins & Sells\nChartered Accountants\n7th Floor, Tower B, Building 10\nDLF Cyber City Complex\nDLF Phase – II, Gurugram, Haryana – 122 002",
+     "Statutory Auditors to our Company\nS.R. Batliboi & Associates LLP\n4th Floor, Office 405\nWorld Mark – 2, Asset No. 8\nIGI Airport Hospitality District, Aerocity\nNew Delhi 110037 Delhi, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "d-mul-02",
+   "split": "dev",
+   "type": "multi_document",
+   "docs": [
+    "lic",
+    "ola_electric"
+   ],
+   "topic": "General Information",
+   "question": "Who is the registrar to the offer in the IPOs of LIC and Ola Electric?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     10
+    ],
+    [
+     77
+    ]
+   ],
+   "reference_answer": "LIC: KFin Technologies Private Limited. Ola Electric: Link Intime India Private Limited.",
+   "key_facts": [
+    "KFin Technologies Private Limited",
+    "Link Intime India Private Limited"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "registrar",
+    "quotes": [
+     "“Registrar to the Offer” or “Registrar” KFin Technologies Private Limited",
+     "Registrar to the Offer\nLink Intime India Private Limited\nC-101, 1st Floor\n247 Park, L.B.S. Marg\nVikhroli West\nMumbai 400 083\nMaharashtra, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "d-mul-03",
+   "split": "dev",
+   "type": "multi_document",
+   "docs": [
+    "ola_electric",
+    "manipal_health"
+   ],
+   "topic": "General Information",
+   "question": "What is the face value of one equity share of Ola Electric and of Manipal Health Enterprises, and are they the same?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     121
+    ],
+    [
+     85
+    ]
+   ],
+   "reference_answer": "Ola Electric: ₹10. Manipal Health Enterprises: ₹2.",
+   "key_facts": [
+    "₹10",
+    "₹2"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "facevalue",
+    "quotes": [
+     "The face value of the Equity Shares is ₹10 each and the Offer Price is [●] times the Floor Price and [●] times the Cap Price, and Floor Price is [●] times the face value and the Cap Price is [●] times the face value.",
+     "Up to 13,584,004 Equity Shares of face value of ₹2 each"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "d-mul-04",
+   "split": "dev",
+   "type": "multi_document",
+   "docs": [
+    "zomato",
+    "manipal_health"
+   ],
+   "topic": "General Information",
+   "question": "In which city or locality are the registered offices of Zomato and Manipal Health Enterprises located?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     80
+    ],
+    [
+     104
+    ]
+   ],
+   "reference_answer": "Zomato: New Delhi. Manipal Health Enterprises: Bengaluru.",
+   "key_facts": [
+    "New Delhi",
+    "Bengaluru"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "office",
+    "quotes": [
+     "Registered Office: \nGround Floor, 12A \n94 Meghdoot, Nehru Place \nNew Delhi 110 019",
+     "Manipal Health Enterprises Limited\nThe Annexe, #98/2\nRustom Bagh, HAL Airport Road\nBengaluru – 560 017, Karnataka, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "d-mul-05",
+   "split": "dev",
+   "type": "multi_document",
+   "docs": [
+    "delhivery",
+    "lic"
+   ],
+   "topic": "General Information",
+   "question": "Who is the registrar to the offer in the IPOs of Delhivery and LIC?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     85
+    ],
+    [
+     10
+    ]
+   ],
+   "reference_answer": "Delhivery: Link Intime India Private Limited. LIC: KFin Technologies Private Limited.",
+   "key_facts": [
+    "Link Intime India Private Limited",
+    "KFin Technologies Private Limited"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "registrar",
+    "quotes": [
+     "Registrar to the Offer\nLink Intime India Private Limited\nC 101, 247 Park\nL.B.S. Marg, Vikhroli (West)  \nMumbai 400083\nMaharashtra, India",
+     "“Registrar to the Offer” or “Registrar” KFin Technologies Private Limited"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-01",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "nykaa",
+    "swiggy"
+   ],
+   "topic": "General Information",
+   "question": "Who are the statutory auditors of FSN E-Commerce Ventures (Nykaa) and of Swiggy?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     110
+    ],
+    [
+     89
+    ]
+   ],
+   "reference_answer": "FSN E-Commerce Ventures (Nykaa): S.R.Batliboi & Associates LLP and V.C. Shah & Co. Swiggy: B S R & Co. LLP, Chartered Accountants.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "auditor",
+    "quotes": [
+     "Our Company has received written consent dated November 2, 2021 from S.R.Batliboi & Associates LLP, Chartered Accountants and from V.C. Shah & Co, to include their name as required under section 26 (1) of the Companies Act, 2013 read with SEBI ICDR Regulations, in this Prospectus, and as an “expert” as defined under section 2(38) of the Companies Act, 2013 to the extent and in their capacity as our joint Statutory Auditors, and in respect of their (i) examination report dated September 27, 2021 on our Restated Financial Statements; and (ii) their report dated July 31, 2021 on the Statement of Special Tax Benefits in this Prospectus and such consent has not been withdrawn as on the date of this Prospectus.",
+     "Statutory Auditors to our Company\nB S R & Co. LLP, Chartered Accountants\n3rd Floor, Embassy Golf Links Business Park\nPebble Beach, ‘B’ Block\nOff Intermediate Ring Road\nBengaluru 560 071\nKarnataka, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-02",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "hyundai_india",
+    "lg_india"
+   ],
+   "topic": "General Information",
+   "question": "Who is the registrar to the offer in the IPOs of Hyundai Motor India and LG Electronics India?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     13
+    ],
+    [
+     13
+    ]
+   ],
+   "reference_answer": "Hyundai Motor India: KFin Technologies Limited. LG Electronics India: KFin Technologies Limited.",
+   "key_facts": [
+    "KFin Technologies Limited",
+    "KFin Technologies Limited"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "registrar",
+    "quotes": [
+     "Registrar to the Offer/Registrar\nKFin Technologies Limited.",
+     "Registrar to the Offer/Registrar\nKFin Technologies Limited"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-03",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "hdb_financial",
+    "nse"
+   ],
+   "topic": "General Information",
+   "question": "In which city or locality are the registered offices of HDB Financial Services and NSE located?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     74
+    ],
+    [
+     89
+    ]
+   ],
+   "reference_answer": "HDB Financial Services: Ahmedabad. NSE: Mumbai.",
+   "key_facts": [
+    "Ahmedabad",
+    "Mumbai"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "office",
+    "quotes": [
+     "Registered Office of our Company\nHDB Financial Services Limited\nRadhika, 2nd Floor\nLaw Garden Road, Navrangpura\nAhmedabad – 380 009\nGujarat, India",
+     "Exchange Plaza, C-1\nBlock-G, Bandra Kurla Complex\nBandra (East), Mumbai 400 051\nMaharashtra, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-04",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "jio_platforms",
+    "swiggy"
+   ],
+   "topic": "General Information",
+   "question": "What is the face value of one equity share of Jio Platforms and of Swiggy, and are they the same?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     64
+    ],
+    [
+     97
+    ]
+   ],
+   "reference_answer": "Jio Platforms: ₹10. Swiggy: ₹1.",
+   "key_facts": [
+    "₹10",
+    "₹1"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "facevalue",
+    "quotes": [
+     "Up to 270,000,000 Equity Shares of face value of ₹10 each for cash at a price of ₹[●] per Equity Share",
+     "2,800,000,000 Equity Shares (of face value of ₹ 1 each)"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-05",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "nykaa",
+    "hyundai_india"
+   ],
+   "topic": "General Information",
+   "question": "In which city or locality are the registered offices of FSN E-Commerce Ventures (Nykaa) and Hyundai Motor India located?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     104
+    ],
+    [
+     82
+    ]
+   ],
+   "reference_answer": "FSN E-Commerce Ventures (Nykaa): Mumbai. Hyundai Motor India: Irrungattukottai, Sriperumbudur Taluk, Kancheepuram District.",
+   "key_facts": [
+    "Mumbai",
+    "Irrungattukottai, Sriperumbudur Taluk, Kancheepuram District"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "office",
+    "quotes": [
+     "104, Vasan Udyog Bhavan\nSun Mill Compound, Tulsi Pipe Road\nLower Parel, Mumbai 400 013, Maharashtra",
+     "Hyundai Motor India Limited\nPlot No. H-1, SIPCOT Industrial Park\nIrrungattukottai, Sriperumbudur Taluk\nKancheepuram District 602 105\nTamil Nadu, India"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-06",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "lg_india",
+    "jio_platforms"
+   ],
+   "topic": "General Information",
+   "question": "Who are the statutory auditors of LG Electronics India and of Jio Platforms?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     15
+    ],
+    [
+     84
+    ]
+   ],
+   "reference_answer": "LG Electronics India: Price Waterhouse Chartered Accountants LLP. Jio Platforms: Deloitte Haskins & Sells LLP, Chartered Accountants and Chaturvedi & Shah LLP, Chartered Accountants.",
+   "key_facts": [
+    "Price Waterhouse Chartered Accountants LLP"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "auditor",
+    "quotes": [
+     "Statutory Auditor\nThe current independent statutory auditor of our Company, namely, Price Waterhouse Chartered Accountants LLP",
+     "Joint Statutory Auditors of the Company  Deloitte Haskins & Sells LLP, Chartered Accountants  One International Center, Tower 3  31st Floor, Senapati Bapat Marg  Elphinstone Road (West)  Mumbai 400 013  Maharashtra, India  E-mail: kvora@deloitte.com  Tel: +91 22 6185 4000  Firm registration number: 117366W/W-100018  Peer review number: 017468  Chaturvedi & Shah LLP, Chartered Accountants  912, Tulsiani Chambers  212, Nariman Point  Mumbai 400 021  Maharashtra, India  E-mail: cas@cas.ind.in  Tel: +91 22 4163 8500  Firm registration number: 101720W/W100355  Peer review number: 015413"
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "t-mul-07",
+   "split": "test",
+   "type": "multi_document",
+   "docs": [
+    "hdb_financial",
+    "nykaa"
+   ],
+   "topic": "General Information",
+   "question": "Who is the registrar to the offer in the IPOs of HDB Financial Services and FSN E-Commerce Ventures (Nykaa)?",
+   "answerable": true,
+   "evidence_groups": [
+    [
+     12
+    ],
+    [
+     12
+    ]
+   ],
+   "reference_answer": "HDB Financial Services: Link Intime India Private Limited. FSN E-Commerce Ventures (Nykaa): Link Intime India Private Limited.",
+   "key_facts": [
+    "Link Intime India Private Limited",
+    "Link Intime India Private Limited"
+   ],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "multi_document"
+   },
+   "provenance": {
+    "method": "llm_extracted_template",
+    "attribute": "registrar",
+    "quotes": [
+     "“Registrar to the Offer” or “Registrar”\nLink Intime India Private Limited",
+     "“Registrar” or “Registrar to the Offer”\nLink Intime India Private Limited."
+    ],
+    "verification": [
+     "llm_verifier",
+     "quote_on_page"
+    ]
+   }
+  },
+  {
+   "id": "d-una-01",
+   "split": "dev",
+   "type": "unanswerable",
+   "docs": [
+    "zomato"
+   ],
+   "topic": "post_listing",
+   "question": "What was the closing price of the shares of Zomato on their first day of trading on the stock exchanges?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it was filed before listing.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "post_listing",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-01",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "nykaa"
+   ],
+   "topic": "post_listing",
+   "question": "What was the closing price of the shares of FSN E-Commerce Ventures (Nykaa) on their first day of trading on the stock exchanges?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it was filed before listing.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "post_listing",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-02",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "swiggy"
+   ],
+   "topic": "post_listing",
+   "question": "What was the closing price of the shares of Swiggy on their first day of trading on the stock exchanges?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it was filed before listing.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "post_listing",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "d-una-02",
+   "split": "dev",
+   "type": "unanswerable",
+   "docs": [
+    "lic"
+   ],
+   "topic": "price_tbd",
+   "question": "What is the final offer price per equity share in the IPO of LIC?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not determined in the draft offer document (shown as [●]).",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "price_tbd",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "d-una-03",
+   "split": "dev",
+   "type": "unanswerable",
+   "docs": [
+    "ola_electric"
+   ],
+   "topic": "future_fy",
+   "question": "What was the revenue from operations of Ola Electric in Fiscal 2030?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it covers historical periods only.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "future_fy",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-03",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "hyundai_india"
+   ],
+   "topic": "price_tbd",
+   "question": "What is the final offer price per equity share in the IPO of Hyundai Motor India?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not determined in the draft offer document (shown as [●]).",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "price_tbd",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-04",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "hdb_financial"
+   ],
+   "topic": "future_fy",
+   "question": "What was the revenue from operations of HDB Financial Services in Fiscal 2030?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it covers historical periods only.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "future_fy",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-05",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "lg_india"
+   ],
+   "topic": "price_tbd",
+   "question": "What is the final offer price per equity share in the IPO of LG Electronics India?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not determined in the draft offer document (shown as [●]).",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "price_tbd",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "d-una-04",
+   "split": "dev",
+   "type": "unanswerable",
+   "docs": [
+    "delhivery"
+   ],
+   "topic": "future_fy",
+   "question": "What was the revenue from operations of Delhivery in Fiscal 2030?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it covers historical periods only.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "future_fy",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "d-una-05",
+   "split": "dev",
+   "type": "unanswerable",
+   "docs": [
+    "manipal_health"
+   ],
+   "topic": "price_tbd",
+   "question": "What is the final offer price per equity share in the IPO of Manipal Health Enterprises?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not determined in the draft offer document (shown as [●]).",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "price_tbd",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-06",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "jio_platforms"
+   ],
+   "topic": "future_fy",
+   "question": "What was the revenue from operations of Jio Platforms in Fiscal 2030?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not in the offer document: it covers historical periods only.",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "future_fy",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  },
+  {
+   "id": "t-una-07",
+   "split": "test",
+   "type": "unanswerable",
+   "docs": [
+    "nse"
+   ],
+   "topic": "price_tbd",
+   "question": "What is the final offer price per equity share in the IPO of NSE?",
+   "answerable": false,
+   "evidence_groups": [],
+   "reference_answer": "Not determined in the draft offer document (shown as [●]).",
+   "key_facts": [],
+   "tags": {
+    "lexical_overlap": null,
+    "needs_table": false,
+    "spread": "none"
+   },
+   "provenance": {
+    "method": "template",
+    "template": "price_tbd",
+    "verification": [
+     "by_construction"
+    ]
+   }
+  }
+ ]
+}
