@@ -1,61 +1,113 @@
 # RAG for Indian IPO offer documents (DRHP / RHP / Prospectus)
 
-Config-driven RAG pipeline + gold-set generation + evaluation suite, built to support an ablation study.
-Work branch: `final`. The older prototype lives in `src/` and `app.py` (kept for reference, not used by the new code).
+A question-answering pipeline for SEBI offer documents, with an evaluation framework that tests which design choices actually matter, a small demo app, and the report.
 
-## Layout
-| Path | Purpose |
-|---|---|
-| `ipo_rag/` | **New pipeline.** `config.py` (every ablation factor), `parsing`, `chunking`, `indexing` (persisted, exact cosine), `retrieval`, `generation`, `verification`, `pipeline`, `cli` |
-| `goldgen/` | LLM-assisted gold-set generation (complete; see `goldgen/README.md`) |
-| `eval/gold/` | `gold_v1.json` + sha256 |
-| `ragbench/` | **Evaluation stack and experiment runner** (metrics, judge, ablation orchestrator, final stage, pooled analysis); raw per-question results in `ragbench/results/` (not committed); curated reports in `results/` |
-| `results/` | **Committed result reports** (`SUMMARY.md` is the index; FinanceBench in `report__financebench_analysis.md`) |
-| `review_app/` | Gradio UI to verify the gold set against the PDF pages |
-| `eval/` | Legacy scaffold from the prototype phase + `eval/gold/` (the gold set) |
-| `data/manifest.json` | 12 filings, fixed dev (5) / test (7) split by document, sha256 of each PDF |
-| `tests/` | Model-free unit tests: `python tests/test_ipo_rag.py` |
+**Main finding.** Hybrid retrieval (keyword plus embeddings) beats embeddings alone (recall@5 0.578 vs 0.468, p = 0.015). Chunking, table format, embedder size and the figure check made no measurable difference. Retrieval, not the generator, limits answer quality: with the right pages the judge score rises from 0.59 to 0.84. Details in [`results/SUMMARY.md`](results/SUMMARY.md) and the report in [`paper/`](paper/).
 
-PDFs (`data/prospectuses/`, `data/financebench/pdfs/`) and built indexes (`indexes/`) are not committed.
+## Quick start (about 10 minutes): look at the demo
 
-## Quick start
+You need Python 3.9 or newer and the 12 filing PDFs.
+
 ```bash
-source .venv/bin/activate
-python -m ipo_rag.cli ingest --docs zomato                       # builds + persists the index for the baseline config
-python -m ipo_rag.cli query "What is the offer price?" --docs zomato --no-llm     # retrieval only
-export NVIDIA_API_KEY=...                                        # for generation (placeholder backend)
-python -m ipo_rag.cli query "..." --docs zomato --set verify=on retrieval_mode=dense
+git clone https://github.com/DarkkReaper007/RAG-for-financial-analysis.git
+cd RAG-for-financial-analysis
+
+python3 -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+pip install -r requirements.txt      # downloads PyTorch, so it takes a few minutes
 ```
-`--set` overrides any config field (`chunker=fixed hierarchy=flat table_mode=flat embedder=bge-large ...`). Each distinct ingest config gets its own index directory (`indexes/<hash>/<doc>/`).
 
-## Ablation studies (final set; one factor at a time against the baseline)
-| # | Study | Levels |
+**Get the PDFs.** They are public SEBI filings but are not stored in git. Ask for the shared folder, put the files in `data/prospectuses/` with the filenames listed in `data/manifest.json`, then check them:
+
+```bash
+python scripts/check_data.py         # lists missing or changed files; FinanceBench PDFs are optional
+```
+
+**Start the demo.**
+
+```bash
+python -m demo.server
+```
+
+Open <http://127.0.0.1:8000>. The six example questions are saved in `demo/cache/`, so they work without any API key and without building indexes. Try the "Table" chip, click the citation to open the source page, then open **Compare** and **Results**.
+
+To ask your own questions the demo needs the search indexes and a generator key (next section).
+
+## Ask your own questions
+
+1. **Build the indexes** (once, about 1.7 GB on disk; the slow part is table detection, so allow an hour or more on a laptop). They are stored in `indexes/` and are not in git. Build a single filing first to try it:
+   ```bash
+   python -m ipo_rag.cli ingest --docs zomato      # one filing
+   python -m ipo_rag.cli ingest                    # all 12
+   ```
+2. **Set an API key** for the generator, in your shell only. Never write keys into files or commit them. Several keys can be comma separated and are used in turn when one is rate limited:
+   ```bash
+   export NVIDIA_API_KEYS=key1,key2               # NVIDIA NIM (the generator)
+   export GROQ_API_KEYS=key1                      # Groq (only for the answer judge in experiments)
+   ```
+3. **Try it from the command line, or restart the demo.**
+   ```bash
+   python -m ipo_rag.cli query "What is the offer price?" --docs zomato --no-llm   # search only
+   python -m ipo_rag.cli query "Who are the statutory auditors?" --docs swiggy
+   python -m demo.server
+   ```
+`--set` changes any setting, for example `--set chunker=fixed retrieval_mode=dense verify=on`.
+Each distinct ingest setting gets its own index folder (`indexes/<hash>/<filing>/`).
+
+## Review the gold set
+
+```bash
+python review_app/app.py                         # http://127.0.0.1:7861
+```
+Shows each question next to its source pages. Decisions are appended to `eval/gold/review_decisions.jsonl`; `gold_v1.json` is never modified.
+
+## What is in the repository
+
+| Path | What it is |
+|---|---|
+| `ipo_rag/` | The pipeline: parsing, chunking, indexing, retrieval, generation, verification. Every ablation factor is a field in `config.py` |
+| `ragbench/` | Evaluation and experiments: metrics, judge, ablations, statistics, final run. See [`ragbench/README.md`](ragbench/README.md) for the protocol and pre-registered rules |
+| `goldgen/` | How the gold set was built (LLM-assisted generation, filters, evidence expansion). See `goldgen/README.md` and `goldgen/REVIEW_LOG.md` |
+| `eval/gold/` | `gold_v1.json` (121 questions, 12 filings) and `gold_fb1.json` (52-question FinanceBench subset), each with a sha256 |
+| `results/` | Report files for every experiment; `SUMMARY.md` is the index, `report__financebench_analysis.md` covers FinanceBench |
+| `demo/` | Prospectus Desk web app (FastAPI backend, plain HTML/CSS/JS frontend). See [`demo/README.md`](demo/README.md) |
+| `review_app/` | Gradio app for checking the gold set against the PDF pages |
+| `paper/` | LaTeX report (`main.tex`), slides (`slides.pptx`) and the scripts that draw the figures |
+| `scripts/check_data.py` | Checks that the PDFs are present and unchanged |
+| `tests/` | Tests that need no models or network: `python tests/test_ipo_rag.py && python tests/test_ragbench.py` |
+| `data/manifest.json` | The 12 filings, the dev/test split by document, and the sha256 of each PDF |
+
+Not in git: PDFs (`data/prospectuses/`, `data/financebench/pdfs/`), built indexes (`indexes/`) and raw per-question results (`ragbench/results/`).
+
+## The five ablation studies
+
+| # | Study | Levels (baseline marked *) |
 |---|---|---|
-| 1 | Chunking & hierarchy | fixed_flat, section_flat, section_parent (baseline), section_parent_ctx |
-| 2 | Parsing & table representation | inline, flat, markdown (baseline); markdown_summary planned |
-| 3 | Retrieval mode | dense, bm25, hybrid (baseline) |
-| 4 | Numeric & citation verification | off (baseline), on |
-| 5 | Embedder | bge-small (baseline), bge-large, e5-large |
+| 1 | Chunking and hierarchy | fixed, section, section + parent*, section + parent + section name |
+| 2 | Table representation | inline, flat, markdown* |
+| 3 | Retrieval mode | dense, BM25, hybrid* |
+| 4 | Figure and citation check | off*, on |
+| 5 | Embedder | bge-small*, bge-large, e5-large |
 
-Held fixed: RRF weights 1.0/1.0, MiniLM cross-encoder reranker, lost-in-the-middle ordering, parent cap, no query rewriting. Generator chosen by a pre-registered rule on dev (Nemotron nano; bolt used for the cheap ablations); judge: gpt-oss-120b, gold-vs-prediction.
+Held fixed: equal-weight rank fusion, MiniLM cross-encoder reranker, context ordering, parent size cap, no query rewriting. The generator (Nemotron nano) was chosen on the dev split by a rule fixed in advance; the judge is gpt-oss-120b comparing the predicted answer with the gold answer.
 
-## Headline results (gold_v1; details in `results/SUMMARY.md`)
-- **Hybrid retrieval beats dense-only**: pooled dev+test recall@5 0.578 vs 0.468 (p = 0.015). It is the only significant ablation effect; chunking, table mode, embedder size and verification are within noise (about +-0.05).
-- **Retrieval is the bottleneck**: giving the generator the gold evidence pages lifts the judge score from 0.59 to 0.84 (dev). Multi-document questions are the weakest group.
-- **Verification** cuts unsupported figures (pooled 5.8% -> 1.9%) without changing the judge score.
-- **FinanceBench subset** (52 questions, 12 filings; `RAG_CORPUS=financebench RAG_GOLD=fb1`): recall@5 about 0.33; hybrid ties dense; US 10-K layout labels (`RAG_STRUCTURE=sec`) change nothing. The right filing is found 88% of the time; the page is not (look-alike statement tables, computed answers). See `results/report__financebench_analysis.md`.
-
-Reproduce: `python -m ragbench.overnight --lane A` (and B-G; lanes F/G run FinanceBench), `python -m ragbench.summary`, `ragbench/fb_sec.sh`, `python -m ragbench.fb_diagnose`. API keys come from environment variables only (`GROQ_API_KEYS`, `NVIDIA_API_KEYS`; never commit them).
+To re-run experiments see `ragbench/README.md` (`python -m ragbench.ablate ...`, `python -m ragbench.overnight --lane A`, then `python -m ragbench.summary`). Judge calls use the Groq free tier, which allows roughly 150 judged answers per key per day.
 
 ## Design decisions
-- **Exact cosine search over persisted numpy embeddings** instead of Qdrant/Chroma: a filing is a few thousand chunks, so brute force is exact (no ANN recall loss to confound the ablations), reproducible and needs no server.
-- **Failures are returned, not disguised as answers** (`failed`, `error`), unlike the prototype, so timeouts cannot be scored as answers.
-- **Verification "on"** = check every answer number against the retrieved text and every cited page against the retrieved pages; regenerate once with feedback; if figures remain unsupported, abstain.
-- Chapter labels come from heading detection (`ipo_rag/structure.py`); they are used for chunk boundaries and sampling, not as ground truth.
 
-## Known limitations / next steps
-- Section-aware children average ~790 chars vs ~1000 for fixed windows (study 1 slightly confounded; match sizes or report it).
-- `markdown_summary` table level, bge-large / e5-large indexes, and the evaluation adapter for `ipo_rag` are not built yet.
-- **Experiments are complete** (dev ablations, generator comparison, verification, hierarchy, embedders, ceiling test, leave-one-out, one-shot test run and test-split confirmations). Read `results/SUMMARY.md`; protocol, rules and bugs found by the evaluation are in `ragbench/README.md`.
-- Gold set v1 is built (`eval/gold/gold_v1.json`, 121 items: dev 53 / test 68) but is LLM-generated, filtered and LLM-verified, then treated as audited by the project author (no per-item human decision log is committed). See `goldgen/REVIEW_LOG.md`.
-- Citation format: the small placeholder generator often ignores `[Company, Page: N]`.
+- **Exact cosine search over stored vectors** instead of a vector database. A filing has a few thousand chunks, so brute force is exact (no approximate-search error to confuse the ablations), reproducible, and needs no server.
+- **Failures are returned, not hidden.** A timeout or empty reply is marked `failed` and never scored as an answer.
+- **Figure check ("verify = on").** Every number in the answer must appear in the retrieved text and every cited page must have been retrieved. The model rewrites once; if figures are still unsupported, the system abstains.
+- **Open corpus.** Retrieval searches all 12 filings together, with no document router, so the system also has to pick the right company.
+- Chapter labels come from heading detection (`ipo_rag/structure.py`) and are used for chunk boundaries and sampling, not as ground truth. A US 10-K variant is available with `RAG_STRUCTURE=sec` for the FinanceBench runs.
+
+## Known limitations
+
+- The gold set was built with LLM help and audited by the project author; no independent annotators, and the sets are small, so confidence intervals are wide. Null results mean no effect large enough to detect.
+- One judge model; checked against a deterministic key-fact metric (84% agreement), not against human grading.
+- FinanceBench results use a 52-question subset and are not directly comparable with published accuracy figures.
+- The report (`paper/main.tex`) and slides have not been compiled or rendered on every machine; check the page count when you build them (`pdflatex main.tex`, twice).
+
+## History
+
+The first prototype (LangChain, Chroma, Ollama, RAGAS) was removed from `main` after the new pipeline replaced it. It is still in the git history, for example at commit `ec2b99d`.
