@@ -67,6 +67,37 @@ def test_hybrid_actually_mixes_sparse_hits():
     assert set(new) & set(bm) and set(new) & set(dense)
 
 
+def test_key_pool_failover():
+    import time
+    from ipo_rag.keys import KeyPool, post_with_pool
+    import ipo_rag.keys as K
+    p = KeyPool(["a", "b", "c"])
+    assert p.get() == (0, "a")
+    p.cool(0, 60); assert p.get() == (1, "b")
+    p.cool(1, 60); p.cool(2, 5); assert p.get()[0] == 2 or p.get()[0] in (0, 1, 2)
+    K._pools["X_API_KEY"] = KeyPool(["k1", "k2", "k3"])
+    calls = []
+
+    class R:
+        def __init__(s, c): s.status_code, s.headers = c, {"retry-after": "1"}
+    def fake(url, headers, json, timeout):
+        calls.append(headers["Authorization"][7:]); return R(429 if headers["Authorization"][7:] == "k1" else (401 if headers["Authorization"][7:] == "k2" else 200))
+    r = post_with_pool(fake, "X_API_KEY", "u", {}, 1)
+    assert r.status_code == 200 and calls == ["k1", "k2", "k3"]            # k1 rate-limited, k2 rejected, k3 used
+    calls.clear(); post_with_pool(fake, "X_API_KEY", "u", {}, 1)
+    assert calls == ["k3"]                                                 # cooled keys are skipped on the next call
+
+
+def test_page_ranges_are_not_figures():
+    from ipo_rag.verification import cited_pages, numbers
+    ans = "Revenue was 19,937.89 million [Zomato Limited, Page: 266-267] and also [Page: 14, 15]."
+    assert numbers(ans) == {"19937.89"}                          # 267 and 15 are page numbers, not figures (found by ragbench)
+    assert cited_pages(ans) == [266, 267, 14, 15]
+    v = check(ans, ["revenue 19,937.89 million"], {266, 267, 14, 15})
+    assert v["ok"] and v["unsupported_numbers"] == [] and v["invalid_citations"] == []
+    assert check("Page: 266-268 says 76", ["76"], {266, 267})["invalid_citations"] == [268]
+
+
 def test_verification():
     ctx = ["Offer price is Rs. 76 per share; issue size 9,375.00 million."]
     ok = check("Price is 76 and size 9,375.00 million [Acme, Page: 5]", ctx, {5, 6})

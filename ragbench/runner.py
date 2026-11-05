@@ -62,11 +62,13 @@ def aggregate(rows):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True)
-    ap.add_argument("--split", default="dev", choices=["dev", "test"])
+    ap.add_argument("--split", default="dev", choices=["dev", "test", "ext"])
     ap.add_argument("--mode", default="retrieval", choices=["retrieval", "generation"])
     ap.add_argument("--set", nargs="*", default=[])
     ap.add_argument("--oracle", action="store_true")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--corpus", default="all", choices=["all", "dev", "test"], help="dev/test = index only that split's filings (cheaper; used for the embedder study)")
+    ap.add_argument("--workers", type=int, default=4, help="parallel LLM calls in generation mode")
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
     d = run_dir(a.name, a.split, a.mode, a.oracle)
@@ -80,28 +82,34 @@ def main():
     if a.limit:
         items = items[:a.limit]
     t0 = time.time()
-    pipe = RAGPipeline(cfg).ingest()
+    from ipo_rag.corpus import manifest
+    docs = [d for d, m in manifest().items() if m["split"] == a.corpus] if a.corpus in ("dev", "test") else None
+    pipe = RAGPipeline(cfg, docs=docs).ingest()
     build_s = round(time.time() - t0, 1)
-    rows = []
-    for it in items:
-        docs = it["docs"] if a.oracle else None
+    rows, rets = [], []
+    for it in items:                                      # retrieval is sequential (shared embedding/rerank models)
+        rets.append(pipe.retrieve(it["question"], it["docs"] if a.oracle else None))
+        print(f"  {it['id']} retrieved", flush=True)
+    outs = [None] * len(items)
+    if a.mode == "generation":                            # LLM calls (and verification retries) run in parallel
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(a.workers) as ex:
+            outs = list(ex.map(lambda p: pipe.answer_from(p[0]["question"], p[1]), zip(items, rets)))
+    for it, r, o in zip(items, rets, outs):
         row = {"id": it["id"], "type": it["type"], "docs": it["docs"], "answerable": it["answerable"]}
         if a.mode == "retrieval":
-            r = pipe.retrieve(it["question"], docs)
             row.update(score_retrieval(it, r) if it["answerable"] else {})
             row["retrieval_s"] = r["retrieval_s"]
         else:
-            r = pipe.answer(it["question"], docs)
             if it["answerable"]:
                 row.update(score_retrieval(it, r))
             ctexts = [c["text"] for c in r["contexts"]]
-            row.update({"question": it["question"], "answer": r["answer"], "failed": r["failed"], "error": r["gen"]["error"], "contexts": ctexts,
-                        "context_pages": sorted(ctx_pages(r["contexts"])), "retrieval_s": r["retrieval_s"], "generation_s": r["gen"]["seconds"],
-                        "verification": r["verification"], "verification_action": r["verification_action"]})
-            if not r["failed"]:
-                row["grounding"] = M.grounding_metrics(r["answer"], ctexts, ctx_pages(r["contexts"]), it["key_facts"], it["answerable"])
+            row.update({"question": it["question"], "answer": o["answer"], "failed": o["failed"], "error": o["gen"]["error"], "contexts": ctexts,
+                        "context_pages": sorted(ctx_pages(r["contexts"])), "retrieval_s": r["retrieval_s"], "generation_s": o["gen"]["seconds"],
+                        "verification": o["verification"], "verification_action": o["verification_action"]})
+            if not o["failed"]:
+                row["grounding"] = M.grounding_metrics(o["answer"], ctexts, ctx_pages(r["contexts"]), it["key_facts"], it["answerable"])
         rows.append(row)
-        print(f"  {row['id']} {a.mode}", flush=True)
     d.mkdir(parents=True, exist_ok=True)
     with open(d / "rows.jsonl", "w") as f:
         for r in rows:
@@ -111,7 +119,7 @@ def main():
         agg["failure_rate"] = sum(r["failed"] for r in rows) / len(rows)
     json.dump(agg, open(d / "metrics.json", "w"), indent=1)
     git = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
-    json.dump({"name": a.name, "config": asdict(cfg), "split": a.split, "mode": a.mode, "oracle": a.oracle, "gold_sha256": gh, "git": git,
+    json.dump({"name": a.name, "config": asdict(cfg), "split": a.split, "mode": a.mode, "oracle": a.oracle, "corpus": a.corpus, "gold_sha256": gh, "git": git,
                "n_items": len(rows), "build_s": build_s, "run_s": round(time.time() - t0, 1)}, open(d / "run.json", "w"), indent=1)
     m = agg["overall"]["metrics"]
     print(f"\n{d.name}: n={agg['overall']['n']}  " + "  ".join(f"{k}={m[k]['mean']:.3f}" for k in ("cand.hit@5", "cand.recall@5", "cand.ndcg@5", "final.recall@5", "final.mrr") if k in m))

@@ -6,7 +6,9 @@ from pathlib import Path
 
 import fitz
 
-from ipo_rag.structure import label_pages
+import os
+
+from ipo_rag.structure import label_pages, label_pages_sec
 
 CACHE = Path(__file__).resolve().parent.parent / "indexes" / "_parse_cache"
 
@@ -26,7 +28,8 @@ def load_pages(pdf, max_pages=None):
         blocks = [b for b in blocks if len(b) > 2 and not re.fullmatch(r"[\dIVXLCivxlc]{1,5}", b)]
         pages.append({"page": i + 1, "text": raw, "blocks": blocks})
         texts.append(raw)
-    for p, ch in zip(pages, label_pages(texts)):
+    labels = label_pages_sec(texts) if os.environ.get("RAG_STRUCTURE", "sebi") == "sec" else label_pages(texts)   # sec = US 10-K/10-Q layout
+    for p, ch in zip(pages, labels):
         p["chapter"] = ch
     return pages
 

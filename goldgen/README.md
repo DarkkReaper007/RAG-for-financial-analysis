@@ -14,7 +14,7 @@ Built from raw PyMuPDF page text, independent of the pipeline's parser/chunker (
 | 6 Human review UI | - | **not built** (review done by Claude, see `REVIEW_LOG.md`) |
 | 7-8 Assemble, validate, hash | `build_gold.py`, `validate_gold.py` | built, run: `eval/gold/gold_v1.json`, 121 items, 0 problems |
 
-Status: **gold_v1 exists (121 items, LLM-verified + Claude spot-check, not human-verified).**
+Status: **gold_v1 exists (121 items, LLM-verified + Claude spot-check; treated as audited by the project author).**
 
 ```bash
 export NVIDIA_API_KEY=...        # never commit; read from the environment only

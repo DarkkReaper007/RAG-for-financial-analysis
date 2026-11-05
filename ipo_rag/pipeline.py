@@ -35,7 +35,10 @@ class RAGPipeline:
         return {"candidates": cand, "final": final, "contexts": assemble(corpus, final, self.cfg.query), "retrieval_s": round(time.time() - t, 3)}
 
     def answer(self, question, doc_ids=None):
-        r = self.retrieve(question, doc_ids)
+        return self.answer_from(question, self.retrieve(question, doc_ids))
+
+    def answer_from(self, question, r):
+        """Generate (and optionally verify) from an existing retrieval result; safe to call from several threads."""
         ctxs = r["contexts"]
         names = {d: self.man[d]["company"].title() for d in self.man}
         block = format_context(ctxs, names)

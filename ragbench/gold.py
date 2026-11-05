@@ -1,12 +1,14 @@
 """Frozen gold set loader. Refuses to run if the file hash differs from the recorded one."""
 import hashlib
 import json
+import os
 from pathlib import Path
 
 GOLD_DIR = Path(__file__).resolve().parent.parent / "eval" / "gold"
 
 
-def load(split=None, types=None, version="v1"):
+def load(split=None, types=None, version=None):
+    version = version or os.environ.get("RAG_GOLD", "v1")
     body = (GOLD_DIR / f"gold_{version}.json").read_text()
     want = (GOLD_DIR / f"gold_{version}.sha256").read_text().strip()
     got = hashlib.sha256(body.encode()).hexdigest()

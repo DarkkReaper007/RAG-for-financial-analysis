@@ -1,0 +1,132 @@
+{
+ "overrides_vs_baseline": {},
+ "generator": "nano",
+ "generator_model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+ "rationale": {
+  "3_retrieval_mode": {
+   "dense": {
+    "n": 48,
+    "diff": -0.1667,
+    "lo": -0.2708,
+    "hi": -0.0625,
+    "p": 0.0078,
+    "n10": 0,
+    "n01": 8,
+    "p_adj": 0.0156
+   },
+   "bm25": {
+    "n": 48,
+    "diff": -0.0625,
+    "lo": -0.1667,
+    "hi": 0.0208,
+    "p": 0.375,
+    "n10": 1,
+    "n01": 4,
+    "p_adj": 0.375
+   },
+   "adopted": "baseline"
+  },
+  "2_parsing_tables": {
+   "inline": {
+    "n": 48,
+    "diff": -0.0625,
+    "lo": -0.1458,
+    "hi": 0.0,
+    "p": 0.25,
+    "n10": 0,
+    "n01": 3,
+    "p_adj": 0.5
+   },
+   "flat": {
+    "n": 48,
+    "diff": 0.0208,
+    "lo": 0.0,
+    "hi": 0.0625,
+    "p": 1.0,
+    "n10": 1,
+    "n01": 0,
+    "p_adj": 1.0
+   },
+   "adopted": "baseline"
+  },
+  "1_chunking_hierarchy": {
+   "fixed_flat": {
+    "n": 48,
+    "diff": -0.0104,
+    "lo": -0.0833,
+    "hi": 0.0625,
+    "p": 1.0,
+    "n10": 2,
+    "n01": 2,
+    "p_adj": 1.0
+   },
+   "section_flat": {
+    "n": 48,
+    "diff": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "p": 1.0,
+    "n10": 0,
+    "n01": 0,
+    "p_adj": 1.0
+   },
+   "section_parent_ctx": {
+    "n": 48,
+    "diff": -0.0104,
+    "lo": -0.1042,
+    "hi": 0.0833,
+    "p": 1.0,
+    "n10": 3,
+    "n01": 3,
+    "p_adj": 1.0
+   },
+   "adopted": "baseline"
+  },
+  "hierarchy(answer-level, nano)": {
+   "section_flat": {
+    "n": 44,
+    "diff": -0.0076,
+    "lo": -0.0852,
+    "hi": 0.0625,
+    "p": 1.0,
+    "n10": 0,
+    "n01": 1,
+    "p_adj": 1.0
+   }
+  },
+  "verification(nano)": {
+   "n": 44,
+   "diff": -0.0095,
+   "lo": -0.0284,
+   "hi": 0.0019,
+   "p": 1.0,
+   "n10": 0,
+   "n01": 0,
+   "p_adj": 1.0,
+   "judge_overall_diff": -0.00946969696969697
+  },
+  "5_embedder": {
+   "bge-large": {
+    "n": 48,
+    "diff": 0.0208,
+    "lo": 0.0,
+    "hi": 0.0625,
+    "p": 1.0,
+    "n10": 1,
+    "n01": 0,
+    "p_adj": 1.0
+   },
+   "e5-large": {
+    "n": 48,
+    "diff": 0.0,
+    "lo": -0.0625,
+    "hi": 0.0625,
+    "p": 1.0,
+    "n10": 1,
+    "n01": 1,
+    "p_adj": 1.0
+   },
+   "candidate": "bge-small"
+  }
+ }
+}

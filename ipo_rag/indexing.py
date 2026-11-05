@@ -1,6 +1,7 @@
 """Per-document, per-ingest-config persisted index: chunks.jsonl + parents.json + embeddings.npy. Brute-force exact cosine search
 (thousands of chunks per filing: exact, reproducible, no vector DB)."""
 import json
+import os
 import time
 from pathlib import Path
 
@@ -34,20 +35,35 @@ def embed(name, texts, kind, batch=32):
 
 
 def index_dir(cfg: IngestConfig, doc_id):
-    return INDEX_ROOT / cfg.key() / doc_id
+    suffix = "-sec" if os.environ.get("RAG_STRUCTURE", "sebi") == "sec" else ""   # section labels change the chunks, so they get their own index
+    return INDEX_ROOT / (cfg.key() + suffix) / doc_id
 
 
 def build_doc_index(doc, cfg: IngestConfig, max_pages=None, force=False, log=print):
     d = index_dir(cfg, doc["id"]) if not max_pages else index_dir(cfg, doc["id"] + f"__first{max_pages}")
     if (d / "meta.json").exists() and not force:
         return d
+    d.mkdir(parents=True, exist_ok=True)
+    lock = d / ".building"
+    if lock.exists() and time.time() - lock.stat().st_mtime < 5400:      # another process is building this index: wait for it
+        while lock.exists() and not (d / "meta.json").exists() and time.time() - lock.stat().st_mtime < 5400:
+            time.sleep(20)
+        if (d / "meta.json").exists():
+            return d
+    lock.write_text(str(time.time()))
+    try:
+        return _build(doc, cfg, d, max_pages, log)
+    finally:
+        lock.unlink(missing_ok=True)
+
+
+def _build(doc, cfg, d, max_pages, log):
     t0 = time.time()
     pages = load_pages(pdf_path(doc), max_pages)
     tables = extract_tables(pdf_path(doc), max_pages) if cfg.table_mode in ("flat", "markdown") else []
     t1 = time.time()
     chunks, parents = build_chunks(doc, pages, tables, cfg)
     emb = embed(cfg.embedder, [c["index_text"] for c in chunks], "passage")
-    d.mkdir(parents=True, exist_ok=True)
     with open(d / "chunks.jsonl", "w") as f:
         for c in chunks:
             f.write(json.dumps(c, ensure_ascii=False) + "\n")

@@ -18,3 +18,8 @@ indexes/
 ragbench/results/
 ragbench/out/
 review_app/cache/
+
+# FinanceBench PDFs are public filings; not committed
+data/financebench/pdfs/
+.claude/worktrees/
+.claude/settings.local.json

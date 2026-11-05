@@ -3,7 +3,7 @@ satisfies a group if any page it spans is in the group. Any single page of a gro
 import math
 import re
 
-from ipo_rag.verification import CITE, numbers
+from ipo_rag.verification import cited_pages, numbers
 
 ABSTAIN = ("do not contain this information", "does not contain this information", "cannot find sufficient information", "not enough information",
            "not explicitly stated", "does not provide", "not mentioned in the", "no information", "not available in the", "cannot be determined",
@@ -44,7 +44,7 @@ def _norm_fact(s):
 def grounding_metrics(answer, contexts, context_pages, key_facts, answerable):
     """Deterministic checks on one answer. contexts: texts the model saw; context_pages: set of pages those contexts span."""
     abstained = any(m in answer.lower() for m in ABSTAIN)
-    cited = [int(p) for p in CITE.findall(answer)]
+    cited = cited_pages(answer)
     ctx_nums = numbers(" ".join(contexts), strip_cites=False)
     ans_nums = numbers(answer)
     unsupported = sorted(n for n in ans_nums if n not in ctx_nums)

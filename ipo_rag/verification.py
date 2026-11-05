@@ -1,13 +1,26 @@
 """Answer verification: every number in the answer must occur in the retrieved context; every cited page must have been retrieved."""
 import re
 
-CITE = re.compile(r"\bPages?:?\s*(\d+)\b", re.I)
+CITE = re.compile(r"\bPages?:?\s*(\d+)\b", re.I)                                  # kept for compatibility: first page of a citation
+CITE_SPAN = re.compile(r"\bPages?:?\s*(\d+(?:\s*(?:[-–—]|,|&|and)\s*\d+)*)", re.I)    # whole citation, incl. ranges like "Page: 266-267"
+
+
+def cited_pages(text):
+    """All pages cited in text; ranges ('14-15') are expanded so both ends count."""
+    pages = []
+    for m in CITE_SPAN.finditer(text):
+        nums = [int(x) for x in re.findall(r"\d+", m.group(1))]
+        if len(nums) >= 2 and re.search(r"[-–—]", m.group(1)) and nums[0] < nums[-1] <= nums[0] + 50:
+            pages += list(range(nums[0], nums[-1] + 1))
+        else:
+            pages += nums
+    return pages
 NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
 
 
 def numbers(text, strip_cites=True):
     if strip_cites:
-        text = CITE.sub(" ", text)
+        text = CITE_SPAN.sub(" ", text)      # drop the whole citation (incl. page ranges) before looking for figures
     out = {n.replace(",", "").rstrip(".") for n in NUM.findall(text)}
     return {n for n in out if len(n.replace(".", "")) >= 3 or "." in n}   # skip list indices / tiny integers; keep years and amounts
 
@@ -16,7 +29,7 @@ def check(answer, contexts, pages):
     """contexts: list of strings; pages: pages of the retrieved contexts (all pages each context spans)."""
     ctx_nums = numbers(" ".join(contexts), strip_cites=False)
     unsupported = sorted(n for n in numbers(answer) if n not in ctx_nums)
-    cited = [int(p) for p in CITE.findall(answer)]
+    cited = cited_pages(answer)
     invalid = sorted({p for p in cited if p not in set(pages)})
     return {"unsupported_numbers": unsupported, "invalid_citations": invalid, "n_numbers": len(numbers(answer)),
             "n_citations": len(cited), "ok": not unsupported and not invalid}

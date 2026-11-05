@@ -1,0 +1,15 @@
+{
+ "chosen": "nano",
+ "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+ "summary": {
+  "bolt": {
+   "failure_rate": 0.0,
+   "overall": 0.3022875816993464
+  },
+  "nano": {
+   "failure_rate": 0.038461538461538464,
+   "overall": 0.3435374149659864
+  }
+ },
+ "rule": "max judge.overall among failure_rate<=0.10; ties -> cheaper"
+}

@@ -1,6 +1,6 @@
 # Review log - gold set v1
 
-**Verification level: LLM-verified + spot-checked by Claude. NOT human-verified.** Disclose this in any report. Recommend a human
+**Verification level: LLM-verified + spot-checked by Claude; the project author has since declared the set audited (no per-item decision log is committed).** State this precisely in any report. Recommend a human
 re-check of at least a random 15% before treating the set as final (see "Recommended human checks").
 
 ## Pipeline funnel

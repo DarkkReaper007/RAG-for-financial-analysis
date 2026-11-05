@@ -43,6 +43,11 @@ def test_grounding():
     assert a["correct_abstention"] == 1.0 and a["numeric_support"] is None
 
 
+def test_grounding_ignores_page_ranges():
+    g = M.grounding_metrics("Total income 215,571.18 million [Page: 332-333]", ["total income 215,571.18 million"], {332, 333}, ["215,571.18"], True)
+    assert g["unsupported_figure"] == 0.0 and g["numeric_support"] == 1.0 and g["citation_valid"] == 1.0
+
+
 def test_stats():
     a, b = [1, 1, 1, 1, 1, 1, 0, 1, 1, 1], [0, 0, 0, 0, 1, 0, 0, 0, 1, 0]
     d = S.paired_bootstrap(a, b)

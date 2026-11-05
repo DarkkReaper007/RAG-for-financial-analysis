@@ -1,0 +1,19 @@
+{
+ "chosen": "ultra",
+ "model": "nvidia/nemotron-3-ultra-550b-a55b",
+ "summary": {
+  "bolt": {
+   "failure_rate": 0.0,
+   "overall": 0.5969945355191256
+  },
+  "nano": {
+   "failure_rate": 0.014705882352941176,
+   "overall": 0.6430555555555556
+  },
+  "ultra": {
+   "failure_rate": 0.0,
+   "overall": 0.6502732240437158
+  }
+ },
+ "rule": "max judge.overall among failure_rate<=0.10; ties -> cheaper"
+}

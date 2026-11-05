@@ -8,6 +8,8 @@ from pathlib import Path
 
 import requests
 
+from ipo_rag.keys import post_with_pool
+
 CACHE = Path(__file__).resolve().parent / "out" / "cache"
 CACHE.mkdir(parents=True, exist_ok=True)
 ENDPOINTS = {"groq": ("https://api.groq.com/openai/v1/chat/completions", "GROQ_API_KEY"),
@@ -30,12 +32,10 @@ def chat(model, prompt, system=None, temperature=0.0, max_tokens=1500, retries=8
             else:
                 prov, real = (model.split(":", 1) if model.startswith("groq:") else ("nvidia", model))
                 url, env = ENDPOINTS[prov]
-                r = requests.post(url, headers={"Authorization": "Bearer " + os.environ[env]},
-                                  json={"model": real, "messages": msgs, "temperature": temperature, "max_tokens": max_tokens}, timeout=timeout)
-                if r.status_code in (429, 500, 502, 503, 504):
-                    time.sleep(min(90, float(r.headers.get("retry-after") or 0) or 2 ** i * 3))
+                r = post_with_pool(requests.post, env, url, {"model": real, "messages": msgs, "temperature": temperature, "max_tokens": max_tokens}, timeout)
+                if r.status_code != 200:
+                    time.sleep(min(60, 2 ** i * 3))
                     continue
-                r.raise_for_status()
                 text = (r.json()["choices"][0]["message"].get("content") or "").strip()
             if text:
                 json.dump({"text": text}, open(cp, "w"))

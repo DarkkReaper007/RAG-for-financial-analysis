@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gold-review",
+      "runtimeExecutable": "/Users/sarvesh/engineering/BDA/.venv/bin/python",
+      "runtimeArgs": ["review_app/app.py"],
+      "port": 7861
+    }
+  ]
+}

@@ -11,6 +11,7 @@ redundancy are not defined for an empty answer, but the miss must count against 
 """
 import argparse
 import json
+import os
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -84,7 +85,10 @@ def score_reply(reply):
 
 
 def judge_pair(question, gold_answer, pred, model, max_tokens=1500):
-    reply = chat(model, PROMPT.format(q=question, gold=gold_answer, pred=pred[:3000]), max_tokens=max_tokens)
+    prompt = PROMPT.format(q=question, gold=gold_answer, pred=pred[:3000])
+    if os.environ.get("RAG_CORPUS", "ipo") != "ipo":
+        prompt = prompt.replace("an Indian IPO offer document", "a company financial filing (SEC 10-K, 10-Q or earnings release)")
+    reply = chat(model, prompt, max_tokens=max_tokens)
     return score_reply(reply)
 
 
