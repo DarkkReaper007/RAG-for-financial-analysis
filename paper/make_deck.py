@@ -76,13 +76,13 @@ bullets(s, 0.7, 1.7, 7.0, 4.8, ["400 to 700 pages||  per filing; 12 filings, 6,7
 tb(s, 8.2, 2.2, 4.5, 3.5, "Who is the registrar to the offer in the IPOs of Hyundai Motor India and LG Electronics India?", size=22, font="Georgia", color=TEAL)
 tb(s, 8.2, 4.4, 4.5, 1.2, "A real test question. It needs two filings. The system fails it (recall 0.14 on this type).", size=15, color=MUTED)
 
-s = new("Three research questions",
-        "RQ1 is the ablation study. RQ2 uses a ceiling experiment that hands the generator the correct pages. RQ3 checks whether findings survive on a different corpus, FinanceBench.", "Research questions")
-bullets(s, 0.7, 1.8, 11.8, 4.5, ["RQ1||  Which pipeline components improve retrieval and answer quality?", "RQ2||  Where is the bottleneck, in retrieval or in generation?", "RQ3||  Do the findings transfer to US SEC filings (FinanceBench)?"], size=26, gap=26)
+s = new("Two research questions",
+        "RQ1 is the ablation study. RQ2 uses a ceiling experiment that hands the generator the correct pages.", "Research questions")
+bullets(s, 0.7, 1.8, 11.8, 4.5, ["RQ1||  Which pipeline components improve retrieval and answer quality?", "RQ2||  Where is the bottleneck, in retrieval or in generation?"], size=28, gap=30)
 
 s = new("Existing work evaluates RAG without checking the right page was found",
-        "RAGAS, ARES and RAGChecker are mostly reference-free. FinanceBench is US filings. No benchmark exists for Indian IPO documents. We score retrieval against annotated evidence pages and add deterministic checks that do not rely on a judge.", "Related work")
-bullets(s, 0.7, 1.8, 11.8, 4.8, ["RAG pipelines||  hybrid search with rank fusion (BM25 + dense), cross-encoder rerankers, context ordering", "RAG evaluation||  RAGAS, ARES, RAGChecker: reference-free, strong on faithfulness, silent on which page", "Financial QA||  FinanceBench (US 10-K/10-Q): a shared index across companies is far harder than the right document", "Gap||  no benchmark or ablation study for Indian IPO offer documents"], size=21, gap=16)
+        "RAGAS, ARES and RAGChecker are mostly reference-free. FinanceBench covers US filings and is not used here. No benchmark exists for Indian IPO documents. We score retrieval against annotated evidence pages and add deterministic checks that do not rely on a judge.", "Related work")
+bullets(s, 0.7, 1.8, 11.8, 4.8, ["RAG pipelines||  hybrid search with rank fusion (BM25 + dense), cross-encoder rerankers, context ordering", "RAG evaluation||  RAGAS, ARES, RAGChecker: reference-free, strong on faithfulness, silent on which page", "Financial QA||  FinanceBench (US filings) reports that a shared index across companies is far harder than the right document", "Gap||  no benchmark or ablation study for Indian IPO offer documents"], size=21, gap=16)
 
 s = new("The pipeline: every stage is a setting that can be switched",
         "Walk left to right. Exact cosine search over stored embeddings, no vector database, so there is no approximate-search error to confound ablations. Retrieval is over all 12 filings at once, so the system must also pick the right company.", "System")
@@ -91,8 +91,8 @@ bullets(s, 0.7, 4.9, 12, 2.0, ["Chunks||  about 1,000 characters inside a chapte
 
 s = new("A gold set built with LLM help and scored at the page level",
         "121 questions. Questions drafted by an LLM from sampled pages, filtered by rules, verified by a second LLM, then evidence expanded to every page that supports the answer. Evidence is stored as groups: any one page in a group counts, every group must be hit. Audited by the author. Document-level dev/test split.", "Evaluation framework")
-bullets(s, 0.7, 1.8, 6.4, 5, ["121 questions||  53 dev (5 filings), 68 test (7 filings)", "Types||  factoid 23, numeric 23, table 24, list 21, definition 6, two-filing 12, unanswerable 12", "Evidence groups||  any page in a group counts; every group must be found", "Checks||  quote must be on the page, no copying, company named"], size=18, gap=12)
-bullets(s, 7.5, 1.8, 5.2, 5, ["Split by document||  dev for decisions, test once at the end", "Audited||  by the project author; no independent annotators", "Unanswerable||  e.g. the offer price of a draft filing"], size=18, gap=12)
+bullets(s, 0.7, 1.8, 6.4, 5, ["366 pages sampled||  one LLM-drafted question per page", "227 pass the filters||  quote on page, self-contained, company named, no copying, second-LLM check", "102 selected, 15 removed by hand||  97 single-page questions", "Evidence expanded||  478 more pages judged; 2.83 evidence pages per question", "+ 12 two-filing and 12 unanswerable||  121 questions in all"], size=17, gap=10)
+bullets(s, 7.5, 1.8, 5.2, 5, ["Evidence groups||  any page in a group counts; a question needs every group (one per filing for two-filing questions)", "Split by document||  5 filings dev (53 questions), 7 test (68)", "Audited||  by the author only; no second annotator", "Caveats||  drafter also an evaluated generator; test questions seen by the authors; keyword overlap 0.35"], size=17, gap=12)
 
 s = new("Three layers of measurement, plus paired statistics",
         "Retrieval metrics need no LLM. Grounding metrics are deterministic. The judge compares the gold answer to the predicted answer only. Decisions follow rules fixed before the test split was used.", "Evaluation framework")
@@ -130,26 +130,20 @@ pic(s, "by_type.png", 0.5, 1.6, 6.3, 3.4)
 pic(s, "taxonomy.png", 6.9, 1.6, 6.0, 3.4)
 bullets(s, 0.7, 5.3, 12, 1.6, ["recall@5 0.656||  judge overall 0.651, faithfulness 0.824, correct abstention 7 of 7", "Most failures start in retrieval||  20 of 27 failures had no evidence retrieved; oracle filing choice lifts recall to 0.787"], size=18, gap=8)
 
-s = new("On FinanceBench the filing is found, the page is not",
-        "52 questions over 12 US filings, searched together. Recall at 5 is 0.33. The US layout labels (Item 1A, Item 7, statements) changed nothing. The right filing is in the top 5 for 88%. Statement tables look alike across companies; many answers are computed.", "External validity")
-pic(s, "financebench.png", 0.5, 1.6, 5.6, 3.6)
-bullets(s, 6.4, 1.8, 6.4, 5.0, ["Right filing in top 5||  88%; restricting to it lifts recall only to 0.42", "Multi-page evidence||  one-page questions 0.40; two or three pages 0.0 and 0.11", "Look-alike tables||  27 of 66 evidence pages are income, balance or cash-flow statements", "Computed answers||  17 of 39 numeric answers are not verbatim on the evidence pages", "Hybrid = dense here||  and BM25 is worst: the IPO finding does not transfer"], size=16, gap=9)
-tb(s, 0.7, 5.5, 5.5, 1.2, "Published context: GPT-4-Turbo with a shared index 19% correct, per-document index 50% (FinanceBench paper). Different metric and subset, so not a head-to-head.", size=13, color=MUTED)
-
 s = new("Prospectus Desk: read the answer, then check it on the source page",
         "Live demo: run python -m demo.server. Show Ask with the Hyundai profit question, click the citation to open page 314 with the figures highlighted, open the retrieval trace, then Compare hybrid vs dense on the two-filing question, then Results. Examples are cached so the demo works offline.", "Demo")
 pic(s, "demo_page.png", 0.6, 1.5, 4.6, 5.4)
 bullets(s, 5.6, 1.8, 7.2, 5.0, ["Ask||  answer with citation buttons; figures highlighted on the source page", "How it found it||  dense, keyword, fused and reranked lists, with reference evidence marked", "Compare||  hybrid vs dense, figure check on/off, with and without surrounding text", "Results||  the charts from this talk", "Honest examples||  six test questions, including a wrong figure and a missed two-filing question"], size=18, gap=12)
 
 s = new("Limitations", "Say these first before the questions come.", "Limitations")
-bullets(s, 0.7, 1.7, 12, 5.2, ["Gold set||  LLM-built, then audited by the author; no independent annotators; small (48 and 61 answerable questions), intervals about +-0.12", "Single judge||  checked against a deterministic metric, not against human grading", "Null results||  mean no effect large enough to detect, not no effect", "Generator choice||  nano vs ultra ordering differs between dev and test, both within noise", "Scope||  12 filings from one regulator; router and query rewriting held fixed", "FinanceBench||  a 52-question subset; published systems were not re-run"], size=19, gap=12)
+bullets(s, 0.7, 1.7, 12, 5.2, ["Gold set||  LLM-built, audited by the author only; small (48 and 61 answerable questions), intervals about +-0.12; the drafter is also a tested generator", "Single judge||  checked against a deterministic metric, not against human grading", "Null results||  mean no effect large enough to detect, not no effect", "Generator choice||  nano vs ultra ordering differs between dev and test, both within noise", "Scope||  12 filings from one regulator; router and query rewriting held fixed", "Baselines||  no comparison with another published RAG system or a long-context model"], size=19, gap=12)
 
 s = new("Future work", "Order by value: the audit first, then table retrieval.", "Future work")
-bullets(s, 0.7, 1.7, 12, 5.2, ["Human annotation||  of a random sample of the gold set and of the judge, with agreement statistics", "Table-aware retrieval||  keep row and column headers with each figure; rewrite computed questions; a reranker trained on financial text", "Questions across filings||  multi-hop or agentic retrieval and an explicit document router", "More evaluation||  RAGAS as a supplementary row; the full 150 FinanceBench questions and published systems", "Larger corpus||  more filings, final prospectuses with the offer price"], size=19, gap=14)
+bullets(s, 0.7, 1.7, 12, 5.2, ["Human annotation||  of a random sample of the gold set and of the judge, with agreement statistics", "Table-aware retrieval||  keep row and column headers with each figure; rewrite computed questions; a reranker trained on financial text", "Questions across filings||  multi-hop or agentic retrieval and an explicit document router", "More evaluation||  RAGAS as a supplementary row; published systems and an external benchmark such as FinanceBench", "Larger corpus||  more filings, final prospectuses with the offer price"], size=19, gap=14)
 
 s = new("Conclusions",
-        "Three takeaways. The framework is the main contribution: it found two bugs in our own pipeline, including hybrid retrieval that was secretly dense.", "Conclusions")
-bullets(s, 0.7, 1.8, 12, 4.8, ["Only hybrid retrieval clearly helped||  recall@5 0.58 vs 0.47 for dense (p = 0.015); other choices are within noise", "Retrieval limits quality||  gold pages lift the judge score from 0.59 to 0.84; two-filing questions fail", "Results are dataset-specific||  on US filings hybrid ties dense; look-alike statement tables are the hard part", "The evaluation is the contribution||  it caught two bugs in our own pipeline and says where to invest next"], size=21, gap=18)
+        "Two takeaways. The framework is the main contribution: it found two bugs in our own pipeline, including hybrid retrieval that was secretly dense.", "Conclusions")
+bullets(s, 0.7, 1.8, 12, 4.8, ["Only hybrid retrieval clearly helped||  recall@5 0.58 vs 0.47 for dense (p = 0.015); other choices are within noise", "Retrieval limits quality||  gold pages lift the judge score from 0.59 to 0.84; two-filing questions fail", "Scope||  one corpus and an author-audited gold set: evidence for this setting, not proof for others", "The evaluation is the contribution||  it caught two bugs in our own pipeline and says where to invest next"], size=21, gap=18)
 
 s = new("Backup: generator comparison", "Reference table for questions about generator choice.", "Backup")
 data = [("", "Dev overall", "Dev fail", "Dev p50 s", "Test overall", "Test fail", "Test p50 s"), ("bolt", "0.580", "0%", "1.05", "0.597", "0%", "1.87"), ("nano (chosen)", "0.594", "4%", "4.83", "0.643", "1%", "3.36"), ("ultra", "0.566", "0%", "8.54", "0.650", "0%", "6.48")]

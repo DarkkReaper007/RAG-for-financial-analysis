@@ -86,16 +86,6 @@ def taxonomy():
     save(fig, "taxonomy")
 
 
-def financebench():
-    fig, ax = plt.subplots(figsize=(4.6, 2.6))
-    items = [("Hybrid", 0.333), ("Dense", 0.314), ("BM25", 0.179), ("Hybrid, right\nfiling only", 0.420)]
-    ax.bar([i[0] for i in items], [i[1] for i in items], color=[TEAL, GREY, GREY, "#6f8ea5"], width=0.6)
-    for i, (_, v) in enumerate(items):
-        ax.text(i, v + 0.012, f"{v:.2f}", ha="center", fontsize=8.5)
-    ax.set_ylim(0, 0.6); ax.set_ylabel("recall@5 (final)")
-    save(fig, "financebench")
-
-
 def pipeline():
     fig, ax = plt.subplots(figsize=(7.4, 2.3)); ax.axis("off"); ax.set_xlim(0, 103); ax.set_ylim(0, 32)
     names = ["PDF\nfiling", "Parse\n+ tables", "Section\nchunks\n+ parents", "Embed +\nBM25\nindex", "Hybrid\nsearch\n(RRF)", "Rerank", "Order +\nparent\ncontext", "Generate\n+ check"]
@@ -111,6 +101,6 @@ def pipeline():
     save(fig, "pipeline")
 
 
-for f in (retrieval_mode, forest, ceiling, by_type, taxonomy, financebench, pipeline):
+for f in (retrieval_mode, forest, ceiling, by_type, taxonomy, pipeline):
     f()
 print("figures:", sorted(p.name for p in OUT.glob("*.pdf")))

@@ -20,7 +20,7 @@ pip install -r requirements.txt      # downloads PyTorch, so it takes a few minu
 **Get the PDFs.** They are public SEBI filings but are not stored in git. Ask for the shared folder, put the files in `data/prospectuses/` with the filenames listed in `data/manifest.json`, then check them:
 
 ```bash
-python scripts/check_data.py         # lists missing or changed files; FinanceBench PDFs are optional
+python scripts/check_data.py         # lists missing or changed files
 ```
 
 **Start the demo.**
@@ -68,8 +68,8 @@ Shows each question next to its source pages. Decisions are appended to `eval/go
 | `ipo_rag/` | The pipeline: parsing, chunking, indexing, retrieval, generation, verification. Every ablation factor is a field in `config.py` |
 | `ragbench/` | Evaluation and experiments: metrics, judge, ablations, statistics, final run. See [`ragbench/README.md`](ragbench/README.md) for the protocol and pre-registered rules |
 | `goldgen/` | How the gold set was built (LLM-assisted generation, filters, evidence expansion). See `goldgen/README.md` and `goldgen/REVIEW_LOG.md` |
-| `eval/gold/` | `gold_v1.json` (121 questions, 12 filings) and `gold_fb1.json` (52-question FinanceBench subset), each with a sha256 |
-| `results/` | Report files for every experiment; `SUMMARY.md` is the index, `report__financebench_analysis.md` covers FinanceBench |
+| `eval/gold/` | `gold_v1.json` (121 questions, 12 filings) and `gold_fb1.json` (a FinanceBench subset used only in side experiments; not part of the report), each with a sha256 |
+| `results/` | Report files for every experiment; `SUMMARY.md` is the index, `report__financebench_analysis.md` is a side experiment on FinanceBench that is not part of the report |
 | `demo/` | Prospectus Desk web app (FastAPI backend, plain HTML/CSS/JS frontend). See [`demo/README.md`](demo/README.md) |
 | `review_app/` | Gradio app for checking the gold set against the PDF pages |
 | `paper/` | LaTeX report (`main.tex`), slides (`slides.pptx`) and the scripts that draw the figures |
@@ -105,7 +105,6 @@ To re-run experiments see `ragbench/README.md` (`python -m ragbench.ablate ...`,
 
 - The gold set was built with LLM help and audited by the project author; no independent annotators, and the sets are small, so confidence intervals are wide. Null results mean no effect large enough to detect.
 - One judge model; checked against a deterministic key-fact metric (84% agreement), not against human grading.
-- FinanceBench results use a 52-question subset and are not directly comparable with published accuracy figures.
 - The report (`paper/main.tex`) and slides have not been compiled or rendered on every machine; check the page count when you build them (`pdflatex main.tex`, twice).
 
 ## History

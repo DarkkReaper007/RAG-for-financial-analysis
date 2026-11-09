@@ -222,7 +222,7 @@ async function renderResults() {
   const h = d.headline;
   el.innerHTML = `
   <h1 class="h-serif">What the experiments found</h1>
-  <p class="sub">121 questions on 12 Indian IPO filings, plus a 52-question US benchmark. Every change was tested alone against the same baseline.</p>
+  <p class="sub">121 questions on 12 Indian IPO filings. Every change was tested alone against the same baseline.</p>
   <div class="find"><h2>Hybrid search is the one change that clearly helped.</h2><p>Mixing keyword and meaning search finds the right page more often than meaning search alone (${h[0].v}, ${h[0].s}).</p></div>
   <div class="grid2">
     <div class="card chart-card"><h2>${esc(d.retrieval_mode.title)}</h2><div class="m">Share of required pages found in the top 5 (${esc(d.retrieval_mode.metric)})</div>
@@ -240,10 +240,7 @@ async function renderResults() {
       <div class="stack" role="img" aria-label="Outcome shares">${d.taxonomy.rows.map(r => `<i class="t-${r.tone}" style="width:${r.n / 68 * 100}%" title="${esc(r.label)}: ${r.n}"></i>`).join("")}</div>
       <ul class="tax">${d.taxonomy.rows.map(r => `<li><i class="t-${r.tone}"></i>${esc(r.label)}<span class="n">${r.n}</span></li>`).join("")}</ul></div>
   </div>
-  <div class="sect"><h2>Checking figures costs little and catches rare errors.</h2><p>With the check on, answers that contain a figure missing from the retrieved text fell from ${(d.verification.rows[0].off * 100).toFixed(1)}% to ${(d.verification.rows[0].on * 100).toFixed(1)}%. The overall judge score did not change.</p></div>
-  <div class="sect"><h2>US filings are harder, and the answer is in the details.</h2><p>${esc(d.financebench.note)}</p></div>
-  <div class="card chart-card" style="max-width:560px"><h2>${esc(d.financebench.title)}</h2><div class="m">Share of required pages found in the top 5</div>
-    <div class="bars">${d.financebench.rows.map(r => `<div class="bar-row" style="grid-template-columns:110px 1fr 44px"><span>${esc(r.label)}</span><div class="track"><div class="fill a" style="width:${r.v * 100}%"></div></div><span class="val">${pct(r.v)}</span></div>`).join("")}</div></div>`;
+  <div class="sect"><h2>Checking figures costs little and catches rare errors.</h2><p>With the check on, answers that contain a figure missing from the retrieved text fell from ${(d.verification.rows[0].off * 100).toFixed(1)}% to ${(d.verification.rows[0].on * 100).toFixed(1)}%. The overall judge score did not change.</p></div>`;
 }
 
 /* ---------- boot ---------- */
