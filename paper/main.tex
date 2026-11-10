@@ -180,6 +180,28 @@ Study & Levels & What varies \\
 A note on a bug found by the evaluation itself: the initial hybrid configuration inherited RRF weights of 0.6 and 0.4, with which keyword-only hits could never enter the candidate cut-off, so ``hybrid'' retrieval was identical to dense retrieval. The ablation showed the two as identical to the digit, which exposed the problem; the weights were set to the standard equal weighting and a regression test was added. A second bug counted the second page in a citation range such as ``Page: 266--267'' as an unsupported figure and flagged about half of all answers; it was fixed and all generation runs repeated.\par\medskip\noindent\textbf{Reproducibility.} Runs are a pure function of the configuration, the gold-set hash, and the generator and judge model names; finished runs are skipped, model calls are cached, and API keys come only from environment variables. The code, the gold sets with their hashes, and every per-experiment report are in the project repository. Hosted models can change over time, and judging used free-tier quotas, so a rerun may differ slightly.
 
 \section{Results}
+Table~\ref{tab:summary} collects the outcome of every study; the subsections below give the evidence behind each row in the same order.
+
+\begin{table}[t]
+\centering
+\caption{Summary of the five ablation studies and the ceiling test. Differences are relative to the baseline (marked *) with 95\% intervals where available. ``Within noise'' means the interval includes zero and the point estimate is small.}
+\label{tab:summary}
+\small
+\begin{tabular}{p{2.5cm}p{2.6cm}p{7.0cm}p{2.6cm}}
+\toprule
+Factor & Levels & Result & Decision \\
+\midrule
+Retrieval mode & dense, BM25, hybrid* & Hybrid beats dense: recall@5 $-0.110$ \ci{-0.18}{-0.04}, $p=0.015$ (pooled). BM25 equals hybrid (0.578 each). & Keep hybrid \\
+Chunking and parent text & fixed, section, section+parent*, +header & Retrieval within $\pm0.05$. Removing the parent block lowers the judge score for \texttt{bolt} ($-0.093$) but not clearly for \texttt{nano} ($-0.03$). & Keep section+parent \\
+Table format & inline, flat, markdown* & Inline lowest on dev (0.573 vs 0.635), tied on test; flat within noise. & Keep markdown \\
+Embedder & bge-small*, bge-large, e5-large & At most $+0.033$ recall, about eight times the indexing cost. & Keep bge-small \\
+Verification & off*, on & Unsupported figures 5.8\% $\to$ 1.9\%; judge score $+0.005$ \ci{-0.02}{0.04}. & Not switched on in the final run \\
+Generator & bolt, nano, ultra & Within noise on both splits; ultra about twice as slow. & nano (pre-specified rule) \\
+Gold pages (ceiling) & retrieved vs gold pages & Judge score 0.59 $\to$ 0.84 on dev. & Retrieval is the bottleneck \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Retrieval ablations}
 Hybrid retrieval is the only change with a clear effect (Figure~\ref{fig:mode}). On dev, hybrid reaches recall@5 of 0.635 against 0.469 for dense retrieval (difference $-0.167$, McNemar $p=0.016$; dense found a required page that hybrid missed on no question, and missed one that hybrid found on eight). On test the gap is smaller and not significant on its own (0.533 versus 0.467), but pooled over 109 questions it is $-0.110$ with interval \ci{-0.18}{-0.04} and $p=0.015$. BM25 alone is competitive: it is lower than hybrid on dev (0.573), higher on test (0.582), and equal pooled (0.578). Hybrid is therefore preferable to dense retrieval, and not demonstrably better than keyword search. The same ordering holds after reranking on dev (final recall@5 0.635 for hybrid versus 0.469 for dense in the leave-one-out run), so the reranker does not hide the difference.
 
@@ -280,6 +302,22 @@ Performance depends strongly on the question type (Figure~\ref{fig:type}). Table
 \caption{Outcome of each of the 68 test questions.}
 \label{fig:tax}
 \end{figure}
+
+\section{Discussion}
+\paragraph{Retrieval limits answer quality more than the generator does.}
+Three results point the same way. Giving the generator the gold pages raises the judge score from 0.59 to 0.84. Swapping the generator for a larger one changes the score by less than the noise on both splits. And on the test set, 20 of the 27 failed answers fail because the evidence was never retrieved, against 7 that fail with the evidence in hand. Restricting each question to its own filing recovers 0.13 of recall@5 (0.656 to 0.787), so choosing the right company accounts for roughly a third of the 0.34 of recall still missing; the rest is evidence that is missed inside the correct filing, mostly for numeric questions (recall 0.46) and for questions that need pages from two filings (0.14).
+
+\paragraph{Why keyword search does so well here.}
+BM25 alone matches hybrid retrieval, and both beat dense retrieval. A plausible reason is that questions about offer documents contain exact company names, accounting terms, dates and figures that BM25 can match directly, while a small embedding model blurs them. We have no experiment that isolates this explanation. The questions in our gold set were drafted from page text and share a mean keyword overlap of 0.35 with their source pages, which may favour keyword search; users who paraphrase more would probably narrow the gap.
+
+\paragraph{Null results are not evidence of no effect.}
+Chunking, table representation and embedding size moved recall by about $\pm0.05$ or less, but with about 109 paired questions effects below roughly 0.07 cannot be excluded. The results say that none of the alternatives tested gave a reliable improvement on this corpus. They do not say that these choices are unimportant in general, and a larger gold set could change them. The one exception is the parent block, which helped the smaller generator clearly ($-0.093$ when removed) and the larger one only weakly; it does not change which pages are retrieved, so its value lies in what the generator is shown.
+
+\paragraph{Practical recommendations.}
+For filings of this kind a system should (i) start with hybrid or BM25 retrieval; (ii) pass the surrounding section and not only the matching chunk, especially to a small generator; (iii) check figures after generation, which removed most unsupported numbers at no measured cost in quality, although we did not switch it on for the final run; and (iv) spend effort on retrieval before paying for a larger generator, which was about twice as slow as \texttt{nano} (median generation time 6.5 versus 3.4 seconds on test) with no clear gain.
+
+\paragraph{Where the next gains may come from.}
+Two directions follow from the failure analysis, and we state them as hypotheses we did not test. Explicit routing to the right filing could recover up to the 0.13 of recall that the oracle-filing run shows, and multi-hop or agentic retrieval is the obvious candidate for questions that span two filings, where the pipeline almost always fails. Table questions are already solved (recall 1.00), so table-specific work is the lower priority on this corpus.
 
 \section{Demonstration}
 Prospectus Desk (Figure~\ref{fig:demo}) is a small web application over the same pipeline. A user selects filings, asks a question, and sees the answer with page citations as buttons that open the source page with the answer's figures highlighted. Beside the answer, a trace shows the dense, keyword, fused and reranked lists, with the reference-set evidence marked for example questions. A compare view runs two settings on the same question (hybrid versus dense, figure check on or off, with or without surrounding text), and a results view charts the findings of this report. The six built-in examples come from the test split and include failures on purpose; answers are cached so the demo works without an API connection.
