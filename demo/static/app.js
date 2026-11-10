@@ -61,6 +61,19 @@ function answerNode(res) {
   wrap.append(text.slice(last)); return wrap;
 }
 const figures = a => [...new Set((a.replace(CITE, "").match(/\d[\d,]*(?:\.\d+)?/g) || []).filter(x => x.replace(/\D/g, "").length >= 3 && !/^(19|20)\d\d$/.test(x)))].slice(0, 12);
+const FAIL = {
+  no_key: ["Answer writing is off on this server", "It can search the filings but has no model key, so it cannot write an answer. The best passages are below. The saved example questions still show full answers."],
+  rate_limit: ["The answer service is busy", "The model provider is limiting requests. Wait a minute and ask again. The passages below are still valid."],
+  timeout: ["The answer service took too long", "The search worked. Ask again, or narrow the question to fewer filings."],
+  bad_key: ["The model key was rejected", "Check the key in NVIDIA_API_KEYS and restart the server. The passages below are still valid."],
+  empty: ["The model returned an empty answer", "Ask again. The passages below are still valid."],
+  other: ["The model did not return an answer", "The search worked and its passages are below."],
+};
+function failNote(res) {
+  const f = FAIL[res.error_kind] || FAIL.other, top = res.stages.reranked[0];
+  const best = top ? `<div class="best"><b>Closest passage, ${esc(pageLabel(top))}</b><p>${esc(tidy(top.text).slice(0, 320))}${top.text.length > 320 ? "…" : ""}</p><button type="button" class="link" data-open="${esc(top.doc)}|${top.page_start}">Open page</button></div>` : "";
+  return `<div class="note-box ${res.error_kind === "no_key" ? "info" : "warn"}"><b>${esc(f[0])}</b><p>${esc(f[1])}</p>${res.error_kind === "other" && res.error ? `<small>${esc(res.error)}</small>` : ""}</div>${best}`;
+}
 function badge(kind, icon, text) {
   const ic = { ok: '<path d="M5 12l4 4 10-10"/>', warn: '<path d="M12 8v5M12 17h.01"/>', info: '<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>' }[icon];
   return `<span class="badge ${kind}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg>${esc(text)}</span>`;
@@ -77,7 +90,7 @@ function badges(res) {
   }
   if (res.verification_action === "regenerated_ok") b.push(badge("good", "ok", "Rewritten after the figure check failed"));
   if (res.verification_action === "abstained") b.push(badge("warn", "warn", "Withheld: figures could not be verified"));
-  if (res.timing?.generation_s) b.push(badge("", "info", `Answered in ${res.timing.total_s} s`));
+  if (res.timing?.generation_s) b.push(badge("", "info", `Search ${res.timing.retrieval_s} s, answer ${res.timing.generation_s} s`));
   if (res.cached) b.push(badge("", "info", "Replayed from a saved run"));
   return `<div class="badges">${b.join("")}</div>`;
 }
@@ -110,30 +123,68 @@ function lightbox(src) {
   l.onclick = close; addEventListener("keydown", k); document.body.append(l);
 }
 
-/* ---------- trace ---------- */
+/* ---------- how the system found it ---------- */
+const STOP = new Set("the a an of to in on for and or is are was were what who which how much many does do did by with as at from that this it its be been has have had their there into than then about per".split(" "));
+const termsOf = q => [...new Set((String(q).toLowerCase().match(/[a-z0-9][a-z0-9.,\-]*[a-z0-9]|[a-z0-9]/g) || []).filter(w => w.length > 2 && !STOP.has(w)))];
+function mark(text, ts) {
+  if (!ts.length) return esc(text);
+  const re = new RegExp("(" + ts.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
+  return String(text).split(re).map((p, i) => i % 2 ? `<mark>${esc(p)}</mark>` : esc(p)).join("");
+}
+const ord = n => { const v = n % 100, s = ["th", "st", "nd", "rd"]; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+const tidy = t => { let x = String(t).trim(); if (/^[a-z]/.test(x)) { const i = x.indexOf(" "); x = "… " + (i > 0 ? x.slice(i + 1) : x); } return x; };
+const pageLabel = c => `${short(c.company)} p. ${c.page_start}${c.page_end > c.page_start ? "-" + c.page_end : ""}`;
+const MODE = { hybrid: "Meaning search and keyword search, top 10 from each", dense: "Meaning search only, top 10", bm25: "Keyword search only, top 10" };
+
 function traceHTML(res, ex) {
-  const final = new Set(res.stages.reranked.map(c => c.doc + ":" + c.page_start));
+  const s = res.stages, t = res.timing, mode = res.settings.mode, terms = termsOf(res.question);
+  const useD = mode !== "bm25", useB = mode !== "dense";
+  const ids = l => new Set(l.map(c => c.cid)), bothN = [...ids(s.dense)].filter(x => ids(s.bm25).has(x)).length;
+  const finalIds = ids(s.reranked), ctxChars = res.contexts.reduce((a, c) => a + c.chars, 0), widened = res.contexts.filter(c => c.expanded).length;
   const gold = c => ex && ex.docs.includes(c.doc) && ex.gold_pages.some(p => p >= c.page_start && p <= c.page_end);
-  const col = (title, sub, list) => `<div class="tr-col"><h4>${esc(title)}<small>${esc(sub)}</small></h4>${list.map((c, i) => `
-    <div class="tr-row ${final.has(c.doc + ":" + c.page_start) ? "in" : ""} ${gold(c) ? "gold" : ""}" data-doc="${esc(c.doc)}" data-page="${c.page_start}" data-t="${esc(c.text)}" tabindex="0" role="button">
-      <span class="n">${i + 1}</span><span><span class="pg">${esc(short(c.company))} p. ${c.page_start}${c.page_end > c.page_start ? "-" + c.page_end : ""}</span><span class="sec">${esc(c.chapter || (c.type === "table" ? "Table" : ""))}</span></span></div>`).join("")}</div>`;
-  const s = res.stages, t = res.timing, ctxChars = res.contexts.reduce((a, c) => a + c.chars, 0);
-  return `<div class="timing"><span>Search <b>${t.retrieval_s} s</b></span><span>Writing the answer <b>${t.generation_s ?? "n/a"} s</b></span><span>Sent to the model <b>${res.contexts.length} passages, ${ctxChars.toLocaleString()} characters</b></span></div>
-  <div class="trace-scroll"><div class="trace">${col("Meaning search", "Top 5 by embedding similarity", s.dense)}${col("Keyword search", "Top 5 by BM25", s.bm25)}${col("Combined list", "Both lists fused, 10 kept", s.fused)}${col("After reranking", "The 5 passages used", s.reranked)}</div></div>
-  <div class="legend"><span><i style="background:var(--accent-soft);border:1px solid var(--accent)"></i>Used in the answer context</span>${ex ? '<span><i style="background:var(--good)"></i>Page marked as evidence in the reference set</span>' : ""}<span>Select a row to read the passage</span></div>`;
+  const gen = t.generation_s, tot = Math.max(t.total_s, 0.01);
+  const steps = [
+    ["Search", `${(res.corpus?.chunks ?? 0).toLocaleString()} passages in ${res.corpus?.filings ?? "?"} ${res.corpus?.filings === 1 ? "filing" : "filings"}`, MODE[mode]],
+    ["Combine", mode === "hybrid" ? `${s.fused.length} candidates` : `${s.fused.length} candidates`, mode === "hybrid" ? `${bothN} of ${s.dense.length} found by both searches` : "Kept in the order the search returned them"],
+    ["Rerank", `Best ${s.reranked.length} kept`, "A second model reads each candidate with the question and reorders them"],
+    ["Read", `${res.contexts.length} blocks, ${ctxChars.toLocaleString()} characters`, widened ? `${widened} widened to the whole section around the match` : "Sent to the model as found"],
+    ["Answer", gen != null ? `${gen} s` : (res.error_kind === "no_key" ? "Off" : "Not written"), res.error_kind === "no_key" ? "No model key on this server" : res.failed && !res.answer ? "The answer service did not reply" : res.cached ? "Replayed from a saved run" : "Written by the model, citing pages"],
+  ];
+  const flow = `<ol class="flow">${steps.map((x, i) => `<li><i class="dot">${i + 1}</i><div><span class="f-name">${esc(x[0])}</span><span class="f-main">${esc(x[1])}</span><div class="f-sub">${esc(x[2])}</div></div></li>`).join("")}</ol>`;
+  const bar = `<div class="timebar" role="img" aria-label="Search ${t.retrieval_s} seconds, answer ${gen ?? 0} seconds"><i class="tb-s" style="flex:${Math.max(t.retrieval_s, .05)}"></i>${gen ? `<i class="tb-a" style="flex:${gen}"></i>` : ""}</div>
+    <div class="timelab"><span>Search <b>${t.retrieval_s} s</b></span><span>Answer <b>${gen ?? "n/a"}${gen != null ? " s" : ""}</b></span><span>Total <b>${t.total_s} s</b></span></div>`;
+  const cards = s.reranked.map((c, i) => {
+    const d = useD ? c.from_dense : null, b = useB ? c.from_bm25 : null, f = c.from_fused;
+    const by = d && b ? ["both", "Found by both searches"] : d ? ["dense", "Found by meaning search"] : b ? ["bm25", "Found by keyword search"] : ["fused", "Found in the combined list"];
+    const moved = f && f !== i + 1 ? (f > i + 1 ? `Reranker moved it up from ${ord(f)}` : `Reranker moved it down from ${ord(f)}`) : "Stayed in place after reranking";
+    return `<article class="ev ${gold(c) ? "gold" : ""}" data-doc="${esc(c.doc)}" data-page="${c.page_start}">
+      <div class="ev-n" aria-label="Rank ${i + 1}">${i + 1}</div>
+      <div class="ev-main">
+        <div class="ev-h"><b>${esc(pageLabel(c))}</b>${c.chapter ? `<span class="sec">${esc(c.chapter)}</span>` : (c.type === "table" ? '<span class="sec">Table</span>' : "")}<span class="tag ${by[0]}">${by[1]}</span>${gold(c) ? '<span class="tag goldtag">Reference evidence</span>' : ""}</div>
+        <p class="ev-t clamp">${mark(tidy(c.text), terms)}</p>
+        <div class="ev-f"><span class="how">${[d ? `Meaning search: ${ord(d)}` : "", b ? `Keyword search: ${ord(b)}` : "", moved].filter(Boolean).map(x => `<i>${esc(x)}</i>`).join("")}</span>
+          <span class="ev-a"><button type="button" class="link more">Show more</button><button type="button" class="link open">Open page</button></span></div>
+      </div></article>`;
+  }).join("");
+  const list = (title, sub, l, on) => `<div class="sx-col"><h4>${esc(title)}</h4><div class="sx-sub">${esc(on ? sub : "Not used in this setting")}</div>${l.map((c, i) => {
+    const other = (l === s.dense ? s.bm25 : s.dense).some(x => x.cid === c.cid);
+    return `<button type="button" class="sx-row ${on ? "" : "off"} ${finalIds.has(c.cid) ? "used" : ""}" data-doc="${esc(c.doc)}" data-page="${c.page_start}"><span class="n">${i + 1}</span><span class="pg">${esc(pageLabel(c))}</span><span class="sc">${esc(c.chapter || (c.type === "table" ? "Table" : ""))}</span>${other ? '<span class="both">in both</span>' : ""}</button>`; }).join("")}</div>`;
+  return `${flow}${bar}
+  <h4 class="sub-h">The ${s.reranked.length} passages used to answer</h4>
+  <p class="sub-p">Highlighted words come from your question. Select a passage to read it, or open its page in the viewer.</p>
+  <div class="evs">${cards}</div>
+  <details class="sx"><summary>Compare what each search returned</summary>
+    <p class="sub-p">Each search ranks every passage on its own. Filled markers show the ones that were finally used.</p>
+    <div class="sx-grid">${list("Meaning search", "Finds passages with similar meaning", s.dense, useD)}${list("Keyword search", "Finds passages with the same words", s.bm25, useB)}</div></details>
+  ${ex ? '<div class="legend"><span><i class="lg-gold"></i>Marked as evidence in the reference set</span></div>' : ""}`;
 }
 function wireTrace(root) {
-  $$(".tr-row", root).forEach(r => {
-    const go = () => {
-      const open = r.querySelector(".tr-txt");
-      if (open) { open.remove(); return; }
-      const d = document.createElement("div"); d.className = "tr-txt"; d.textContent = r.dataset.t + " ";
-      const b = document.createElement("button"); b.type = "button"; b.className = "link"; b.textContent = "Open page";
-      b.onclick = e => { e.stopPropagation(); openPage(r.dataset.doc, +r.dataset.page, [], false); };
-      d.append(b); r.append(d);
-    };
-    r.onclick = go; r.onkeydown = e => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), go());
+  $$(".ev", root).forEach(c => {
+    const t = $(".ev-t", c), more = $(".more", c);
+    more.onclick = () => { const open = t.classList.toggle("clamp"); more.textContent = open ? "Show more" : "Show less"; };
+    $(".open", c).onclick = () => openPage(c.dataset.doc, +c.dataset.page, [], false);
   });
+  $$(".sx-row", root).forEach(r => r.onclick = () => openPage(r.dataset.doc, +r.dataset.page, [], false));
 }
 
 /* ---------- ask ---------- */
@@ -142,14 +193,16 @@ $$(".seg button").forEach(b => b.onclick = () => { state.mode = b.dataset.mode; 
 $("#ask-form").onsubmit = e => { e.preventDefault(); if (state.example && state.example.question !== $("#q").value.trim()) state.example = null; submit(); };
 $("#q").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ask-form").requestSubmit(); } });
 
+let seq = 0;
 async function submit() {
-  const p = payload(); if (!p.question) { toast("Type a question first."); $("#q").focus(); return; }
+  const my = ++seq, p = payload(); if (!p.question) { toast("Type a question first."); $("#q").focus(); return; }
   const out = $("#result"), btn = $("#go"); btn.disabled = true; btn.textContent = "Asking";
-  out.innerHTML = `<div class="res"><div class="col"><div class="card"><div class="steps" id="steps"><i class="on">Searching the filings</i><i>Reranking passages</i><i>Writing the answer</i></div><div class="loading"><div class="sk" style="width:92%"></div><div class="sk" style="width:78%"></div><div class="sk" style="width:55%"></div></div></div></div><div class="col"><div class="card viewer"><div class="empty">The source page appears here.</div></div></div></div>`;
-  const timers = [2500, 6000].map((ms, i) => setTimeout(() => $$("#steps i").forEach((el, j) => el.classList.toggle("on", j === i + 1)), ms));
-  try { const res = await api("/api/ask", p); state.res = res; render(res); }
-  catch (e) { out.innerHTML = `<div class="card" style="margin-top:16px"><div class="err">${esc(e.message)}</div></div>`; }
-  finally { timers.forEach(clearTimeout); btn.disabled = false; btn.textContent = "Ask"; }
+  out.innerHTML = `<div class="res"><div class="col"><div class="card"><div class="steps" id="steps"><i class="on">Searching the filings</i><i>Reranking passages</i><i>Writing the answer</i><i class="el" id="elapsed">0 s</i></div>${$("#status").dataset.s === "wait" ? '<p class="warm">The search models are still loading. This happens once after the server starts and takes about 20 seconds.</p>' : ""}<div class="loading"><div class="sk" style="width:92%"></div><div class="sk" style="width:78%"></div><div class="sk" style="width:55%"></div></div></div></div><div class="col"><div class="card viewer"><div class="empty">The source page appears here.</div></div></div></div>`;
+  const t0 = Date.now(), timers = [2500, 6000].map((ms, i) => setTimeout(() => $$("#steps i").forEach((el, j) => el.classList.toggle("on", j === i + 1)), ms));
+  const tick = setInterval(() => { const e = $("#elapsed"); if (e) e.textContent = ((Date.now() - t0) / 1000).toFixed(0) + " s"; }, 500); timers.push(tick);
+  try { const res = await api("/api/ask", p); if (my !== seq) return; state.res = res; render(res); }
+  catch (e) { if (my !== seq) return; out.innerHTML = `<div class="card" style="margin-top:16px"><div class="err">${esc(e.message)}</div></div>`; }
+  finally { timers.forEach(x => { clearTimeout(x); clearInterval(x); }); if (my === seq) { btn.disabled = false; btn.textContent = "Ask"; } }
 }
 
 function render(res) {
@@ -158,15 +211,14 @@ function render(res) {
   const seen = new Set(); state.pages = cited.filter(p => !seen.has(p.doc + p.page) && seen.add(p.doc + p.page));
   if (!state.pages.length) state.pages = res.stages.reranked.slice(0, 3).map(c => ({ doc: c.doc, page: c.page_start, hl: [], cited: false }));
   state.active = 0;
-  const answer = res.failed && !res.answer
-    ? `<div class="err">The model did not return an answer (${esc(res.error || "no reply")}). The search still worked, so the retrieved passages are listed below. Check that NVIDIA_API_KEYS is set on the server, or pick one of the saved example questions.</div>` : "";
+  const answer = res.failed && !res.answer ? failNote(res) : "";
   out.innerHTML = `<div class="res"><div class="col">
-    <div class="card"><h3>Answer</h3><div id="ans"></div>${answer}${res.failed ? "" : badges(res)}
+    <div class="card"><h3>Answer</h3><div id="ans"></div>${answer}${res.failed && !res.answer ? "" : badges(res)}
       ${ex ? `<div class="ref"><b>Reference answer.</b> ${esc(ex.reference)}<br>Evidence pages in the reference set: ${ex.gold_pages.slice(0, 10).join(", ")}${ex.gold_pages.length > 10 ? "…" : ""}${ex.answerable ? "" : ". This question cannot be answered from the document, so the right reply is to say so."}</div>` : ""}</div>
     <div class="card"><h3>How the system found it</h3>${traceHTML(res, ex)}</div></div>
     <div class="col"><div class="card viewer" id="viewer"></div></div></div>`;
   if (!res.failed || res.answer) $("#ans").append(answerNode(res));
-  wireTrace(out); renderViewer();
+  wireTrace(out); $$("[data-open]", out).forEach(b => b.onclick = () => { const [d, p] = b.dataset.open.split("|"); openPage(d, +p, [], false); }); renderViewer();
 }
 
 /* ---------- compare ---------- */
@@ -185,24 +237,27 @@ const label = k => { const [d, p] = k.split(":"); return `${short(state.docs.fin
 function side(tag, cfg, res, other, ex) {
   const mine = pageKeys(res), theirs = new Set(pageKeys(other));
   const chips = mine.map(k => { const [d, p] = k.split(":"); return `<button type="button" class="pgchip ${theirs.has(k) ? "" : "only"} ${ex && ex.docs.includes(d) && ex.gold_pages.includes(+p) ? "gold" : ""}" data-k="${esc(k)}">${esc(label(k))}</button>`; }).join("");
-  return `<div class="card"><div class="side-h"><b>${esc(cfg.label)}</b><span>Setting ${tag}</span></div><div class="ans-slot" data-tag="${tag}"></div>${res.failed && !res.answer ? `<div class="err">${esc(res.error || "No reply")}</div>` : badges(res)}
+  return `<div class="card"><div class="side-h"><b>${esc(cfg.label)}</b><span>Setting ${tag}</span></div><div class="ans-slot" data-tag="${tag}"></div>${res.failed && !res.answer ? failNote(res) : badges(res)}
     <div class="pgset" aria-label="Pages used">${chips}</div>
     <div class="delta">Search ${res.timing.retrieval_s} s, answer ${res.timing.generation_s ?? "n/a"} s. Highlighted pages were retrieved by this setting only.</div></div>`;
 }
+let cseq = 0;
 async function compare() {
-  const q = $("#cq").value.trim(); if (!q) { toast("Type a question or choose an example."); return; }
+  const cmy = ++cseq, q = $("#cq").value.trim(); if (!q) { toast("Type a question or choose an example."); return; }
   const base = { question: q, docs: state.cmpDocs || [], mode: "hybrid", verify: "off", hierarchy: "parent" };
   const out = $("#cmp-out"), btn = $("#cmp-go"); btn.disabled = true; btn.textContent = "Comparing";
   out.innerHTML = [0, 1].map(() => `<div class="card"><div class="loading"><div class="sk" style="width:90%"></div><div class="sk" style="width:70%"></div><div class="sk" style="width:50%"></div></div></div>`).join("");
   try {
     const [a, b] = await Promise.all([api("/api/ask", { ...base, ...preset.a, label: undefined }), api("/api/ask", { ...base, ...preset.b, label: undefined })]);
+    if (cmy !== cseq) return;
     const ex = state.examples.find(e => e.question === q);
     out.innerHTML = side("A", preset.a, a, b, ex) + side("B", preset.b, b, a, ex);
     [a, b].forEach((r, i) => { const s = $(`.ans-slot[data-tag="${"AB"[i]}"]`); if (r.answer) s.append(answerNode(r)); });
     $$(".pgchip", out).forEach(c => c.onclick = () => { const [d, p] = c.dataset.k.split(":"); lightbox(`/api/page/${encodeURIComponent(d)}/${p}`); });
     $$(".cite", out).forEach(c => c.onclick = () => toast("Open the same question in Ask to read the cited page."));
-  } catch (e) { out.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="err">${esc(e.message)}</div></div>`; }
-  finally { btn.disabled = false; btn.textContent = "Compare"; }
+    $$("[data-open]", out).forEach(b => b.onclick = () => { const [d, p] = b.dataset.open.split("|"); lightbox(`/api/page/${encodeURIComponent(d)}/${p}`); });
+  } catch (e) { if (cmy === cseq) out.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="err">${esc(e.message)}</div></div>`; }
+  finally { if (cmy === cseq) { btn.disabled = false; btn.textContent = "Compare"; } }
 }
 $("#cmp-go").onclick = compare; $("#cq").addEventListener("keydown", e => e.key === "Enter" && compare());
 
@@ -243,9 +298,19 @@ async function renderResults() {
   <div class="sect"><h2>Checking figures costs little and catches rare errors.</h2><p>With the check on, answers that contain a figure missing from the retrieved text fell from ${(d.verification.rows[0].off * 100).toFixed(1)}% to ${(d.verification.rows[0].on * 100).toFixed(1)}%. The overall judge score did not change.</p></div>`;
 }
 
+/* ---------- server status ---------- */
+async function pollStatus() {
+  const el = $("#status"); let st;
+  try { st = await api("/api/status"); } catch (e) { el.dataset.s = "down"; el.textContent = "Server not reachable"; return; }
+  if (!st.ready) { el.dataset.s = "wait"; el.textContent = "Loading search models"; setTimeout(pollStatus, 1500); return; }
+  el.dataset.s = st.answers_live ? "live" : "off";
+  el.textContent = st.answers_live ? "Answers live" : "Saved answers only";
+  el.title = st.answers_live ? `Answers are written by ${st.model}` : `No model key on this server. Search works, and ${st.saved_answers} saved answers replay. Start the server with NVIDIA_API_KEYS set to write new answers.`;
+}
+
 /* ---------- boot ---------- */
 (async function init() {
-  show(location.hash.slice(1) || "ask");
+  show(location.hash.slice(1) || "ask"); pollStatus();
   try { [state.docs, state.examples] = await Promise.all([api("/api/docs"), api("/api/examples")]); } catch (e) { toast("Could not reach the server: " + e.message); return; }
   renderDocs(); renderPresets();
   renderChips($("#chips"), pickExample);
