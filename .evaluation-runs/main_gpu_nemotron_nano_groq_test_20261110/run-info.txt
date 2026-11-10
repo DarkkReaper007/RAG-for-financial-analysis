@@ -1,0 +1,23 @@
+﻿Current main GPU evaluation
+Date: 2026-11-10 (Asia/Kolkata)
+Source: origin/main at commit 8110aa35d31896611ea3022ddc75011060722479
+Run: main_gpu_final_nano_test_20261110__test__generation
+Split: test; 68 questions; open corpus; 12 IPO PDFs, all manifest hashes verified
+Generator: NVIDIA NIM, nvidia/nemotron-3-nano-omni-30b-a3b-reasoning
+Judge: Groq, openai/gpt-oss-120b; 59 scored rows; 0 unjudged
+Pipeline: hybrid retrieval; BGE-small embeddings; MiniLM cross-encoder reranker; verification off; max generation tokens 4096
+Elapsed: 609.1 seconds; indexing: 407.6 seconds
+
+Aggregate metrics
+LLM judge: overall 0.654; coverage 0.6102; faithfulness 0.8125; redundancy 1.0
+Retrieval: candidate recall@5 0.5164; final recall@5 0.6393; final nDCG@5 0.5162; context recall@10 0.6393
+Grounding: key-fact recall 0.5543; numeric support 0.9762; citation validity 1.0; false-abstention rate 0.2542
+Generation failures: 2/68 (2.94%): t-fac-07, t-num-10 returned empty replies and remain counted as failures.
+
+GPU verification
+Docker image: rag-eval-env:cuda-pytorch211; PyTorch 2.11.0+cu128; CUDA available; NVIDIA GeForce RTX 3050 Laptop GPU. During BGE embedding, nvidia-smi observed 96% GPU utilization and about 759 MB used. Both SentenceTransformer embedding and CrossEncoder reranking reported cuda:0.
+NVIDIA NIM generation and Groq judging are hosted API calls; local GPU was used for embeddings and reranking.
+
+Current main uses its custom gold-answer judge and deterministic retrieval/grounding metrics; it does not run RAGAS.
+
+The runner saved rows and native metrics, then raised FileNotFoundError because this Docker image has no git executable for final metadata collection. I restored run.json with the verified host commit; Groq judging completed. See run.log and judge.log.

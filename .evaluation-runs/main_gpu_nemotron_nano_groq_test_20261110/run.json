@@ -1,0 +1,46 @@
+{
+    "name":  "main_gpu_final_nano_test_20261110",
+    "config":  {
+                   "ingest":  {
+                                  "table_mode":  "markdown",
+                                  "chunker":  "section",
+                                  "hierarchy":  "parent",
+                                  "contextual_header":  false,
+                                  "child_chars":  1000,
+                                  "child_overlap":  150,
+                                  "parent_chars":  3000,
+                                  "embedder":  "bge-small"
+                              },
+                   "query":  {
+                                 "retrieval_mode":  "hybrid",
+                                 "top_k":  5,
+                                 "candidate_depth":  2,
+                                 "rrf_dense_weight":  1.0,
+                                 "rrf_sparse_weight":  1.0,
+                                 "rrf_k":  60,
+                                 "rerank":  true,
+                                 "reranker":  "cross-encoder/ms-marco-MiniLM-L-6-v2",
+                                 "reorder":  true,
+                                 "parent_cap_chars":  4000,
+                                 "verify":  "off"
+                             },
+                   "gen":  {
+                               "backend":  "openai",
+                               "model":  "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+                               "url":  "https://integrate.api.nvidia.com/v1",
+                               "api_key_env":  "NVIDIA_API_KEY",
+                               "temperature":  0.0,
+                               "max_tokens":  4096,
+                               "timeout":  240
+                           }
+               },
+    "split":  "test",
+    "mode":  "generation",
+    "oracle":  false,
+    "corpus":  "all",
+    "gold_sha256":  "e6ecd78c611d0c533c3f11c0dd3f775cfd90487d706c12f33228cd45cc773aa1",
+    "git":  "8110aa3",
+    "n_items":  68,
+    "build_s":  407.6,
+    "run_s":  609.1
+}
