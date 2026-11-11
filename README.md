@@ -103,7 +103,7 @@ To re-run experiments see `ragbench/README.md` (`python -m ragbench.ablate ...`,
 
 ## Known limitations
 
-- The gold set was built with LLM help and audited by the project authors; no independent annotators, and the sets are small, so confidence intervals are wide. Null results mean no effect large enough to detect.
+- The gold set was built with LLM help and verified by all four project authors; no annotators from outside the team, and the sets are small, so confidence intervals are wide. Null results mean no effect large enough to detect.
 - One judge model; checked against a deterministic key-fact metric (84% agreement), not against human grading.
 - The report (`paper/main.tex`) and slides have not been compiled or rendered on every machine; check the page count when you build them (`pdflatex main.tex`, twice).
 

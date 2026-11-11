@@ -1,4 +1,4 @@
-# Final test-split results (gold set treated as audited by the authors)
+# Final test-split results (gold set verified by all four authors)
 
 Generator: **nano** (`nvidia/nemotron-3-nano-omni-30b-a3b-reasoning`); judge: gpt-oss-120b (gold-vs-prediction). Final-config overrides vs baseline: `none (baseline)`
 

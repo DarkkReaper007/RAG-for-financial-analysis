@@ -1,6 +1,6 @@
 # Experiment summary (auto-generated)
 
-All results use the LLM-built gold set audited by the authors (gold_v1). Dev = model/level selection; test = one-shot final run + confirmations.
+All results use the LLM-built gold set verified by all four authors (gold_v1). Dev = model/level selection; test = one-shot final run + confirmations.
 
 ## Final configuration (pre-registered rules applied on dev)
 
