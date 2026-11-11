@@ -33,8 +33,6 @@ def new(title, notes, section=None):
     s = prs.slides.add_slide(BLANK)
     s.background.fill.solid(); s.background.fill.fore_color.rgb = WHITE
     text(s, 0.6, 0.4, 12.1, 1.0, title, size=28, bold=True, font=HEAD)
-    if section:
-        text(s, 0.6, 7.05, 6, 0.3, section, size=11, color=MUTED)
     text(s, 11.7, 7.05, 1.0, 0.3, str(len(prs.slides)), size=11, color=MUTED, align=PP_ALIGN.RIGHT)
     s.notes_slide.notes_text_frame.text = notes
     return s
@@ -55,6 +53,26 @@ def chip(slide, x, y, label, filled=False, size=14, h=0.36):
     return w
 
 
+SECTIONS = ["Background", "Method", "Results and demo", "Wrap-up"]
+
+
+def divider(idx, line_, notes):
+    """Section slide: name, one line about what follows, and a strip that shows where we are."""
+    s = prs.slides.add_slide(BLANK)
+    s.background.fill.solid(); s.background.fill.fore_color.rgb = INK
+    text(s, 0.9, 2.2, 11.5, 0.5, f"Part {idx + 1} of {len(SECTIONS)}", size=18, color=C("8FA3B2"))
+    text(s, 0.9, 2.75, 11.5, 1.2, SECTIONS[idx], size=48, bold=True, font=HEAD, color=WHITE)
+    text(s, 0.9, 4.0, 11.5, 0.6, line_, size=22, color=C("C9D6DF"))
+    x = 0.9
+    for k, nm in enumerate(SECTIONS):
+        w = measure(nm, "Calibri", k == idx, 16) / 72 + 0.5
+        b = box(s, x, 6.2, w, 0.5, fill=TEAL if k == idx else DARK_CHIP, radius=0.25)
+        write(b, nm, size=16, bold=k == idx, color=WHITE if k == idx else C("8FA3B2"), align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        x += w + 0.2
+    s.notes_slide.notes_text_frame.text = notes
+    return s
+
+
 # ---------------------------------------------------------------- 1 title
 s = prs.slides.add_slide(BLANK)
 s.background.fill.solid(); s.background.fill.fore_color.rgb = INK
@@ -66,6 +84,8 @@ for i, lab in enumerate(["12 IPO filings, 6,718 pages", "121 questions with page
 text(s, 0.9, 6.5, 11, 0.4, "Sarvesh   |   Minor specialization, Big Data Analytics", size=16, color=C("8FA3B2"))
 s.notes_slide.notes_text_frame.text = ("One-line pitch: we built a RAG system for SEBI offer documents, but the main result is a set of measurements that say which of its design choices matter. "
                                       "Scope in one line: 12 filings, 121 questions with page-level evidence, 5 single-factor studies. About 15 minutes plus questions.")
+
+divider(0, "Why this is hard, what we ask, and what exists", "Part 1. The problem: long documents full of tables, the two research questions, and the related work.")
 
 # ---------------------------------------------------------------- 2 motivation
 s = new("Offer documents are long, full of tables and sometimes incomplete",
@@ -126,6 +146,8 @@ for i, (h_, does, miss) in enumerate(rw):
     text(s, x + 0.25, 3.8, 3.4, 1.3, [[("What is missing", {"bold": True, "color": WARN, "size": 14})], [(miss, {})]], size=16, gap=3)
 g = box(s, 0.6, 5.4, 12.1, 1.45, fill=TEAL, radius=0.08)
 write(g, [[("Our gap", {"bold": True, "size": 22, "font": HEAD})], [("No benchmark and no ablation study exists for Indian IPO offer documents, and existing evaluations do not check which page the evidence came from.", {"size": 18})]], color=WHITE, margin=0.3, anchor=MSO_ANCHOR.MIDDLE, gap=4)
+
+divider(1, "The pipeline, the gold set and how answers are scored", "Part 2. What we built and how we measure it: the pipeline, the question set, the scoring, and the five ablations.")
 
 # ---------------------------------------------------------------- 5 pipeline diagram
 s = new("The pipeline: eight stages, each one a setting we can switch",
@@ -330,6 +352,8 @@ for nm, what, chips in abl:
     y += rh
 text(s, 0.6, 6.45, 12.1, 0.4, "Generators compared: bolt (small, 4B class), nano (30B reasoning) and ultra (550B). The answer judge is gpt-oss-120b.", size=14, color=MUTED)
 
+divider(2, "What the experiments found, and the demo", "Part 3. Results: retrieval mode, the other choices, the generators, the ceiling test, the final test run, and the live demo.")
+
 # ---------------------------------------------------------------- 9 retrieval mode
 s = new("Hybrid search beats dense-only search; keyword search alone is just as good",
         "Pooled over 109 questions, dense is 0.11 below hybrid, McNemar p = 0.015. BM25 alone matches hybrid pooled, so we can say hybrid is better than dense, not that it is better than keyword search. This is the only significant effect in the study.", "Results")
@@ -337,13 +361,55 @@ pic(s, "retrieval_mode.png", 0.6, 1.6, 7.6, 5.0)
 card_text(s, 8.6, 1.7, 4.1, 1.1, [[("What recall@5 means", {"bold": True, "size": 15})], [("The share of questions where the top 5 pages include the evidence needed.", {"color": MUTED})]], fill=PAPER, pad=0.2, size=15, gap=3)
 bullets(s, 8.6, 3.05, 4.1, 3.4, ["0.578 vs 0.468||  hybrid vs dense-only, pooled over dev and test", "The only clear effect||  found in the whole study", "Keyword search alone||  scores 0.578 too: lower on dev, higher on test"], size=17, gap=14)
 
-# ---------------------------------------------------------------- 10 within noise
+# ---------------------------------------------------------------- 10 the other choices (table)
 s = new("The other four choices made no reliable difference",
-        "Each row is the change in recall at 5 versus the baseline with a 95% interval. Only dense retrieval excludes zero. These are 'no effect large enough to detect with 109 questions', not proof of no effect. Larger embedders cost about eight times more to index.", "Results")
-pic(s, "forest.png", 0.6, 1.6, 7.9, 5.2)
-card_text(s, 8.8, 1.7, 3.9, 2.45, [[("How to read the chart", {"bold": True, "size": 15})],
-                                   [("Each row changes one thing against the baseline. The dot is the change in recall@5. The bar is the 95% range for the true change. A bar that crosses zero could be chance. Only dense-only search is clearly below zero.", {"color": MUTED})]], fill=PAPER, pad=0.2, size=14, gap=3)
-bullets(s, 8.8, 4.4, 3.9, 2.4, ["Parent section||  helps the small generator: 0.50 to 0.59 (bolt)", "Verification||  unsupported figures fall from 5.8% to 1.9%; the score is unchanged"], size=15, gap=10)
+        "Recall@5 is the share of questions whose top five pages include the evidence. Numbers are the final recall@5 on the dev split (48 answerable questions) and the test split (61). "
+        "Chunking, table format and embedder each move recall by at most about 0.05 on either split, and the direction is not consistent: for example inline tables are lower on dev but equal on test. With this sample size those differences are within noise. "
+        "Removing the parent section does not change which pages are found (recall is identical by construction) but lowers the small generator's answer score from 0.59 to 0.50. "
+        "Verification does not change retrieval; it lowers the share of answers with a figure that is not in the retrieved text from 5.8% to 1.9% and leaves the judge score unchanged. "
+        "The embedder rows are scored on each split's own filings. The chart version of this table is in the backup slides.", "Results")
+text(s, 0.6, 1.3, 12.1, 0.35, "Recall@5 is the share of questions whose top 5 pages include the evidence. Each variant changes one thing against its baseline.", size=14, color=MUTED)
+NR = "no reliable difference"
+trows = [("Chunking", "By chapter + parent section", "0.635", "0.656", "baseline", 1),
+         ("", "Fixed-size windows", "0.625", "0.689", NR, 0),
+         ("", "Also chapter name in each chunk", "0.625", "0.705", NR, 0),
+         ("Table format", "Own chunk, markdown + caption", "0.635", "0.656", "baseline", 1),
+         ("", "Left in the page text", "0.573", "0.656", NR, 0),
+         ("", "Own chunk, rows a | b | c", "0.656", "0.639", NR, 0),
+         ("Embedding model", "bge-small", "0.698", "0.672", "baseline", 1),
+         ("", "bge-large", "0.719", "0.680", NR, 0),
+         ("", "e5-large", "0.698", "0.705", NR, 0),
+         ("Verification", "Off", "same", "same", "5.8% of answers have an unsupported figure", 1),
+         ("", "On", "same", "same", "1.9%, answer score unchanged", 2)]
+heads = ["Factor", "Variant", "Dev", "Test", "Verdict"]
+cw_ = (2.0, 3.7, 1.0, 1.0, 4.4)
+gf = s.shapes.add_table(len(trows) + 1, 5, Inches(0.6), Inches(1.75), Inches(sum(cw_)), Inches(0.4 * (len(trows) + 1)))
+tb_ = gf.table
+for j, wd in enumerate(cw_):
+    tb_.columns[j].width = Inches(wd)
+grp = -1
+for i in range(len(trows) + 1):
+    tb_.rows[i].height = Inches(0.4)
+    if i and trows[i - 1][0]:
+        grp += 1
+    for j in range(5):
+        cell = tb_.cell(i, j)
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = INK if i == 0 else (PAPER if grp % 2 == 0 else WHITE)
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        cell.margin_left = Inches(0.12); cell.margin_right = Inches(0.08)
+        tf_ = cell.text_frame
+        para = tf_.paragraphs[0]
+        if j in (2, 3):
+            para.alignment = PP_ALIGN.CENTER
+        val = heads[j] if i == 0 else (trows[i - 1][0], trows[i - 1][1], trows[i - 1][2], trows[i - 1][3], trows[i - 1][4])[j]
+        r_ = para.add_run(); r_.text = val
+        r_.font.size = Pt(14); r_.font.name = "Calibri"
+        base = i > 0 and trows[i - 1][5] == 1
+        good = i > 0 and trows[i - 1][5] == 2
+        r_.font.bold = i == 0 or j == 0 or (base and j == 1) or (good and j == 4)
+        r_.font.color.rgb = WHITE if i == 0 else (TEAL if (good and j == 4) else (MUTED if (j == 4 and base) else INK))
+text(s, 0.6, 6.62, 12.1, 0.6, "Dev: 48 answerable questions. Test: 61. Embedder rows are scored on each split's own filings. Without the parent section, retrieval is identical, but the small generator's answer score falls from 0.59 to 0.50.", size=12, color=MUTED)
 
 # ---------------------------------------------------------------- 10b generators
 s = new("Three generators compared: nano is the best choice",
@@ -393,6 +459,8 @@ s = new("Prospectus Desk: read the answer, then check it on the source page",
 pic(s, "demo_page.png", 0.6, 1.5, 4.6, 5.4)
 bullets(s, 5.6, 1.8, 7.2, 5.0, ["Ask||  answer with citation buttons; figures highlighted on the source page", "How the system found it||  the five steps, and the passages used with which search found each", "Compare||  hybrid vs dense, figure check on or off, with and without surrounding text", "Results||  the charts from this talk", "Honest examples||  six test questions, including a wrong figure and a missed two-filing question"], size=18, gap=12)
 
+divider(3, "Limitations, future work and conclusions", "Part 4. What to keep in mind, what comes next, and the two takeaways.")
+
 # ---------------------------------------------------------------- 14 limitations
 s = new("Limitations",
         "Three limits to state before the questions. First, the gold set: LLM-drafted, checked by one person, small, so small effects cannot be ruled out, and the drafting model is also a tested generator. "
@@ -429,6 +497,13 @@ for i, (h_, body) in enumerate(concl):
     b = box(s, 0.6, y, 4.6, 2.05, fill=TEAL_T, radius=0.08)
     write(b, h_, size=24, bold=True, font=HEAD, color=TEAL, margin=0.3, anchor=MSO_ANCHOR.MIDDLE)
     text(s, 5.5, y, 7.2, 2.05, body, size=20, anchor=MSO_ANCHOR.MIDDLE)
+
+# ---------------------------------------------------------------- 17a backup forest chart
+s = new("Backup: change in recall against each baseline",
+        "The same comparison as the table, drawn as the change in recall@5 versus the baseline with a 95% interval, pooled over dev and test (embedder rows: test split). Only dense-only retrieval excludes zero.", "Backup")
+pic(s, "forest.png", 0.6, 1.5, 7.9, 5.3)
+card_text(s, 8.8, 1.7, 3.9, 2.6, [[("How to read the chart", {"bold": True, "size": 15})],
+                                  [("Each row changes one thing against the baseline. The dot is the change in recall@5. The bar is the 95% range for the true change. A bar that crosses zero could be chance. Only dense-only search is clearly below zero.", {"color": MUTED})]], fill=PAPER, pad=0.2, size=14, gap=3)
 
 # ---------------------------------------------------------------- 17 backup
 s = new("Backup: generator comparison", "Reference table for questions about generator choice.", "Backup")
