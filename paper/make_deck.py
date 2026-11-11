@@ -174,11 +174,11 @@ text(s, 0.6, 6.4, 12.1, 0.4, "Slate stages run once per filing. Teal stages run 
 # ---------------------------------------------------------------- 6 gold set
 s = new("How the 121-question gold set was built",
         "A gold set is the answer key. We sampled 366 pages across the 12 filings and had an LLM draft one question per page; 227 passed automatic checks (the quote is on the page, the question is self-contained, the company is named, no copying, a second LLM agrees). "
-        "102 were chosen to balance question types. A review pass removed 15 of them and 10 were refilled from the next-best candidates, giving 97 (5 short of 102, because too few acceptable candidates remained for some filings and types). We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
+        "102 were chosen to balance question types. The review by hand removed 15 and 10 were refilled from the next-best candidates, so the net change is 5 fewer, giving 97 (5 short because too few acceptable candidates remained for some filings and types). We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
         "Finally 12 two-filing and 12 unanswerable questions were added, giving 121. Evidence is stored in groups: any page in a group counts, and every group must be hit. "
         "The set was audited by the author only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Evaluation framework")
 flow = [("Sample", "366", "pages from the 12 filings"), ("Draft and filter", "227", "LLM questions that pass the automatic checks"), ("Select", "102", "chosen to balance question types"),
-        ("Review", "97", "15 removed in review, 10 refilled"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
+        ("Review", "97", "net 5 fewer after review by hand"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
 fw, fg = 1.85, 0.2
 for i, (st, big, lab) in enumerate(flow):
     x = 0.6 + i * (fw + fg)
@@ -220,14 +220,41 @@ write(t_, "test 68", size=15, bold=True, color=WHITE, align=PP_ALIGN.CENTER, anc
 text(s, 9.05, 5.2, 3.5, 0.6, "Split by filing: 5 filings for dev, 7 for test.", size=14, color=MUTED)
 text(s, 9.05, 5.85, 3.5, 0.9, "7 question types: table, fact, number, list, definition, two-filing, unanswerable.", size=14, color=MUTED)
 
-# ---------------------------------------------------------------- 7 scoring
+# ---------------------------------------------------------------- 7 question types
+s = new("Seven question types test different skills",
+        "The 121 questions fall into seven types. Factoid, numeric, table and list questions each have about 21 to 24 items; definition questions are few by design (6). Two-filing questions need one lookup in each of two filings. "
+        "Unanswerable questions have no answer in the documents (for example a share price after listing, which a draft does not contain): the right behaviour is to decline. "
+        "Figures are checked against key facts, lists and descriptions by the judge, and unanswerable questions by whether the system declines. Counts are dev / test: 53 and 68 in total.", "Evaluation framework")
+types = [("Factoid", "What was the revenue from operations for Zomato in Fiscal 2021?", "one fact from the text", "10 / 13", TEAL_T),
+         ("Numeric", "What is the minimum bid amount for Retail Individual Bidders in Zomato's offer?", "an exact figure with its unit", "10 / 13", TEAL_T),
+         ("Table", "What was the total expenses amount for Zomato in Fiscal 2020 compared to Fiscal 2019?", "values read from a table", "10 / 14", TEAL_T),
+         ("List", "What are the specific qualitative strengths supporting Zomato's offer price?", "several items, all needed", "10 / 11", TEAL_T),
+         ("Definition", "What does the abbreviation MCA signify?", "a term defined in the document", "3 / 3", TEAL_T),
+         ("Two filings", "Who are the statutory auditors of Zomato and of Delhivery?", "one lookup in each of two filings", "5 / 7", SLATE_T),
+         ("Unanswerable", "What was the closing price of Zomato shares on their first day of trading?", "declining when the answer is not there", "5 / 7", WARN_T)]
+text(s, 0.6, 1.45, 2.0, 0.3, "Type", size=13, bold=True, color=MUTED)
+text(s, 2.75, 1.45, 5.5, 0.3, "Example question", size=13, bold=True, color=MUTED)
+text(s, 8.55, 1.45, 3.0, 0.3, "What it tests", size=13, bold=True, color=MUTED)
+text(s, 11.6, 1.45, 1.1, 0.3, "Dev / test", size=13, bold=True, color=MUTED, align=PP_ALIGN.RIGHT)
+for i, (nm, ex, what, cnt, fill) in enumerate(types):
+    y = 1.8 + i * 0.7
+    tcol = WARN if fill == WARN_T else (SLATE if fill == SLATE_T else TEAL)
+    b = box(s, 0.6, y, 1.95, 0.6, fill=fill, radius=0.08)
+    write(b, nm, size=15, bold=True, color=tcol, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 2.75, y, 5.6, 0.6, ex, size=14, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 8.55, y, 3.0, 0.6, what, size=14, color=MUTED, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 11.6, y, 1.1, 0.6, cnt, size=15, bold=True, align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+    line(s, 0.6, y + 0.65, 12.7, y + 0.65, color=LINE, width=0.75)
+text(s, 0.6, 6.75, 12.1, 0.3, "Total 53 dev and 68 test questions. Figures are checked against key facts, lists by the judge, and unanswerable questions by whether the system declines.", size=12, color=MUTED)
+
+# ---------------------------------------------------------------- 7b scoring
 s = new("How each answer is scored",
         "Three checks, each comparing two things. Retrieval: do the pages the system retrieved include the evidence pages from the gold set? Grounding: are the figures in the answer in the retrieved text, are the cited pages real, "
         "and did the system decline when it should (and only then)? The judge: an LLM compares the answer with the gold answer and scores coverage, faithfulness and redundancy. "
         "Retrieval and grounding follow fixed rules, so they give the same score every time; only the judge uses an LLM. The judge agrees with a rule-based key-fact check on 84% of 83 answers.", "Evaluation framework")
 lay = [("Retrieval", "fixed rules", "Pages the system retrieved", "Evidence pages in the gold set", "Did the right page come back?", "Recall, nDCG and MRR at the page level", TEAL_T, TEAL),
        ("Grounding", "fixed rules", "The answer", "The retrieved text", "Are the figures and citations real?", "Also: did it decline when it should, and only then", TEAL_T, TEAL),
-       ("Judge", "an LLM compares", "The answer", "The gold answer", "Is it complete, accurate and concise?", "Scores coverage, faithfulness and redundancy", WARN_T, WARN)]
+       ("Judge", "an LLM (gpt-oss-120b) compares", "The answer", "The gold answer", "Is it complete, accurate and concise?", "Scores coverage, faithfulness and redundancy", WARN_T, WARN)]
 for i, (nm, how, a_, b_, q, sub, fill, col) in enumerate(lay):
     y = 1.6 + i * 1.6
     lb = box(s, 0.6, y, 2.3, 1.4, fill=fill, radius=0.08)
@@ -241,6 +268,41 @@ for i, (nm, how, a_, b_, q, sub, fill, col) in enumerate(lay):
     arrow(s, 9.3, y + 0.7, 9.7, y + 0.7, color=MUTED)
     text(s, 9.8, y + 0.1, 2.9, 1.3, [[(q, {"bold": True, "size": 18})], [(sub, {"color": MUTED})]], size=14, gap=3, anchor=MSO_ANCHOR.MIDDLE)
 text(s, 0.6, 6.45, 12.1, 0.45, "Retrieval and grounding follow fixed rules, so they score the same every time. Only the judge uses an LLM.", size=15, color=MUTED)
+
+# ---------------------------------------------------------------- 7c the judge
+s = new("The LLM judge: what it does and how we checked it",
+        "The judge is gpt-oss-120b, accessed through Groq, a different model family from the Nemotron generators and from the model that drafted the questions. It sees only the question, the gold answer and the predicted answer, never the retrieved text. "
+        "It splits the gold answer into items and grades coverage, faithfulness and redundancy on five levels (excellent 1.0, good 0.75, acceptable 0.5, bad 0.25, extremely bad 0); the overall score is their mean. "
+        "An abstention on an answerable question scores 0 without a call. To check the judge we compared its coverage with a rule-based key-fact check on 83 dev answers: they agree on 84% (60 + 10 of 83), with a moderate correlation of 0.56. "
+        "The judge has not been compared with human graders, which is on the limitations slide.", "Evaluation framework")
+text(s, 0.6, 1.5, 6.4, 0.35, "What the judge does", size=18, bold=True, font=HEAD)
+for k, lab in enumerate(("Question", "Gold answer", "Predicted answer")):
+    b = box(s, 0.6, 2.0 + k * 0.75, 2.2, 0.6, fill=PAPER, line=LINE, radius=0.08)
+    write(b, lab, size=15, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    arrow(s, 2.85, 2.3 + k * 0.75, 3.35, 3.0 + (k - 1) * 0.1, color=MUTED, width=1.5)
+jb_ = box(s, 3.4, 2.1, 1.65, 2.05, fill=WARN_T, line=WARN, lw=1.25, radius=0.1)
+write(jb_, [[("LLM judge", {"bold": True, "size": 16, "color": WARN})], [("gpt-oss-120b", {"size": 14, "color": INK})], [("different model family", {"size": 12, "color": MUTED})]], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, margin=0.08, gap=3)
+for k, (nm, q) in enumerate((("Coverage", "all gold items present?"), ("Faithfulness", "anything wrong or invented?"), ("Redundancy", "anything repeated?"))):
+    y = 2.0 + k * 0.75
+    arrow(s, 5.1, 3.1, 5.55, y + 0.3, color=MUTED, width=1.5)
+    b = box(s, 5.6, y, 1.9, 0.6, fill=TEAL_T, radius=0.08)
+    write(b, [[(nm, {"bold": True, "size": 14, "color": TEAL})], [(q, {"size": 11, "color": MUTED})]], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, margin=0.04)
+text(s, 0.6, 4.4, 6.9, 1.9, [[("Each axis has five levels, from excellent (1.0) to extremely bad (0). The overall score is the mean of the three.", {})],
+                             [("The judge never sees the retrieved text, only the three answers above.", {"color": MUTED})],
+                             [("An abstention on an answerable question scores 0 without a call.", {"color": MUTED})]], size=15, gap=6)
+text(s, 8.0, 1.5, 4.7, 0.35, "Is the judge reliable?", size=18, bold=True, font=HEAD)
+text(s, 8.0, 1.9, 4.7, 0.55, "Its coverage score against a rule-based key-fact check, on 83 dev answers", size=13, color=MUTED)
+cells = [(60, "agree", TEAL_T, TEAL), (9, "disagree", WARN_T, WARN), (4, "disagree", WARN_T, WARN), (10, "agree", TEAL_T, TEAL)]
+text(s, 9.3, 2.5, 1.7, 0.4, "all key facts found", size=12, color=MUTED, align=PP_ALIGN.CENTER)
+text(s, 11.1, 2.5, 1.6, 0.4, "a key fact missing", size=12, color=MUTED, align=PP_ALIGN.CENTER)
+text(s, 8.0, 3.2, 1.3, 0.8, "judge: complete", size=12, color=MUTED, anchor=MSO_ANCHOR.MIDDLE)
+text(s, 8.0, 4.5, 1.3, 0.8, "judge: parts missing", size=12, color=MUTED, anchor=MSO_ANCHOR.MIDDLE)
+for k, (n_, lab, fill, col) in enumerate(cells):
+    cx_, cy_ = 9.3 + (k % 2) * 1.8, 2.95 + (k // 2) * 1.3
+    b = box(s, cx_, cy_, 1.7, 1.2, fill=fill, radius=0.08)
+    write(b, [[(str(n_), {"bold": True, "size": 28, "font": HEAD, "color": col})], [(lab, {"size": 13, "color": MUTED})]], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, margin=0.04)
+text(s, 8.0, 5.5, 4.7, 0.5, [[("They agree on 84% of answers.", {"bold": True})]], size=16)
+card_text(s, 8.0, 6.0, 4.7, 0.8, [[("Not compared with human graders.", {"color": WARN, "bold": True})]], fill=WARN_T, pad=0.15, size=14, anchor=MSO_ANCHOR.MIDDLE)
 
 # ---------------------------------------------------------------- 8 ablations
 s = new("Five single-factor ablations against one baseline",
@@ -283,13 +345,40 @@ card_text(s, 8.8, 1.7, 3.9, 2.45, [[("How to read the chart", {"bold": True, "si
                                    [("Each row changes one thing against the baseline. The dot is the change in recall@5. The bar is the 95% range for the true change. A bar that crosses zero could be chance. Only dense-only search is clearly below zero.", {"color": MUTED})]], fill=PAPER, pad=0.2, size=14, gap=3)
 bullets(s, 8.8, 4.4, 3.9, 2.4, ["Parent section||  helps the small generator: 0.50 to 0.59 (bolt)", "Verification||  unsupported figures fall from 5.8% to 1.9%; the score is unchanged"], size=15, gap=10)
 
+# ---------------------------------------------------------------- 10b generators
+s = new("Three generators compared: nano is the best choice",
+        "We compared three language models from NVIDIA's Nemotron family as the answer writer: bolt (about 4B parameters, small and fast), nano (30B, a reasoning model) and ultra (550B). The choice rule was fixed before the final run: the highest judge score on dev among generators that fail on at most 10% of questions. "
+        "That picked nano (0.594 against 0.580 for bolt and 0.566 for ultra). On test the order is ultra 0.650, nano 0.643, bolt 0.597, but the gap between ultra and nano is within noise and ultra takes about twice as long, so nano is the practical best choice. "
+        "We kept the pre-specified choice and report the test ordering as it came out.", "Results")
+gens = [("bolt", "about 4B parameters, small and fast", 0.580, 0.597, "1.9 s", False),
+        ("nano", "30B reasoning model", 0.594, 0.643, "3.4 s", True),
+        ("ultra", "550B, the largest", 0.566, 0.650, "6.5 s", False)]
+for i, (nm, sub, dev, tst, tm, best) in enumerate(gens):
+    x = 0.6 + i * 4.1
+    box(s, x, 1.6, 3.9, 3.85, fill=TEAL_T if best else PAPER, line=TEAL if best else None, lw=2, radius=0.08)
+    text(s, x + 0.25, 1.75, 2.2, 0.55, nm, size=26, bold=True, font=HEAD, color=TEAL if best else INK)
+    if best:
+        cb_ = box(s, x + 2.55, 1.85, 1.15, 0.38, fill=TEAL, radius=0.19)
+        write(cb_, "chosen", size=13, bold=True, color=WHITE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, x + 0.25, 2.35, 3.4, 0.35, sub, size=14, color=MUTED)
+    for j, (lab, v) in enumerate((("Judge score on dev", dev), ("Judge score on test", tst))):
+        yy = 2.95 + j * 0.85
+        text(s, x + 0.25, yy, 2.6, 0.3, lab, size=13, color=MUTED)
+        text(s, x + 2.75, yy, 0.9, 0.3, f"{v:.3f}", size=14, bold=True, align=PP_ALIGN.RIGHT)
+        box(s, x + 0.25, yy + 0.33, 3.4, 0.2, fill=WHITE, line=LINE, lw=0.75, radius=0.05)
+        box(s, x + 0.25, yy + 0.33, 3.4 * v, 0.2, fill=TEAL if best else C("8FA3B2"), radius=0.05)
+    text(s, x + 0.25, 4.7, 3.4, 0.5, [[("Median time per answer, test  ", {"color": MUTED}), (tm, {"bold": True})]], size=14)
+card_text(s, 0.6, 5.7, 12.1, 1.15, [[("Why nano  ", {"bold": True, "color": TEAL}),
+                                     ("It scored highest on dev under a rule fixed in advance. On test ultra is 0.007 higher (0.650 against 0.643), within noise, and takes about twice as long. bolt is fastest but lower on dev.", {})]],
+          fill=PAPER, pad=0.25, size=16, anchor=MSO_ANCHOR.MIDDLE)
+
 # ---------------------------------------------------------------- 11 ceiling
 s = new("Giving the generator the right pages lifts the score from 0.59 to 0.84",
         "Ceiling experiment on dev: the model is handed the gold evidence pages instead of the retrieved ones. The retrieval loss is +0.27 with a 95% interval of 0.10 to 0.43. Largest losses on two-filing and numeric questions. "
         "Generator choice: nano by the dev rule fixed before the final run; on test ultra is nominally higher but within noise and twice as slow.", "Results")
 pic(s, "ceiling.png", 0.6, 1.7, 6.2, 4.9)
 card_text(s, 7.2, 1.7, 5.5, 1.2, [[("The ceiling test", {"bold": True, "size": 15})], [("Hand the model the correct pages and skip retrieval. The gap to the normal score is what retrieval loses.", {"color": MUTED})]], fill=PAPER, pad=0.2, size=15, gap=3)
-bullets(s, 7.2, 3.15, 5.5, 3.5, ["Retrieval is the bottleneck||  the gap to 0.84 is mostly pages that were never found", "Generators are tied||  bolt 0.58, nano 0.59, ultra 0.57 on dev", "Chosen: nano||  by a rule fixed in advance; on test ultra scores 0.650 and nano 0.643"], size=17, gap=14)
+bullets(s, 7.2, 3.15, 5.5, 3.5, ["Retrieval is the bottleneck||  the gap to 0.84 is mostly pages that were never found", "Biggest losses||  two-filing questions (nano 0.20 to 0.60) and numeric questions (0.56 to 0.93)", "Same pattern for bolt||  0.58 rises to 0.79 with the right pages"], size=17, gap=14)
 
 # ---------------------------------------------------------------- 12 final test
 s = new("On the held-out test, tables are solved and two-filing questions fail",
@@ -331,16 +420,15 @@ for i, (h_, body) in enumerate(fut):
 
 # ---------------------------------------------------------------- 16 conclusions
 s = new("Conclusions",
-        "Three takeaways. Hybrid search is the only one of the five choices with a measurable effect, and it beats dense-only search but not keyword search. Retrieval, not generation, limits answer quality: with the right pages the score rises from 0.59 to 0.84, "
-        "and questions that span two filings almost always fail. All of this is evidence for this corpus and this gold set, not a claim about other corpora.", "Conclusions")
+        "Two takeaways. Hybrid search is the only one of the five choices with a measurable effect, and it beats dense-only search but not keyword search. Retrieval, not generation, limits answer quality: with the right pages the score rises from 0.59 to 0.84, "
+        "and questions that span two filings almost always fail.", "Conclusions")
 concl = [("Hybrid search beat dense-only search", "Recall@5 is 0.58 against 0.47 for dense-only search. The other four choices made no reliable difference."),
-         ("Retrieval limits quality", "With the right pages the judge score rises from 0.59 to 0.84, and questions that span two filings almost always fail."),
-         ("Evidence for this setting", "One corpus and an author-audited gold set: the results show what works here, not that other corpora behave the same way.")]
+         ("Retrieval limits quality", "With the right pages the judge score rises from 0.59 to 0.84, and questions that span two filings almost always fail.")]
 for i, (h_, body) in enumerate(concl):
-    y = 1.7 + i * 1.7
-    b = box(s, 0.6, y, 4.6, 1.5, fill=TEAL_T, radius=0.08)
-    write(b, h_, size=22, bold=True, font=HEAD, color=TEAL, margin=0.25, anchor=MSO_ANCHOR.MIDDLE)
-    text(s, 5.5, y, 7.2, 1.5, body, size=19, anchor=MSO_ANCHOR.MIDDLE)
+    y = 1.8 + i * 2.35
+    b = box(s, 0.6, y, 4.6, 2.05, fill=TEAL_T, radius=0.08)
+    write(b, h_, size=24, bold=True, font=HEAD, color=TEAL, margin=0.3, anchor=MSO_ANCHOR.MIDDLE)
+    text(s, 5.5, y, 7.2, 2.05, body, size=20, anchor=MSO_ANCHOR.MIDDLE)
 
 # ---------------------------------------------------------------- 17 backup
 s = new("Backup: generator comparison", "Reference table for questions about generator choice.", "Backup")
