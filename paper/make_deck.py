@@ -174,11 +174,11 @@ text(s, 0.6, 6.4, 12.1, 0.4, "Slate stages run once per filing. Teal stages run 
 # ---------------------------------------------------------------- 6 gold set
 s = new("How the 121-question gold set was built",
         "A gold set is the answer key. We sampled 366 pages across the 12 filings and had an LLM draft one question per page; 227 passed automatic checks (the quote is on the page, the question is self-contained, the company is named, no copying, a second LLM agrees). "
-        "102 were chosen to balance question types, 15 were removed by hand, leaving 97. We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
+        "102 were chosen to balance question types. A review pass removed 15 of them and 10 were refilled from the next-best candidates, giving 97 (5 short of 102, because too few acceptable candidates remained for some filings and types). We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
         "Finally 12 two-filing and 12 unanswerable questions were added, giving 121. Evidence is stored in groups: any page in a group counts, and every group must be hit. "
         "The set was audited by the author only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Evaluation framework")
 flow = [("Sample", "366", "pages from the 12 filings"), ("Draft and filter", "227", "LLM questions that pass the automatic checks"), ("Select", "102", "chosen to balance question types"),
-        ("Review", "97", "left after 15 are removed by hand"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
+        ("Review", "97", "15 removed in review, 10 refilled"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
 fw, fg = 1.85, 0.2
 for i, (st, big, lab) in enumerate(flow):
     x = 0.6 + i * (fw + fg)
