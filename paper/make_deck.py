@@ -32,7 +32,9 @@ def pic(slide, name, x, y, w, h):
 def new(title, notes, section=None):
     s = prs.slides.add_slide(BLANK)
     s.background.fill.solid(); s.background.fill.fore_color.rgb = WHITE
-    text(s, 0.6, 0.4, 12.1, 1.0, title, size=28, bold=True, font=HEAD)
+    if section:
+        text(s, 0.6, 0.2, 8, 0.3, section, size=13, bold=True, color=TEAL)
+    text(s, 0.6, 0.5, 12.1, 1.0, title, size=28, bold=True, font=HEAD)
     text(s, 11.7, 7.05, 1.0, 0.3, str(len(prs.slides)), size=11, color=MUTED, align=PP_ALIGN.RIGHT)
     s.notes_slide.notes_text_frame.text = notes
     return s
@@ -53,26 +55,6 @@ def chip(slide, x, y, label, filled=False, size=14, h=0.36):
     return w
 
 
-SECTIONS = ["Background", "Method", "Results and demo", "Wrap-up"]
-
-
-def divider(idx, line_, notes):
-    """Section slide: name, one line about what follows, and a strip that shows where we are."""
-    s = prs.slides.add_slide(BLANK)
-    s.background.fill.solid(); s.background.fill.fore_color.rgb = INK
-    text(s, 0.9, 2.2, 11.5, 0.5, f"Part {idx + 1} of {len(SECTIONS)}", size=18, color=C("8FA3B2"))
-    text(s, 0.9, 2.75, 11.5, 1.2, SECTIONS[idx], size=48, bold=True, font=HEAD, color=WHITE)
-    text(s, 0.9, 4.0, 11.5, 0.6, line_, size=22, color=C("C9D6DF"))
-    x = 0.9
-    for k, nm in enumerate(SECTIONS):
-        w = measure(nm, "Calibri", k == idx, 16) / 72 + 0.5
-        b = box(s, x, 6.2, w, 0.5, fill=TEAL if k == idx else DARK_CHIP, radius=0.25)
-        write(b, nm, size=16, bold=k == idx, color=WHITE if k == idx else C("8FA3B2"), align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        x += w + 0.2
-    s.notes_slide.notes_text_frame.text = notes
-    return s
-
-
 # ---------------------------------------------------------------- 1 title
 s = prs.slides.add_slide(BLANK)
 s.background.fill.solid(); s.background.fill.fore_color.rgb = INK
@@ -81,11 +63,10 @@ text(s, 0.9, 3.75, 11.6, 0.6, "A reproducible ablation study with an evaluation 
 for i, lab in enumerate(["12 IPO filings, 6,718 pages", "121 questions with page evidence", "5 ablation studies"]):
     b = box(s, 0.9 + i * 3.95, 4.85, 3.7, 0.7, fill=DARK_CHIP, radius=0.1)
     write(b, lab, size=16, color=WHITE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-text(s, 0.9, 6.5, 11, 0.4, "Sarvesh   |   Minor specialization, Big Data Analytics", size=16, color=C("8FA3B2"))
+text(s, 0.9, 5.95, 11.6, 0.4, "Sarvesh Kumar     Konthalapalli Laalenthika     Gitaansh Bhuradia     Shasmeet Shinde", size=19, color=WHITE)
+text(s, 0.9, 6.5, 11, 0.4, "Minor specialization, Big Data Analytics", size=15, color=C("8FA3B2"))
 s.notes_slide.notes_text_frame.text = ("One-line pitch: we built a RAG system for SEBI offer documents, but the main result is a set of measurements that say which of its design choices matter. "
                                       "Scope in one line: 12 filings, 121 questions with page-level evidence, 5 single-factor studies. About 15 minutes plus questions.")
-
-divider(0, "Why this is hard, what we ask, and what exists", "Part 1. The problem: long documents full of tables, the two research questions, and the related work.")
 
 # ---------------------------------------------------------------- 2 motivation
 s = new("Offer documents are long, full of tables and sometimes incomplete",
@@ -131,7 +112,7 @@ for i, (tag, q, why, how) in enumerate(cards):
     text(s, x + 0.3, 6.0, 5.25, 0.8, [[("How we answer it  ", {"bold": True, "color": TEAL}), (how, {"color": INK})]], size=15)
 
 # ---------------------------------------------------------------- 4 related work
-s = new("Related work",
+s = new("What exists, and what is missing",
         "Three strands. Pipelines: hybrid search, reranking and context ordering are well studied, but not measured on long financial filings. Evaluation: RAGAS, ARES and RAGChecker score answers, mostly with an LLM judge; "
         "none of them checks retrieval against annotated evidence pages. Financial QA: FinanceBench covers US filings and shows that searching across many companies is far harder than searching one. "
         "Our gap: no benchmark or ablation study for Indian IPO documents with page-level evidence. We use annotated evidence pages and add rule-based checks that do not rely on a judge.", "Related work")
@@ -147,12 +128,10 @@ for i, (h_, does, miss) in enumerate(rw):
 g = box(s, 0.6, 5.4, 12.1, 1.45, fill=TEAL, radius=0.08)
 write(g, [[("Our gap", {"bold": True, "size": 22, "font": HEAD})], [("No benchmark and no ablation study exists for Indian IPO offer documents, and existing evaluations do not check which page the evidence came from.", {"size": 18})]], color=WHITE, margin=0.3, anchor=MSO_ANCHOR.MIDDLE, gap=4)
 
-divider(1, "The pipeline, the gold set and how answers are scored", "Part 2. What we built and how we measure it: the pipeline, the question set, the scoring, and the five ablations.")
-
 # ---------------------------------------------------------------- 5 pipeline diagram
 s = new("The pipeline: eight stages, each one a setting we can switch",
         "Walk left to right. The slate stages run once per filing and are saved to disk as an index. The teal stages run for every question: two searches are merged, a second model reranks the shortlist, "
-        "each hit is widened to its section, the language model answers with page citations, and an optional check verifies the figures. Search runs over all 12 filings at once, so the system must also pick the right company.", "System")
+        "each hit is widened to its section, the language model answers with page citations, and an optional check verifies the figures. Search runs over all 12 filings at once, so the system must also pick the right company.", "Pipeline")
 text(s, 0.6, 1.5, 8, 0.35, [[("Once per filing: build the index", {"bold": True, "color": SLATE})]], size=17)
 top = [("12 PDF filings", "the input", None), ("Parse", "text, chapters, tables", 1), ("Chunk", "pieces and sections", 2), ("Embed", "384 numbers each", 3), ("Saved index", "searched later", None)]
 tw, tg = 2.0, 0.525
@@ -198,7 +177,7 @@ s = new("How the 121-question gold set was built",
         "A gold set is the answer key. We sampled 366 pages across the 12 filings and had an LLM draft one question per page; 227 passed automatic checks (the quote is on the page, the question is self-contained, the company is named, no copying, a second LLM agrees). "
         "102 were chosen to balance question types. The review by hand removed 15 and 10 were refilled from the next-best candidates, so the net change is 5 fewer, giving 97 (5 short because too few acceptable candidates remained for some filings and types). We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
         "Finally 12 two-filing and 12 unanswerable questions were added, giving 121. Evidence is stored in groups: any page in a group counts, and every group must be hit. "
-        "The set was audited by the author only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Evaluation framework")
+        "The set was audited by the author only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Gold set")
 flow = [("Sample", "366", "pages from the 12 filings"), ("Draft and filter", "227", "LLM questions that pass the automatic checks"), ("Select", "102", "chosen to balance question types"),
         ("Review", "97", "net 5 fewer after review by hand"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
 fw, fg = 1.85, 0.2
@@ -246,7 +225,7 @@ text(s, 9.05, 5.85, 3.5, 0.9, "7 question types: table, fact, number, list, defi
 s = new("Seven question types test different skills",
         "The 121 questions fall into seven types. Factoid, numeric, table and list questions each have about 21 to 24 items; definition questions are few by design (6). Two-filing questions need one lookup in each of two filings. "
         "Unanswerable questions have no answer in the documents (for example a share price after listing, which a draft does not contain): the right behaviour is to decline. "
-        "Figures are checked against key facts, lists and descriptions by the judge, and unanswerable questions by whether the system declines. Counts are dev / test: 53 and 68 in total.", "Evaluation framework")
+        "Figures are checked against key facts, lists and descriptions by the judge, and unanswerable questions by whether the system declines. Counts are dev / test: 53 and 68 in total.", "Gold set")
 types = [("Factoid", "What was the revenue from operations for Zomato in Fiscal 2021?", "one fact from the text", "10 / 13", TEAL_T),
          ("Numeric", "What is the minimum bid amount for Retail Individual Bidders in Zomato's offer?", "an exact figure with its unit", "10 / 13", TEAL_T),
          ("Table", "What was the total expenses amount for Zomato in Fiscal 2020 compared to Fiscal 2019?", "values read from a table", "10 / 14", TEAL_T),
@@ -273,7 +252,7 @@ text(s, 0.6, 6.75, 12.1, 0.3, "Total 53 dev and 68 test questions. Figures are c
 s = new("How each answer is scored",
         "Three checks, each comparing two things. Retrieval: do the pages the system retrieved include the evidence pages from the gold set? Grounding: are the figures in the answer in the retrieved text, are the cited pages real, "
         "and did the system decline when it should (and only then)? The judge: an LLM compares the answer with the gold answer and scores coverage, faithfulness and redundancy. "
-        "Retrieval and grounding follow fixed rules, so they give the same score every time; only the judge uses an LLM. The judge agrees with a rule-based key-fact check on 84% of 83 answers.", "Evaluation framework")
+        "Retrieval and grounding follow fixed rules, so they give the same score every time; only the judge uses an LLM. The judge agrees with a rule-based key-fact check on 84% of 83 answers.", "Evaluation method")
 lay = [("Retrieval", "fixed rules", "Pages the system retrieved", "Evidence pages in the gold set", "Did the right page come back?", "Recall, nDCG and MRR at the page level", TEAL_T, TEAL),
        ("Grounding", "fixed rules", "The answer", "The retrieved text", "Are the figures and citations real?", "Also: did it decline when it should, and only then", TEAL_T, TEAL),
        ("Judge", "an LLM (gpt-oss-120b) compares", "The answer", "The gold answer", "Is it complete, accurate and concise?", "Scores coverage, faithfulness and redundancy", WARN_T, WARN)]
@@ -296,7 +275,7 @@ s = new("The LLM judge: what it does and how we checked it",
         "The judge is gpt-oss-120b, accessed through Groq, a different model family from the Nemotron generators and from the model that drafted the questions. It sees only the question, the gold answer and the predicted answer, never the retrieved text. "
         "It splits the gold answer into items and grades coverage, faithfulness and redundancy on five levels (excellent 1.0, good 0.75, acceptable 0.5, bad 0.25, extremely bad 0); the overall score is their mean. "
         "An abstention on an answerable question scores 0 without a call. To check the judge we compared its coverage with a rule-based key-fact check on 83 dev answers: they agree on 84% (60 + 10 of 83), with a moderate correlation of 0.56. "
-        "The judge has not been compared with human graders, which is on the limitations slide.", "Evaluation framework")
+        "The judge has not been compared with human graders, which is on the limitations slide.", "Evaluation method")
 text(s, 0.6, 1.5, 6.4, 0.35, "What the judge does", size=18, bold=True, font=HEAD)
 for k, lab in enumerate(("Question", "Gold answer", "Predicted answer")):
     b = box(s, 0.6, 2.0 + k * 0.75, 2.2, 0.6, fill=PAPER, line=LINE, radius=0.08)
@@ -330,7 +309,7 @@ card_text(s, 8.0, 6.0, 4.7, 0.8, [[("Not compared with human graders.", {"color"
 s = new("Five single-factor ablations against one baseline",
         "One factor varies at a time; everything else stays at the baseline (the filled chip). Chunking: fixed-size windows, cutting by chapter, adding the parent section the model reads, and adding the chapter name to each chunk (the 'header'). "
         "Table format: inline leaves tables as ordinary page text; flat makes one chunk per table with rows written as 'a | b | c'; markdown adds the caption and a header row. Retrieval: meaning only (dense), keyword only (BM25) or both (hybrid). "
-        "Verification checks figures and cited pages. Embedder: bge-small, bge-large or e5-large. Held fixed: equal-weight merge, MiniLM reranker, context ordering, parent size cap, no query rewriting.", "Experiments")
+        "Verification checks figures and cited pages. Embedder: bge-small, bge-large or e5-large. Held fixed: equal-weight merge, MiniLM reranker, context ordering, parent size cap, no query rewriting.", "Ablations")
 text(s, 0.6, 1.4, 12.1, 0.35, "Each study changes one factor. Everything else stays at the baseline (filled chip).", size=15, color=MUTED)
 abl = [("Chunking", "How text is cut, and what the model reads around a match", [("Fixed-size windows", 0), ("By chapter", 0), ("By chapter + parent section", 1), ("Also chapter name in each chunk", 0)]),
        ("Table format", "How a table is turned into text", [("Left in page text", 0), ("Own chunk, rows a | b | c", 0), ("Own chunk, markdown + caption", 1)]),
@@ -351,8 +330,6 @@ for nm, what, chips in abl:
     line(s, 0.6, y + rh - 0.04, 12.7, y + rh - 0.04, color=LINE, width=1)
     y += rh
 text(s, 0.6, 6.45, 12.1, 0.4, "Generators compared: bolt (small, 4B class), nano (30B reasoning) and ultra (550B). The answer judge is gpt-oss-120b.", size=14, color=MUTED)
-
-divider(2, "What the experiments found, and the demo", "Part 3. Results: retrieval mode, the other choices, the generators, the ceiling test, the final test run, and the live demo.")
 
 # ---------------------------------------------------------------- 9 retrieval mode
 s = new("Hybrid search beats dense-only search; keyword search alone is just as good",
@@ -459,10 +436,8 @@ s = new("Prospectus Desk: read the answer, then check it on the source page",
 pic(s, "demo_page.png", 0.6, 1.5, 4.6, 5.4)
 bullets(s, 5.6, 1.8, 7.2, 5.0, ["Ask||  answer with citation buttons; figures highlighted on the source page", "How the system found it||  the five steps, and the passages used with which search found each", "Compare||  hybrid vs dense, figure check on or off, with and without surrounding text", "Results||  the charts from this talk", "Honest examples||  six test questions, including a wrong figure and a missed two-filing question"], size=18, gap=12)
 
-divider(3, "Limitations, future work and conclusions", "Part 4. What to keep in mind, what comes next, and the two takeaways.")
-
 # ---------------------------------------------------------------- 14 limitations
-s = new("Limitations",
+s = new("Three limits to keep in mind",
         "Three limits to state before the questions. First, the gold set: LLM-drafted, checked by one person, small, so small effects cannot be ruled out, and the drafting model is also a tested generator. "
         "Second, one judge: the answer-quality score comes from one LLM that agrees with a rule-based check only moderately and was never compared with human graders. Third, scope: 12 filings from one regulator and no comparison with other published systems.", "Limitations")
 lim = [("The gold set", "LLM-drafted and checked by the author only; no second annotator. It is small, so a null result means no effect large enough to detect. The drafting model is also one of the three generators tested."),
@@ -475,21 +450,20 @@ for i, (h_, body) in enumerate(lim):
     text(s, x + 0.3, 2.65, 3.3, 3.3, body, size=19)
 
 # ---------------------------------------------------------------- 15 future work
-s = new("Future work", "Order by value: check the gold set and the judge against people first, then table retrieval.", "Future work")
-fut = [("Human checks", "Compare a random sample of the gold set and of the judge's scores with human annotators, with agreement figures."),
-       ("Table-aware retrieval", "Keep row and column headers with each figure, rewrite computed questions, and train a reranker on financial text."),
+s = new("Where we would go next", "Order by value: table-aware retrieval first, then the document router, then broader evaluation.", "Future work")
+fut = [("Table-aware retrieval", "Keep row and column headers with each figure, rewrite computed questions, and train a reranker on financial text."),
        ("Questions across filings", "Add multi-hop retrieval and an explicit document router for the weakest category."),
        ("Broader evaluation", "More filings, final prospectuses with the offer price, other published RAG systems and an outside benchmark such as FinanceBench.")]
 for i, (h_, body) in enumerate(fut):
-    x, y = 0.6 + (i % 2) * 6.1, 1.7 + (i // 2) * 2.6
-    box(s, x, y, 5.95, 2.4, fill=TEAL_T if (i + i // 2) % 2 == 0 else SLATE_T, radius=0.08)
-    text(s, x + 0.3, y + 0.25, 5.35, 0.5, h_, size=21, bold=True, font=HEAD)
-    text(s, x + 0.3, y + 0.85, 5.35, 1.45, body, size=17, color=MUTED)
+    x = 0.6 + i * 4.1
+    box(s, x, 1.7, 3.9, 4.3, fill=TEAL_T if i % 2 == 0 else SLATE_T, radius=0.08)
+    text(s, x + 0.3, 1.95, 3.3, 0.9, h_, size=22, bold=True, font=HEAD)
+    text(s, x + 0.3, 2.95, 3.3, 2.9, body, size=18, color=MUTED)
 
 # ---------------------------------------------------------------- 16 conclusions
-s = new("Conclusions",
+s = new("Two takeaways",
         "Two takeaways. Hybrid search is the only one of the five choices with a measurable effect, and it beats dense-only search but not keyword search. Retrieval, not generation, limits answer quality: with the right pages the score rises from 0.59 to 0.84, "
-        "and questions that span two filings almost always fail.", "Conclusions")
+        "and questions that span two filings almost always fail.", "Conclusion")
 concl = [("Hybrid search beat dense-only search", "Recall@5 is 0.58 against 0.47 for dense-only search. The other four choices made no reliable difference."),
          ("Retrieval limits quality", "With the right pages the judge score rises from 0.59 to 0.84, and questions that span two filings almost always fail.")]
 for i, (h_, body) in enumerate(concl):
