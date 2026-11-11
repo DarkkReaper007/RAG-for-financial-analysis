@@ -4,3 +4,4 @@
 * `slides.pptx`: 18 slides (17 plus a backup) with speaker notes, built by `python paper/make_deck.py`.
 * `figs/`: figures drawn by `python paper/make_figs.py` from `demo/results.json`; `demo_page.png` is a source page rendered by the demo server.
 Every number in the report comes from `results/` (see `results/SUMMARY.md` and `results/report__financebench_analysis.md`).
+* `pipeline_slides.pptx`: 14 slides that explain the pipeline stage by stage (no results), with speaker notes; built by `python paper/make_pipeline_deck.py` (add `--preview` for PNG previews in `paper/_preview/`).
