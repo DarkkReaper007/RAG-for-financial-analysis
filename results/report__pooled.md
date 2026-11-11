@@ -1,6 +1,6 @@
 # Pooled confirmatory analysis (dev + test)
 
-Decisions were fixed on dev with pre-registered rules; pooling adds statistical power and does not change them. Gold set treated as author-audited.
+Decisions were fixed on dev with pre-registered rules; pooling adds statistical power and does not change them. Gold set treated as audited by the authors.
 
 ### 3_retrieval_mode (retrieval): pooled n=109 (48 dev + 61 test)
 

@@ -177,7 +177,7 @@ s = new("How the 121-question gold set was built",
         "A gold set is the answer key. We sampled 366 pages across the 12 filings and had an LLM draft one question per page; 227 passed automatic checks (the quote is on the page, the question is self-contained, the company is named, no copying, a second LLM agrees). "
         "102 were chosen to balance question types. The review by hand removed 15 and 10 were refilled from the next-best candidates, so the net change is 5 fewer, giving 97 (5 short because too few acceptable candidates remained for some filings and types). We then looked for every other page that supports each answer: 478 pages were judged and the average question ended up with 2.83 evidence pages. "
         "Finally 12 two-filing and 12 unanswerable questions were added, giving 121. Evidence is stored in groups: any page in a group counts, and every group must be hit. "
-        "The set was audited by the author only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Gold set")
+        "The set was audited by the authors only, and the split between dev and test is by filing. The caveats are on the limitations slide.", "Gold set")
 flow = [("Sample", "366", "pages from the 12 filings"), ("Draft and filter", "227", "LLM questions that pass the automatic checks"), ("Select", "102", "chosen to balance question types"),
         ("Review", "97", "net 5 fewer after review by hand"), ("Expand evidence", "2.8", "evidence pages per question on average"), ("Add special cases", "121", "with 12 two-filing and 12 unanswerable")]
 fw, fg = 1.85, 0.2
@@ -440,7 +440,7 @@ bullets(s, 5.6, 1.8, 7.2, 5.0, ["Ask||  answer with citation buttons; figures hi
 s = new("Three limits to keep in mind",
         "Three limits to state before the questions. First, the gold set: LLM-drafted, checked by one person, small, so small effects cannot be ruled out, and the drafting model is also a tested generator. "
         "Second, one judge: the answer-quality score comes from one LLM that agrees with a rule-based check only moderately and was never compared with human graders. Third, scope: 12 filings from one regulator and no comparison with other published systems.", "Limitations")
-lim = [("The gold set", "LLM-drafted and checked by the author only; no second annotator. It is small, so a null result means no effect large enough to detect. The drafting model is also one of the three generators tested."),
+lim = [("The gold set", "LLM-drafted and checked by the authors only; no second annotator. It is small, so a null result means no effect large enough to detect. The drafting model is also one of the three generators tested."),
        ("One judge", "Answer quality comes from a single LLM (gpt-oss-120b). It agrees only moderately with a rule-based check and was never compared with human graders."),
        ("One corpus", "12 filings from one regulator, and no comparison with another published RAG system, so the findings are for this setting.")]
 for i, (h_, body) in enumerate(lim):
